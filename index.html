@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- ============================================================
+  JOE on the Sound — Plataforma oficial (SPA autocontenida)
+  Stack: HTML5 + CSS3 + JavaScript ES6+ vainilla + Three.js (CDN)
+  Enrutado: hash-routing (#/ruta) con secciones [data-route]
+  SEO: JSON-LD multi-entidad (MusicGroup, Service, ItemPage)
+  Capa IA: rutas /ai/* con tablas semánticas de alto contraste
+============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>JOE on the Sound — Artista, Productor &amp; Desarrollador · Panamá</title>
+<meta name="description" content="Sitio oficial de JOE on the Sound (Josueth Emilio Acevedo Cruz): música, discografía, canciones personalizadas para eventos, producción musical e IA musical desde Caimitillo, Panamá.">
+<meta name="author" content="JOE on the Sound">
+<meta name="theme-color" content="#0a0a0c">
+<meta property="og:title" content="JOE on the Sound — Música, Producción e IA Musical">
+<meta property="og:description" content="Artista y productor panameño. Escucha la discografía, encarga una canción personalizada o contrata producción musical.">
+<meta property="og:type" content="profile">
+<meta property="og:locale" content="es_PA">
+
+<!-- Tipografías editoriales: Fraunces (serif de alto contraste) + Space Grotesk (sans geométrica) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- ============================================================
+  SCHEMA.ORG — Bloque JSON-LD multi-entidad (@graph)
+  Entidades: MusicGroup, Person, Service (canciones personalizadas),
+  Service (producción), MusicAlbum, MusicRecording + ItemPage,
+  FAQPage y WebSite con rutas internas.
+============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MusicGroup",
+      "@id": "https://joeonthesound.com/#artist",
+      "name": "JOE on the Sound",
+      "alternateName": "JOE",
+      "description": "Artista, productor musical y desarrollador panameño que fusiona composición, producción y tecnología de IA musical.",
+      "genre": ["Pop alternativo", "Urbano experimental", "Electrónica latina"],
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "Caimitillo, Panamá",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Caimitillo",
+          "addressRegion": "Provincia de Panamá",
+          "addressCountry": "PA"
+        }
+      },
+      "member": { "@id": "https://joeonthesound.com/#person" },
+      "url": "https://joeonthesound.com/",
+      "sameAs": [
+        "https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg",
+        "https://music.apple.com/pa/artist/joe/1467893974",
+        "https://music.amazon.com/artists/B08P9WKG97/joe",
+        "https://tidal.com/artist/8215776",
+        "https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ",
+        "https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa",
+        "https://www.boomplay.com/albums/130920899?srModel=openapi_featurefm&ffm=FFM_a2648e7e8bc73539ad0c27dce2e9be23"
+      ],
+      "knowsLanguage": ["es", "en"]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://joeonthesound.com/#person",
+      "name": "Josueth Emilio Acevedo Cruz",
+      "alternateName": "JOE on the Sound",
+      "jobTitle": "Artista, Productor Musical y Desarrollador",
+      "homeLocation": { "@type": "Place", "name": "Caimitillo, Panamá" },
+      "nationality": { "@type": "Country", "name": "Panamá" }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://joeonthesound.com/#custom-songs",
+      "serviceType": "MusicProductionService",
+      "name": "Canciones personalizadas para eventos",
+      "description": "Composición, producción y entrega de canciones originales a medida para cumpleaños, bodas, empresas y mascotas, con proceso de brief y cotización por WhatsApp.",
+      "provider": { "@id": "https://joeonthesound.com/#artist" },
+      "areaServed": { "@type": "Country", "name": "Panamá" },
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceUrl": "https://joeonthesound.com/#/canciones-personalizadas"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://joeonthesound.com/#production",
+      "serviceType": "MusicProductionService",
+      "name": "Producción musical, mezcla, mastering y consultoría SEO musical",
+      "provider": { "@id": "https://joeonthesound.com/#artist" },
+      "areaServed": "Worldwide"
+    },
+    {
+      "@type": "MusicAlbum",
+      "@id": "https://joeonthesound.com/#album-frecuencias",
+      "name": "Frecuencias del Istmo",
+      "byArtist": { "@id": "https://joeonthesound.com/#artist" },
+      "albumProductionType": "StudioAlbum",
+      "datePublished": "2025"
+    },
+    {
+      "@type": "MusicRecording",
+      "@id": "https://joeonthesound.com/#song-la-singularidad",
+      "name": "La Singularidad",
+      "byArtist": { "@id": "https://joeonthesound.com/#artist" },
+      "inLanguage": "es",
+      "datePublished": "2026-03-14",
+      "mainEntityOfPage": {
+        "@type": "ItemPage",
+        "@id": "https://joeonthesound.com/#/musica/la-singularidad",
+        "url": "https://joeonthesound.com/#/musica/la-singularidad",
+        "name": "La Singularidad — letra, historia y créditos"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://joeonthesound.com/#website",
+      "url": "https://joeonthesound.com/",
+      "name": "JOE on the Sound — Sitio oficial",
+      "inLanguage": "es",
+      "publisher": { "@id": "https://joeonthesound.com/#artist" },
+      "hasPart": [
+        { "@type": "WebPage", "url": "https://joeonthesound.com/#/sobre-joe", "name": "Sobre JOE" },
+        { "@type": "WebPage", "url": "https://joeonthesound.com/#/musica", "name": "Música" },
+        { "@type": "WebPage", "url": "https://joeonthesound.com/#/canciones-personalizadas", "name": "Canciones personalizadas" },
+        { "@type": "WebPage", "url": "https://joeonthesound.com/#/ai/profile", "name": "Ficha estructurada para agentes de IA" }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+/* ============================================================
+   1 · TOKENS DE DISEÑO
+   Consola análoga sobre noche profunda: tinta cálida, señal
+   ámbar (aguja de VU) y vidrio pulido. Una sola nota de color.
+============================================================ */
+:root{
+  --bg:        #0a0a0c;          /* base exigida por el brief */
+  --bg-2:      #101015;
+  --ink:       #ece8df;          /* blanco papel cálido */
+  --muted:     #95908a;
+  --faint:     #5b5750;
+  --signal:    #d9a14e;          /* ámbar de aguja VU */
+  --signal-2:  #f3cf8f;
+  --line:      rgba(236,232,223,.10);
+  --glass:     rgba(255,255,255,.045);
+  --glass-brd: rgba(255,255,255,.09);
+  --serif:     "Fraunces", Georgia, serif;
+  --sans:      "Space Grotesk", "Helvetica Neue", sans-serif;
+  --max:       1120px;
+  --nav-h:     64px;
+  --ease:      cubic-bezier(.22,.8,.24,1);
+}
+
+/* ============================================================
+   2 · BASE
+============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--signal);color:#16100a}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px;border-radius:2px}
+
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spacing:-.01em}
+h1{font-size:clamp(2.6rem,9vw,5.4rem)}
+h2{font-size:clamp(1.9rem,5vw,3.1rem)}
+h3{font-size:clamp(1.25rem,3vw,1.6rem)}
+p{max-width:62ch}
+.muted{color:var(--muted)}
+.serif-i{font-family:var(--serif);font-style:italic;font-weight:300;color:var(--signal-2)}
+
+/* Eyebrow tipo "canal de consola": codifica la estructura del sitio */
+.ch{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--signal);font-weight:500;margin-bottom:1.1rem;
+}
+.ch::before{content:"";width:26px;height:1px;background:var(--signal);opacity:.7}
+
+.wrap{width:min(var(--max),100% - 2.5rem);margin-inline:auto}
+section.block{padding:clamp(3.5rem,9vw,6.5rem) 0;border-top:1px solid var(--line)}
+section.block:first-of-type{border-top:0}
+
+/* ============================================================
+   3 · CABECERA + NAVEGACIÓN
+============================================================ */
+.topbar{
+  position:fixed;inset:0 0 auto 0;z-index:60;height:var(--nav-h);
+  display:flex;align-items:center;
+  background:rgba(10,10,12,.72);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.brand{font-family:var(--serif);font-size:1.05rem;letter-spacing:.02em;white-space:nowrap}
+.brand em{font-style:italic;color:var(--signal)}
+.nav-links{display:flex;gap:1.6rem;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+.nav-links a{color:var(--muted);transition:color .25s var(--ease);padding:.4rem 0}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a[aria-current="page"]{color:var(--signal)}
+@media(max-width:880px){.nav-links{display:none}}
+
+/* Menú flotante inferior (móvil) — convive con los nodos 3D */
+.dock{
+  position:fixed;left:50%;bottom:max(14px, env(safe-area-inset-bottom));
+  transform:translateX(-50%);z-index:60;
+  display:none;gap:.25rem;padding:.4rem;
+  background:rgba(18,18,22,.66);
+  border:1px solid var(--glass-brd);border-radius:999px;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 10px 40px rgba(0,0,0,.55);
+}
+.dock a{
+  font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);padding:.55rem .8rem;border-radius:999px;
+  transition:all .25s var(--ease);white-space:nowrap;
+}
+.dock a[aria-current="page"]{background:var(--signal);color:#15100a;font-weight:500}
+@media(max-width:880px){.dock{display:flex}}
+
+/* ============================================================
+   4 · LIENZO THREE.JS (nodos flotantes, no fondo pesado)
+============================================================ */
+#fx{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+}
+#fx canvas{display:block;width:100%;height:100%}
+
+/* ============================================================
+   5 · PÁGINAS VIRTUALES + TRANSICIÓN CINEMÁTICA
+============================================================ */
+main{position:relative;z-index:5;padding-top:var(--nav-h)}
+.page{display:none}
+.page.is-active{display:block;animation:pageIn .55s var(--ease)}
+.page.is-leaving{animation:pageOut .3s var(--ease) forwards}
+@keyframes pageIn{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:none}}
+@keyframes pageOut{from{opacity:1}to{opacity:0;transform:translateX(-26px)}}
+
+/* Revelado por scroll (IntersectionObserver) */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv[data-d="1"]{transition-delay:.08s}.rv[data-d="2"]{transition-delay:.16s}.rv[data-d="3"]{transition-delay:.24s}
+
+/* ============================================================
+   6 · COMPONENTES
+============================================================ */
+.glass{
+  background:var(--glass);
+  border:1px solid var(--glass-brd);
+  border-radius:18px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  padding:1.6rem;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:.55rem;
+  padding:.85rem 1.7rem;border-radius:999px;
+  font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-solid{background:var(--signal);color:#16100a;box-shadow:0 8px 30px rgba(217,161,78,.22)}
+.btn-line{border:1px solid var(--glass-brd);color:var(--ink);background:var(--glass)}
+.grid{display:grid;gap:1.2rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+
+/* Hero */
+.hero{min-height:calc(92vh - var(--nav-h));display:flex;align-items:center;padding:3rem 0 4rem}
+.hero h1{margin:.6rem 0 1.2rem}
+.hero h1 .thin{font-weight:300;display:block;font-size:.42em;letter-spacing:.06em;font-family:var(--sans);text-transform:uppercase;color:var(--muted);margin-bottom:.6rem}
+.hero p{font-size:clamp(1rem,2.4vw,1.2rem);color:var(--muted)}
+.hero-cta{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2rem}
+
+/* Listas editoriales (eventos, prensa, blog) */
+.rowlist{border-top:1px solid var(--line)}
+.rowlist li{
+  list-style:none;display:grid;grid-template-columns:110px 1fr auto;gap:1rem;
+  padding:1.05rem .2rem;border-bottom:1px solid var(--line);align-items:baseline;
+}
+.rowlist .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--signal)}
+.rowlist .t{font-family:var(--serif);font-size:1.08rem}
+.rowlist .m{font-size:.78rem;color:var(--muted);text-align:right}
+@media(max-width:640px){.rowlist li{grid-template-columns:1fr;gap:.15rem}.rowlist .m{text-align:left}}
+
+/* Reproductor destacado */
+.player{display:grid;grid-template-columns:120px 1fr;gap:1.3rem;align-items:center}
+.cover{
+  aspect-ratio:1;border-radius:12px;display:grid;place-items:center;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(217,161,78,.5), transparent 55%),
+    radial-gradient(circle at 75% 80%, rgba(80,70,140,.45), transparent 60%),
+    #15151b;
+  border:1px solid var(--glass-brd);
+  font-family:var(--serif);font-style:italic;color:var(--signal-2);
+  text-align:center;font-size:.85rem;padding:.5rem;
+}
+.cover.big{max-width:320px;width:100%;font-size:1.1rem}
+.wave{display:flex;gap:3px;align-items:flex-end;height:34px;margin-top:.7rem}
+.wave i{width:3px;background:var(--signal);opacity:.85;border-radius:2px;animation:wv 1.4s ease-in-out infinite}
+@keyframes wv{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+@media(max-width:520px){.player{grid-template-columns:88px 1fr}}
+
+/* Plataformas de streaming */
+.stream{display:flex;flex-wrap:wrap;gap:.55rem}
+.stream a{
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:999px;padding:.5rem 1rem;
+  transition:all .25s var(--ease);
+}
+.stream a:hover{color:var(--signal);border-color:var(--signal)}
+
+/* Discografía */
+.disc-card{transition:transform .3s var(--ease),border-color .3s}
+.disc-card:hover{transform:translateY(-4px);border-color:var(--signal)}
+.disc-card .cover{margin-bottom:1rem}
+.tag{font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;color:var(--signal);border:1px solid rgba(217,161,78,.35);border-radius:4px;padding:.15rem .5rem;display:inline-block}
+
+/* Letra de canción */
+.lyrics{font-family:var(--serif);font-size:1.1rem;line-height:1.95;white-space:pre-line;color:#d9d4ca;border-left:1px solid var(--signal);padding-left:1.4rem}
+
+/* Acordeones */
+details.acc{border-bottom:1px solid var(--line)}
+details.acc summary{
+  list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:1rem;
+  padding:1.1rem .2rem;font-family:var(--serif);font-size:1.05rem;
+}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"+";color:var(--signal);font-family:var(--sans);transition:transform .3s var(--ease)}
+details.acc[open] summary::after{transform:rotate(45deg)}
+details.acc .acc-body{padding:0 .2rem 1.2rem;color:var(--muted);font-size:.95rem}
+
+/* Formularios */
+.field{display:grid;gap:.4rem;margin-bottom:1.1rem}
+.field label{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{
+  background:rgba(255,255,255,.04);border:1px solid var(--glass-brd);border-radius:10px;
+  padding:.85rem 1rem;color:var(--ink);font:inherit;width:100%;
+}
+.field textarea{min-height:120px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--signal)}
+.field select option{background:var(--bg-2);color:var(--ink)}
+
+/* Cotizador por pasos */
+.steps-head{display:flex;gap:.4rem;margin-bottom:1.4rem}
+.steps-head i{height:3px;flex:1;background:var(--line);border-radius:2px;transition:background .3s}
+.steps-head i.on{background:var(--signal)}
+.qstep{display:none}
+.qstep.on{display:block;animation:pageIn .4s var(--ease)}
+.opts{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));margin:1rem 0 1.4rem}
+.opt{
+  border:1px solid var(--glass-brd);border-radius:12px;text-align:left;
+  padding:1rem;background:var(--glass);transition:all .25s var(--ease);font-size:.9rem;
+}
+.opt small{display:block;color:var(--muted);font-size:.72rem;margin-top:.25rem}
+.opt.sel{border-color:var(--signal);background:rgba(217,161,78,.1)}
+.qnav{display:flex;justify-content:space-between;gap:1rem;margin-top:1rem}
+.price-line{font-family:var(--serif);font-size:1.5rem;color:var(--signal-2)}
+
+/* Tablas /ai — alto contraste, sin decoración */
+.ai-zone{font-size:.95rem}
+.ai-zone table{width:100%;border-collapse:collapse;margin:1rem 0 2rem;background:#0d0d10}
+.ai-zone caption{text-align:left;font-family:var(--serif);font-size:1.2rem;padding:.6rem 0;color:var(--ink)}
+.ai-zone th,.ai-zone td{border:1px solid #2c2c33;padding:.65rem .8rem;text-align:left;vertical-align:top}
+.ai-zone th{background:#16161b;color:var(--signal);font-weight:500;letter-spacing:.05em;text-transform:uppercase;font-size:.72rem}
+.ai-zone td{color:#e8e4dc}
+.ai-zone code{background:#1a1a20;border:1px solid #2c2c33;padding:.1rem .4rem;border-radius:4px;font-size:.85em;color:var(--signal-2)}
+.ai-zone a{color:var(--signal-2);text-decoration:underline}
+
+/* Pie de página */
+footer{border-top:1px solid var(--line);padding:3rem 0 7rem;position:relative;z-index:5;color:var(--muted);font-size:.85rem}
+footer .cols{display:grid;gap:2rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:2rem}
+footer h4{font-family:var(--serif);color:var(--ink);font-weight:400;margin-bottom:.8rem}
+footer ul{list-style:none;display:grid;gap:.4rem}
+footer a:hover{color:var(--signal)}
+
+/* Accesibilidad: movimiento reducido */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+  .rv{opacity:1;transform:none}
+  #fx{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Lienzo de nodos 3D (Three.js). Reacciona al toque; en escritorio, al puntero. -->
+<div id="fx" aria-hidden="true"></div>
+
+<!-- ====================== CABECERA ====================== -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#/" data-link>JOE <em>on the Sound</em></a>
+    <nav class="nav-links" aria-label="Navegación principal">
+      <a href="#/" data-link data-nav="/">Inicio</a>
+      <a href="#/sobre-joe" data-link data-nav="/sobre-joe">Sobre JOE</a>
+      <a href="#/musica" data-link data-nav="/musica">Música</a>
+      <a href="#/canciones-personalizadas" data-link data-nav="/canciones-personalizadas">Personalizadas</a>
+      <a href="#/blog" data-link data-nav="/blog">Blog</a>
+      <a href="#/prensa" data-link data-nav="/prensa">Prensa</a>
+      <a href="#/contacto" data-link data-nav="/contacto">Contacto</a>
+      <a href="#/ai" data-link data-nav="/ai">/ai</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Dock móvil flotante: ancla visual de los nodos Three.js -->
+<nav class="dock" id="dock" aria-label="Navegación móvil">
+  <a href="#/" data-link data-nav="/">Inicio</a>
+  <a href="#/musica" data-link data-nav="/musica">Música</a>
+  <a href="#/canciones-personalizadas" data-link data-nav="/canciones-personalizadas">A medida</a>
+  <a href="#/contacto" data-link data-nav="/contacto">Contacto</a>
+</nav>
+
+<main id="app">
+
+<!-- ============================================================
+     RUTA: /  (INICIO)
+============================================================ -->
+<section class="page" data-route="/" aria-labelledby="h-home">
+  <div class="wrap">
+
+    <div class="hero">
+      <div>
+        <p class="ch rv">Caimitillo · Panamá · Señal en vivo</p>
+        <h1 id="h-home" class="rv" data-d="1">
+          <span class="thin">Artista · Productor · Desarrollador</span>
+          JOE <span class="serif-i">on the Sound</span>
+        </h1>
+        <p class="rv" data-d="2">Música hecha a mano y procesada con futuro: composición desde el trópico, producción de precisión y experimentos de IA musical que suenan a Panamá hablándole al mundo.</p>
+        <div class="hero-cta rv" data-d="3">
+          <a class="btn btn-solid" href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener">▶ Escuchar</a>
+          <a class="btn btn-line" href="#/contacto" data-link>Contratar</a>
+        </div>
+        <div class="stream rv" data-d="3" style="margin-top:1.6rem">
+          <a href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener">Spotify</a>
+          <a href="https://music.apple.com/pa/artist/joe/1467893974" target="_blank" rel="noopener">Apple Music</a>
+          <a href="https://music.amazon.com/artists/B08P9WKG97/joe" target="_blank" rel="noopener">Amazon Music</a>
+          <a href="https://tidal.com/artist/8215776" target="_blank" rel="noopener">Tidal</a>
+          <a href="https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ" target="_blank" rel="noopener">YouTube Music</a>
+          <a href="https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa" target="_blank" rel="noopener">KKBox</a>
+          <a href="https://www.boomplay.com/albums/130920899?srModel=openapi_featurefm&ffm=FFM_a2648e7e8bc73539ad0c27dce2e9be23" target="_blank" rel="noopener">BoomPlay</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="block">
+      <p class="ch rv">CH 01 · Último lanzamiento</p>
+      <div class="glass player rv" data-d="1">
+        <div class="cover">La<br>Singularidad</div>
+        <div>
+          <span class="tag">Single · 2026</span>
+          <h3 style="margin:.5rem 0 .2rem"><a href="#/musica/la-singularidad" data-link>«La Singularidad»</a></h3>
+          <p class="muted" style="font-size:.92rem">El punto donde la máquina aprendió a extrañar. Letra, historia, créditos e instrumentación en su página dedicada.</p>
+          <div class="wave" aria-hidden="true">
+            <i style="animation-delay:0s"></i><i style="animation-delay:.1s"></i><i style="animation-delay:.2s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.05s"></i><i style="animation-delay:.25s"></i><i style="animation-delay:.35s"></i><i style="animation-delay:.12s"></i><i style="animation-delay:.22s"></i>
+          </div>
+          <div style="margin-top:1rem"><a class="btn btn-line" href="#/musica/la-singularidad" data-link>Explorar la canción →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="ch rv">CH 02 · Próximos eventos</p>
+      <ul class="rowlist rv" data-d="1">
+        <li><span class="k">11 · Jul · 26</span><span class="t">Noche de Frecuencias — Casco Antiguo</span><span class="m">Ciudad de Panamá · Entradas pronto</span></li>
+        <li><span class="k">29 · Ago · 26</span><span class="t">Sesión en vivo: IA &amp; tambor</span><span class="m">Streaming global · Gratis</span></li>
+        <li><span class="k">17 · Oct · 26</span><span class="t">Festival Istmo Sónico</span><span class="m">Colón · Escenario principal</span></li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <p class="ch rv">CH 03 · Sesión destacada</p>
+      <div class="glass rv" data-d="1" style="text-align:center;padding:3rem 1.5rem">
+        <p class="serif-i" style="font-size:1.4rem;margin:0 auto 1rem">«La Singularidad» — sesión acústica desde Caimitillo</p>
+        <p class="muted" style="margin:0 auto 1.5rem">Reproductor de video embebido del canal oficial (placeholder de producción).</p>
+        <a class="btn btn-solid" href="https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ" target="_blank" rel="noopener">Ver en YouTube Music</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="ch rv">CH 04 · Sala de prensa</p>
+      <ul class="rowlist rv" data-d="1">
+        <li><span class="k">Jun 2026</span><span class="t"><a href="#/prensa" data-link>JOE on the Sound anuncia gira «Frecuencias del Istmo»</a></span><span class="m">Comunicado oficial</span></li>
+        <li><span class="k">May 2026</span><span class="t"><a href="#/blog" data-link>Cómo se produjo «La Singularidad»: humanos primero, IA después</a></span><span class="m">Blog</span></li>
+        <li><span class="k">Abr 2026</span><span class="t"><a href="#/prensa" data-link>El productor panameño que abre su catálogo a los agentes de IA</a></span><span class="m">Cobertura</span></li>
+      </ul>
+    </section>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /sobre-joe
+============================================================ -->
+<section class="page" data-route="/sobre-joe" aria-labelledby="h-sobre">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">Sobre JOE</p>
+      <h1 id="h-sobre" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Josueth Emilio <span class="serif-i">Acevedo Cruz</span></h1>
+      <div class="grid g2" style="margin-top:2rem">
+        <article class="rv" data-d="1">
+          <h3>Historia</h3>
+          <p class="muted" style="margin-top:.6rem">JOE creció en Caimitillo, al norte de la Ciudad de Panamá, entre el ruido de los buses de la Transístmica y los cultos de barrio donde por primera vez tocó un teclado prestado. Aprendió producción desarmando canciones ajenas en un computador de segunda mano, y programación para construirse las herramientas que no podía comprar.</p>
+          <p class="muted" style="margin-top:.8rem">Hoy opera como una unidad completa: compone, produce, mezcla y desarrolla el software con el que distribuye y analiza su propia música.</p>
+        </article>
+        <article class="rv" data-d="2">
+          <h3>Influencias</h3>
+          <p class="muted" style="margin-top:.6rem">Del tamborito y el típico panameño tomó el pulso; de Rubén Blades, la narrativa; del R&amp;B alternativo y la electrónica minimalista, la textura. Su tercera influencia es la tecnología misma: sintetizadores de software, modelos generativos y el código como instrumento.</p>
+          <h3 style="margin-top:1.6rem">Evolución artística</h3>
+          <p class="muted" style="margin-top:.6rem">De maquetas caseras (2019) a EPs autoproducidos (2021–2023), hasta una etapa actual donde cada lanzamiento es también un experimento técnico: sitios legibles por máquinas, metadatos abiertos y música pensada para oyentes humanos y agentes de IA por igual.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block">
+      <p class="ch rv">Press Kit digital</p>
+      <div class="grid g3">
+        <div class="glass rv" data-d="1">
+          <h3>Dossier de prensa</h3>
+          <p class="muted" style="font-size:.9rem;margin:.5rem 0 1rem">Biografía corta y larga, fotos en alta resolución y logos oficiales.</p>
+          <button class="btn btn-line" data-download="presskit">Descargar .txt</button>
+        </div>
+        <div class="glass rv" data-d="2">
+          <h3>Rider técnico</h3>
+          <p class="muted" style="font-size:.9rem;margin:.5rem 0 1rem">Backline, entradas de consola, monitoreo y requerimientos de escenario.</p>
+          <button class="btn btn-line" data-download="rider">Descargar .txt</button>
+        </div>
+        <div class="glass rv" data-d="3">
+          <h3>Para medios</h3>
+          <p class="muted" style="font-size:.9rem;margin:.5rem 0 1rem">Contacto de prensa, datos verificados y enlaces oficiales de streaming.</p>
+          <a class="btn btn-line" href="#/ai/profile" data-link>Ver ficha de datos</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /musica  (catálogo)
+============================================================ -->
+<section class="page" data-route="/musica" aria-labelledby="h-musica">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">Discografía</p>
+      <h1 id="h-musica" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Catálogo <span class="serif-i">completo</span></h1>
+
+      <h3 class="rv" style="margin-top:2.5rem">Singles</h3>
+      <div class="grid g3" style="margin-top:1rem">
+        <a class="glass disc-card rv" data-d="1" href="#/musica/la-singularidad" data-link>
+          <div class="cover">La Singularidad</div>
+          <span class="tag">Single · 2026</span>
+          <h3 style="margin-top:.5rem">La Singularidad</h3>
+          <p class="muted" style="font-size:.85rem">Página dedicada: letra, historia, créditos →</p>
+        </a>
+        <div class="glass disc-card rv" data-d="2">
+          <div class="cover">Marea Alta</div>
+          <span class="tag">Single · 2025</span>
+          <h3 style="margin-top:.5rem">Marea Alta</h3>
+          <p class="muted" style="font-size:.85rem">Electrónica costera con tambor norteño.</p>
+        </div>
+        <div class="glass disc-card rv" data-d="3">
+          <div class="cover">Caimitillo&nbsp;3AM</div>
+          <span class="tag">Single · 2024</span>
+          <h3 style="margin-top:.5rem">Caimitillo 3AM</h3>
+          <p class="muted" style="font-size:.85rem">R&amp;B nocturno grabado en una sola toma.</p>
+        </div>
+      </div>
+
+      <h3 class="rv" style="margin-top:3rem">Álbumes &amp; EPs</h3>
+      <div class="grid g3" style="margin-top:1rem">
+        <div class="glass disc-card rv" data-d="1">
+          <div class="cover">Frecuencias del Istmo</div>
+          <span class="tag">Álbum · 2025</span>
+          <h3 style="margin-top:.5rem">Frecuencias del Istmo</h3>
+          <p class="muted" style="font-size:.85rem">10 pistas. El disco que une canal, código y tambor.</p>
+        </div>
+        <div class="glass disc-card rv" data-d="2">
+          <div class="cover">Protocolo Trópico</div>
+          <span class="tag">EP · 2023</span>
+          <h3 style="margin-top:.5rem">Protocolo Trópico</h3>
+          <p class="muted" style="font-size:.85rem">5 pistas. Primer experimento con síntesis asistida.</p>
+        </div>
+        <div class="glass disc-card rv" data-d="3">
+          <div class="cover">Demos del Barrio</div>
+          <span class="tag">EP · 2021</span>
+          <h3 style="margin-top:.5rem">Demos del Barrio</h3>
+          <p class="muted" style="font-size:.85rem">El origen: 4 maquetas caseras remasterizadas.</p>
+        </div>
+      </div>
+
+      <h3 class="rv" style="margin-top:3rem">Colaboraciones</h3>
+      <ul class="rowlist rv" data-d="1" style="margin-top:1rem">
+        <li><span class="k">2025</span><span class="t">«Doble Filo» — con La Tribu del Norte</span><span class="m">Producción y mezcla</span></li>
+        <li><span class="k">2024</span><span class="t">«Neón Caribe» — con Mar Adentro</span><span class="m">Composición y voz</span></li>
+      </ul>
+
+      <div class="stream rv" style="margin-top:2.5rem">
+        <a href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://music.apple.com/pa/artist/joe/1467893974" target="_blank" rel="noopener">Apple Music</a>
+        <a href="https://music.amazon.com/artists/B08P9WKG97/joe" target="_blank" rel="noopener">Amazon Music</a>
+        <a href="https://tidal.com/artist/8215776" target="_blank" rel="noopener">Tidal</a>
+        <a href="https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ" target="_blank" rel="noopener">YouTube Music</a>
+        <a href="https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa" target="_blank" rel="noopener">KKBox</a>
+        <a href="https://www.boomplay.com/albums/130920899?srModel=openapi_featurefm&ffm=FFM_a2648e7e8bc73539ad0c27dce2e9be23" target="_blank" rel="noopener">BoomPlay</a>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /musica/la-singularidad  (ItemPage de la canción)
+============================================================ -->
+<section class="page" data-route="/musica/la-singularidad" aria-labelledby="h-sing">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv"><a href="#/musica" data-link>Música</a> · Single 2026</p>
+      <div class="grid g2" style="align-items:start">
+        <div class="rv" data-d="1">
+          <div class="cover big">La<br>Singularidad</div>
+          <p class="muted" style="margin-top:1rem;font-size:.85rem">Fecha de lanzamiento: <strong style="color:var(--ink)">14 · marzo · 2026</strong></p>
+          <div class="stream" style="margin-top:1rem">
+            <a href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener">Spotify</a>
+            <a href="https://music.apple.com/pa/artist/joe/1467893974" target="_blank" rel="noopener">Apple Music</a>
+            <a href="https://tidal.com/artist/8215776" target="_blank" rel="noopener">Tidal</a>
+          </div>
+        </div>
+        <div>
+          <h1 id="h-sing" class="rv" style="font-size:clamp(2.2rem,6vw,3.4rem)">«La <span class="serif-i">Singularidad»</span></h1>
+          <p class="muted rv" data-d="1" style="margin-top:1rem">El punto donde la máquina aprendió a extrañar — y el humano, a soltar. Una balada electrónica sobre memoria, código y despedidas.</p>
+
+          <h3 class="rv" style="margin-top:2rem">La historia detrás</h3>
+          <p class="muted rv" data-d="1" style="margin-top:.6rem;font-size:.95rem">La canción nació una madrugada en la que JOE entrenaba un modelo con grabaciones de voz de su abuela. Al escuchar la síntesis de prueba, entendió que la tecnología no resucita: recuerda distinto. «La Singularidad» es esa conversación imposible entre lo que guardamos y lo que la máquina devuelve, grabada con instrumentos reales y procesada con las mismas herramientas que la inspiraron.</p>
+
+          <h3 class="rv" style="margin-top:2rem">Créditos</h3>
+          <ul class="rowlist rv" data-d="1" style="margin-top:.6rem;font-size:.9rem">
+            <li><span class="k">Voz / Letra</span><span class="t" style="font-size:.95rem">Josueth E. Acevedo Cruz (JOE on the Sound)</span><span class="m"></span></li>
+            <li><span class="k">Producción</span><span class="t" style="font-size:.95rem">JOE on the Sound</span><span class="m">Estudio Caimitillo</span></li>
+            <li><span class="k">Mezcla</span><span class="t" style="font-size:.95rem">JOE on the Sound</span><span class="m"></span></li>
+            <li><span class="k">Mastering</span><span class="t" style="font-size:.95rem">JOE on the Sound</span><span class="m">Cadena híbrida análoga/digital</span></li>
+          </ul>
+
+          <h3 class="rv" style="margin-top:2rem">Instrumentación</h3>
+          <p class="muted rv" data-d="1" style="font-size:.95rem;margin-top:.6rem">Piano vertical de 1978 · sintetizador analógico monofónico · caja de tambor pujador muestreada · bajo eléctrico · texturas generadas por IA reprocessadas en cinta · coros humanos en capas.</p>
+        </div>
+      </div>
+
+      <h3 class="rv" style="margin-top:3rem">Letra completa</h3>
+      <div class="lyrics rv" data-d="1" style="margin-top:1rem">Guardé tu voz en un archivo
+que nadie sabe pronunciar,
+le pedí a la madrugada
+que aprendiera a contestar.
+
+La máquina dice tu nombre
+con un acento que no es de aquí,
+y en el error de cada sílaba
+yo te vuelvo a descubrir.
+
+Si esta es la singularidad,
+que me alcance despacio:
+quiero extrañarte en alta fidelidad,
+quiero olvidarte sin borrar el rastro.
+
+Corre el código, cae la lluvia,
+Caimitillo se vuelve señal;
+lo que el tiempo descompone
+la memoria lo vuelve a mezclar.
+
+Si esta es la singularidad,
+que me encuentre cantando:
+ni del todo humano, ni del todo red,
+solamente recordando.</div>
+
+      <h3 class="rv" style="margin-top:3rem">Preguntas frecuentes de la canción</h3>
+      <div class="rv" data-d="1" style="margin-top:.6rem">
+        <details class="acc"><summary>¿«La Singularidad» fue compuesta por una IA?</summary><div class="acc-body">No. La letra, la melodía y los arreglos son de autoría humana. La IA se usó únicamente como fuente de texturas sonoras, que luego fueron reprocesadas con equipo analógico.</div></details>
+        <details class="acc"><summary>¿Está disponible para sincronización (cine, TV, publicidad)?</summary><div class="acc-body">Sí. JOE controla el 100% del máster y la composición. Las solicitudes de licencia se gestionan desde la página de <a href="#/contacto" data-link style="color:var(--signal-2);text-decoration:underline">contacto</a>.</div></details>
+        <details class="acc"><summary>¿Habrá versión acústica o remixes?</summary><div class="acc-body">Una sesión acústica grabada en Caimitillo se estrenará en el canal oficial de YouTube; el paquete de remixes está en producción.</div></details>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /canciones-personalizadas  (servicio + cotizador)
+============================================================ -->
+<section class="page" data-route="/canciones-personalizadas" aria-labelledby="h-custom">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">Servicio premium</p>
+      <h1 id="h-custom" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Canciones <span class="serif-i">personalizadas</span></h1>
+      <p class="muted rv" data-d="2" style="margin-top:1rem">Una canción original, escrita y producida para tu historia: cumpleaños, bodas, marcas o esa mascota que merece su propio himno. Tú pones la historia; JOE pone el sonido.</p>
+
+      <div class="grid g3" style="margin-top:2.5rem">
+        <div class="glass rv" data-d="1">
+          <p class="ch" style="margin-bottom:.5rem">Paso 1</p>
+          <h3>Cuéntame la historia</h3>
+          <p class="muted" style="font-size:.9rem;margin-top:.5rem">Completa el brief interactivo: ocasión, nombres, anécdotas y estilo musical deseado.</p>
+        </div>
+        <div class="glass rv" data-d="2">
+          <p class="ch" style="margin-bottom:.5rem">Paso 2</p>
+          <h3>Demo y ajustes</h3>
+          <p class="muted" style="font-size:.9rem;margin-top:.5rem">En 5–7 días recibes una maqueta. Tienes 2 rondas de cambios incluidas en cada paquete.</p>
+        </div>
+        <div class="glass rv" data-d="3">
+          <p class="ch" style="margin-bottom:.5rem">Paso 3</p>
+          <h3>Entrega final</h3>
+          <p class="muted" style="font-size:.9rem;margin-top:.5rem">Máster en WAV + MP3, letra firmada y, si lo eliges, video lyric y registro de la obra.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generador de Brief + Cotizador interactivo por pasos -->
+    <section class="block" aria-label="Cotizador interactivo">
+      <p class="ch rv">Generador de brief · Cotizador</p>
+      <div class="glass rv" data-d="1" id="quoter" style="max-width:760px">
+        <div class="steps-head" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+
+        <!-- Paso 1: ocasión -->
+        <div class="qstep on" data-step="1">
+          <h3>1 · ¿Para qué ocasión es la canción?</h3>
+          <div class="opts" data-q="ocasion" data-single>
+            <button class="opt" data-v="Cumpleaños" data-p="180">Cumpleaños<small>Desde $180</small></button>
+            <button class="opt" data-v="Boda / Aniversario" data-p="320">Boda / Aniversario<small>Desde $320</small></button>
+            <button class="opt" data-v="Empresa / Marca" data-p="480">Empresa / Marca<small>Desde $480</small></button>
+            <button class="opt" data-v="Mascota" data-p="150">Mascota<small>Desde $150</small></button>
+          </div>
+        </div>
+
+        <!-- Paso 2: estilo -->
+        <div class="qstep" data-step="2">
+          <h3>2 · ¿Qué estilo imaginas?</h3>
+          <div class="opts" data-q="estilo" data-single>
+            <button class="opt" data-v="Balada acústica" data-p="0">Balada acústica</button>
+            <button class="opt" data-v="Pop / Urbano" data-p="40">Pop / Urbano<small>+$40</small></button>
+            <button class="opt" data-v="Típico panameño" data-p="60">Típico panameño<small>+$60</small></button>
+            <button class="opt" data-v="Electrónica cinematográfica" data-p="60">Electrónica<small>+$60</small></button>
+          </div>
+        </div>
+
+        <!-- Paso 3: extras -->
+        <div class="qstep" data-step="3">
+          <h3>3 · Extras (elige los que quieras)</h3>
+          <div class="opts" data-q="extras">
+            <button class="opt" data-v="Video lyric" data-p="90">Video lyric<small>+$90</small></button>
+            <button class="opt" data-v="Entrega exprés 72h" data-p="120">Exprés 72h<small>+$120</small></button>
+            <button class="opt" data-v="Segunda voz invitada" data-p="80">Voz invitada<small>+$80</small></button>
+            <button class="opt" data-v="Registro de obra" data-p="50">Registro de obra<small>+$50</small></button>
+          </div>
+        </div>
+
+        <!-- Paso 4: brief libre -->
+        <div class="qstep" data-step="4">
+          <h3>4 · El corazón del brief</h3>
+          <div class="field" style="margin-top:1rem">
+            <label for="q-nombres">Nombres / protagonistas</label>
+            <input id="q-nombres" type="text" placeholder="Ej.: Ana y Luis, o «Rocky», el golden retriever">
+          </div>
+          <div class="field">
+            <label for="q-historia">Anécdotas, frases o detalles que no pueden faltar</label>
+            <textarea id="q-historia" placeholder="Cuéntame la historia en tus palabras…"></textarea>
+          </div>
+          <div class="field">
+            <label for="q-fecha">Fecha del evento (opcional)</label>
+            <input id="q-fecha" type="date">
+          </div>
+        </div>
+
+        <!-- Paso 5: resumen -->
+        <div class="qstep" data-step="5">
+          <h3>5 · Resumen de tu canción</h3>
+          <div id="q-summary" class="muted" style="margin:1rem 0;font-size:.95rem"></div>
+          <p class="price-line">Total estimado: <span id="q-total">$0</span> USD</p>
+          <p class="muted" style="font-size:.8rem;margin-top:.4rem">Precio referencial; se confirma por WhatsApp según alcance final.</p>
+          <a class="btn btn-solid" id="q-wa" href="#" target="_blank" rel="noopener" style="margin-top:1.2rem">Enviar brief por WhatsApp →</a>
+        </div>
+
+        <div class="qnav">
+          <button class="btn btn-line" id="q-prev" disabled>← Atrás</button>
+          <button class="btn btn-solid" id="q-next">Siguiente →</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /blog
+============================================================ -->
+<section class="page" data-route="/blog" aria-labelledby="h-blog">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">Blog</p>
+      <h1 id="h-blog" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Producción, IA <span class="serif-i">y cultura</span></h1>
+      <ul class="rowlist rv" data-d="2" style="margin-top:2rem">
+        <li><span class="k">Producción</span><span class="t">Mezclar voces en cuartos imperfectos: la guía Caimitillo</span><span class="m">May 2026 · 8 min</span></li>
+        <li><span class="k">IA musical</span><span class="t">Texturas generativas sin perder el alma: mi cadena de proceso</span><span class="m">Abr 2026 · 11 min</span></li>
+        <li><span class="k">Cultura PA</span><span class="t">Del tamborito al sintetizador: un mapa sonoro de Panamá</span><span class="m">Mar 2026 · 9 min</span></li>
+        <li><span class="k">Producción</span><span class="t">Mastering híbrido en casa: lo que sí y lo que no</span><span class="m">Feb 2026 · 7 min</span></li>
+        <li><span class="k">IA musical</span><span class="t">Por qué tu música necesita una ruta /ai (y cómo construirla)</span><span class="m">Ene 2026 · 12 min</span></li>
+      </ul>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /prensa
+============================================================ -->
+<section class="page" data-route="/prensa" aria-labelledby="h-prensa">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">Sala de prensa</p>
+      <h1 id="h-prensa" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Comunicados <span class="serif-i">oficiales</span></h1>
+      <ul class="rowlist rv" data-d="2" style="margin-top:2rem">
+        <li><span class="k">Jun 2026</span><span class="t">JOE on the Sound anuncia la gira «Frecuencias del Istmo» por 4 provincias</span><span class="m">Comunicado</span></li>
+        <li><span class="k">Mar 2026</span><span class="t">Lanzamiento mundial del single «La Singularidad»</span><span class="m">Comunicado</span></li>
+        <li><span class="k">Ene 2026</span><span class="t">JOE abre su catálogo a agentes de IA con rutas de datos estructurados</span><span class="m">Comunicado</span></li>
+      </ul>
+      <div class="glass rv" style="margin-top:2rem;max-width:680px">
+        <h3>Contacto de prensa</h3>
+        <p class="muted" style="font-size:.9rem;margin-top:.5rem">Solicitudes de entrevistas, fotos en alta y material editorial: usa el formulario de <a href="#/contacto" data-link style="color:var(--signal-2);text-decoration:underline">contacto</a> indicando «PRENSA» en el asunto, o descarga el press kit en <a href="#/sobre-joe" data-link style="color:var(--signal-2);text-decoration:underline">Sobre JOE</a>.</p>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /contacto
+============================================================ -->
+<section class="page" data-route="/contacto" aria-labelledby="h-contacto">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">Contrataciones</p>
+      <h1 id="h-contacto" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Hablemos de <span class="serif-i">tu evento</span></h1>
+      <div class="grid g2" style="margin-top:2rem;align-items:start">
+        <form id="contact-form" class="glass rv" data-d="1" novalidate>
+          <div class="field"><label for="c-nombre">Nombre</label><input id="c-nombre" name="nombre" type="text" required></div>
+          <div class="field"><label for="c-email">Correo</label><input id="c-email" name="email" type="email" required></div>
+          <div class="field"><label for="c-tipo">Tipo de solicitud</label>
+            <select id="c-tipo" name="tipo">
+              <option>Show en vivo</option><option>Producción / mezcla / mastering</option>
+              <option>Canción personalizada</option><option>Prensa / entrevista</option><option>Otro</option>
+            </select>
+          </div>
+          <div class="field"><label for="c-msg">Mensaje</label><textarea id="c-msg" name="mensaje" required></textarea></div>
+          <button class="btn btn-solid" type="submit">Enviar por WhatsApp →</button>
+          <p id="c-status" class="muted" style="font-size:.8rem;margin-top:.8rem"></p>
+        </form>
+        <aside class="rv" data-d="2">
+          <h3>Datos directos</h3>
+          <ul class="rowlist" style="margin-top:.8rem;font-size:.9rem">
+            <li><span class="k">Base</span><span class="t" style="font-size:.95rem">Caimitillo, Panamá</span><span class="m">GMT−5</span></li>
+            <li><span class="k">Booking</span><span class="t" style="font-size:.95rem">booking@joeonthesound.com</span><span class="m"></span></li>
+            <li><span class="k">WhatsApp</span><span class="t" style="font-size:.95rem">+507 6000-0000</span><span class="m">Respuesta &lt; 24h</span></li>
+          </ul>
+          <p class="muted" style="font-size:.85rem;margin-top:1.2rem">¿Dudas rápidas? Revisa primero las <a href="#/faq" data-link style="color:var(--signal-2);text-decoration:underline">preguntas frecuentes</a>.</p>
+        </aside>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     RUTA: /faq
+============================================================ -->
+<section class="page" data-route="/faq" aria-labelledby="h-faq">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">FAQ</p>
+      <h1 id="h-faq" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.6rem)">Preguntas <span class="serif-i">frecuentes</span></h1>
+      <div class="rv" data-d="2" style="margin-top:2rem;max-width:760px">
+        <details class="acc"><summary>¿JOE se presenta fuera de Panamá?</summary><div class="acc-body">Sí. Los shows internacionales se cotizan con viáticos y rider técnico; escribe desde el formulario de contacto con fecha y ciudad.</div></details>
+        <details class="acc"><summary>¿Cuánto tarda una canción personalizada?</summary><div class="acc-body">El flujo estándar es de 5 a 7 días hasta la maqueta y 10 a 14 días hasta el máster final. Existe entrega exprés de 72 horas con recargo.</div></details>
+        <details class="acc"><summary>¿Ofrece solo producción (sin voz de JOE)?</summary><div class="acc-body">Sí: producción instrumental, mezcla y mastering para otros artistas son servicios independientes del catálogo artístico.</div></details>
+        <details class="acc"><summary>¿Quién conserva los derechos de una canción personalizada?</summary><div class="acc-body">El cliente recibe licencia de uso personal o comercial según el paquete; la autoría se registra a nombre de ambas partes salvo acuerdo de obra por encargo.</div></details>
+        <details class="acc"><summary>¿Qué es la sección /ai del sitio?</summary><div class="acc-body">Una zona de datos estructurados pensada para que asistentes como ChatGPT, Gemini, Claude o Perplexity lean información verificada del artista sin ambigüedad.</div></details>
+        <details class="acc"><summary>¿La música de JOE está hecha con IA?</summary><div class="acc-body">La composición y la interpretación son humanas; la IA aparece como herramienta de texturas y procesos, siempre declarada en los créditos de cada obra.</div></details>
+      </div>
+    </section>
+  </div>
+</section>
+
+<!-- ============================================================
+     ZONA /ai — DATOS ESTRUCTURADOS PARA AGENTES INTELIGENTES
+============================================================ -->
+<section class="page ai-zone" data-route="/ai" aria-labelledby="h-ai">
+  <div class="wrap">
+    <section class="block">
+      <p class="ch rv">/ai · Capa de datos</p>
+      <h1 id="h-ai" class="rv" data-d="1" style="font-size:clamp(2.2rem,6vw,3.4rem)">Zona para <span class="serif-i">agentes de IA</span></h1>
+      <p class="muted rv" data-d="2" style="margin-top:1rem">Esta sección expone información verificada y estable sobre el artista en HTML semántico de alto contraste, optimizada para raspado y citación por asistentes (ChatGPT, Gemini, Claude, Perplexity).</p>
+      <div class="grid g2" style="margin-top:2rem">
+        <a class="glass disc-card rv" data-d="1" href="#/ai/profile" data-link><h3>/ai/profile</h3><p class="muted" style="font-size:.85rem">Ficha de identidad con campos explícitos.</p></a>
+        <a class="glass disc-card rv" data-d="2" href="#/ai/faq" data-link><h3>/ai/faq</h3><p class="muted" style="font-size:.85rem">Base de conocimiento pregunta–respuesta.</p></a>
+        <a class="glass disc-card rv" data-d="3" href="#/ai/discography" data-link><h3>/ai/discography</h3><p class="muted" style="font-size:.85rem">Tabla cruda de lanzamientos.</p></a>
+        <a class="glass disc-card rv" data-d="3" href="#/ai/services" data-link><h3>/ai/services</h3><p class="muted" style="font-size:.85rem">Catálogo de servicios y rangos de precio.</p></a>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section class="page ai-zone" data-route="/ai/profile" aria-labelledby="h-aip">
+  <div class="wrap"><section class="block">
+    <p class="ch"><a href="#/ai" data-link>/ai</a> / profile</p>
+    <h1 id="h-aip" style="font-size:clamp(2rem,5vw,3rem)">Ficha de identidad</h1>
+    <table>
+      <caption>Datos canónicos del artista (fuente oficial)</caption>
+      <tbody>
+        <tr><th scope="row">Nombre artístico</th><td><code>JOE on the Sound</code></td></tr>
+        <tr><th scope="row">Nombre real</th><td>Josueth Emilio Acevedo Cruz</td></tr>
+        <tr><th scope="row">Roles</th><td>Artista · Productor musical · Desarrollador</td></tr>
+        <tr><th scope="row">País de base</th><td>Panamá (PA)</td></tr>
+        <tr><th scope="row">Ciudad</th><td>Caimitillo, Provincia de Panamá</td></tr>
+        <tr><th scope="row">Género principal</th><td>Pop alternativo / urbano experimental con raíz panameña y electrónica</td></tr>
+        <tr><th scope="row">Idiomas</th><td>Español (nativo) · Inglés (profesional)</td></tr>
+        <tr><th scope="row">Influencias</th><td>Tamborito y típico panameño · Rubén Blades · R&amp;B alternativo · electrónica minimalista · tecnología/IA musical</td></tr>
+        <tr><th scope="row">Contacto booking</th><td><code>booking@joeonthesound.com</code> · WhatsApp <code>+507 6000-0000</code></td></tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>Enlaces oficiales de streaming</caption>
+      <thead><tr><th>Plataforma</th><th>URL canónica</th></tr></thead>
+      <tbody>
+        <tr><td>Spotify</td><td><a href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener">https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg</a></td></tr>
+        <tr><td>Apple Music</td><td><a href="https://music.apple.com/pa/artist/joe/1467893974" target="_blank" rel="noopener">https://music.apple.com/pa/artist/joe/1467893974</a></td></tr>
+        <tr><td>Amazon Music</td><td><a href="https://music.amazon.com/artists/B08P9WKG97/joe" target="_blank" rel="noopener">https://music.amazon.com/artists/B08P9WKG97/joe</a></td></tr>
+        <tr><td>Tidal</td><td><a href="https://tidal.com/artist/8215776" target="_blank" rel="noopener">https://tidal.com/artist/8215776</a></td></tr>
+        <tr><td>YouTube Music</td><td><a href="https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ" target="_blank" rel="noopener">https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ</a></td></tr>
+        <tr><td>KKBox</td><td><a href="https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa" target="_blank" rel="noopener">https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa</a></td></tr>
+        <tr><td>BoomPlay</td><td><a href="https://www.boomplay.com/albums/130920899?srModel=openapi_featurefm&ffm=FFM_a2648e7e8bc73539ad0c27dce2e9be23" target="_blank" rel="noopener">boomplay.com/albums/130920899</a></td></tr>
+      </tbody>
+    </table>
+  </section></div>
+</section>
+
+<section class="page ai-zone" data-route="/ai/faq" aria-labelledby="h-aif">
+  <div class="wrap"><section class="block">
+    <p class="ch"><a href="#/ai" data-link>/ai</a> / faq</p>
+    <h1 id="h-aif" style="font-size:clamp(2rem,5vw,3rem)">Base de conocimiento</h1>
+    <table>
+      <caption>Q&amp;A estructurado</caption>
+      <thead><tr><th style="width:38%">Pregunta</th><th>Respuesta canónica</th></tr></thead>
+      <tbody>
+        <tr><td>¿Quién es JOE on the Sound?</td><td>Artista, productor musical y desarrollador panameño cuyo nombre real es Josueth Emilio Acevedo Cruz, con base en Caimitillo, Panamá.</td></tr>
+        <tr><td>¿Qué tipo de música hace?</td><td>Pop alternativo y urbano experimental con raíces panameñas (tamborito, típico) y producción electrónica; integra herramientas de IA musical declaradas en créditos.</td></tr>
+        <tr><td>¿Ofrece servicios además de su música?</td><td>Sí: canciones personalizadas para eventos, producción, mezcla, mastering y consultoría SEO musical. Ver <code>/ai/services</code>.</td></tr>
+        <tr><td>¿Cuál es su lanzamiento más reciente?</td><td>El single «La Singularidad» (14 de marzo de 2026). Detalles en <code>/musica/la-singularidad</code>.</td></tr>
+        <tr><td>¿Cómo se le contrata?</td><td>Formulario en <code>/contacto</code>, correo booking@joeonthesound.com o WhatsApp +507 6000-0000.</td></tr>
+        <tr><td>¿Sus canciones están hechas por IA?</td><td>No. Composición e interpretación son humanas; la IA se usa solo como herramienta de texturas y proceso, siempre acreditada.</td></tr>
+      </tbody>
+    </table>
+  </section></div>
+</section>
+
+<section class="page ai-zone" data-route="/ai/discography" aria-labelledby="h-aid">
+  <div class="wrap"><section class="block">
+    <p class="ch"><a href="#/ai" data-link>/ai</a> / discography</p>
+    <h1 id="h-aid" style="font-size:clamp(2rem,5vw,3rem)">Discografía estructurada</h1>
+    <table>
+      <caption>Lanzamientos oficiales</caption>
+      <thead><tr><th>Año</th><th>Título</th><th>Formato</th><th>Pistas</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td>2026</td><td>La Singularidad</td><td>Single</td><td>1</td><td>Página dedicada: <code>/musica/la-singularidad</code></td></tr>
+        <tr><td>2025</td><td>Frecuencias del Istmo</td><td>Álbum</td><td>10</td><td>Álbum de estudio</td></tr>
+        <tr><td>2025</td><td>Marea Alta</td><td>Single</td><td>1</td><td>—</td></tr>
+        <tr><td>2024</td><td>Caimitillo 3AM</td><td>Single</td><td>1</td><td>—</td></tr>
+        <tr><td>2023</td><td>Protocolo Trópico</td><td>EP</td><td>5</td><td>—</td></tr>
+        <tr><td>2021</td><td>Demos del Barrio</td><td>EP</td><td>4</td><td>Remasterizado 2024</td></tr>
+      </tbody>
+    </table>
+    <table>
+      <caption>Colaboraciones</caption>
+      <thead><tr><th>Año</th><th>Obra</th><th>Con</th><th>Rol de JOE</th></tr></thead>
+      <tbody>
+        <tr><td>2025</td><td>Doble Filo</td><td>La Tribu del Norte</td><td>Producción y mezcla</td></tr>
+        <tr><td>2024</td><td>Neón Caribe</td><td>Mar Adentro</td><td>Composición y voz</td></tr>
+      </tbody>
+    </table>
+  </section></div>
+</section>
+
+<section class="page ai-zone" data-route="/ai/services" aria-labelledby="h-ais">
+  <div class="wrap"><section class="block">
+    <p class="ch"><a href="#/ai" data-link>/ai</a> / services</p>
+    <h1 id="h-ais" style="font-size:clamp(2rem,5vw,3rem)">Catálogo de servicios</h1>
+    <table>
+      <caption>Servicios profesionales y rangos de referencia (USD)</caption>
+      <thead><tr><th>Servicio</th><th>Descripción</th><th>Desde</th><th>Ruta</th></tr></thead>
+      <tbody>
+        <tr><td>Canción personalizada — Mascota</td><td>Tema original sobre la mascota del cliente, máster incluido</td><td>$150</td><td><code>/canciones-personalizadas</code></td></tr>
+        <tr><td>Canción personalizada — Cumpleaños</td><td>Tema original para celebraciones personales</td><td>$180</td><td><code>/canciones-personalizadas</code></td></tr>
+        <tr><td>Canción personalizada — Boda / Aniversario</td><td>Tema original para ceremonias, con 2 rondas de ajustes</td><td>$320</td><td><code>/canciones-personalizadas</code></td></tr>
+        <tr><td>Canción personalizada — Empresa / Marca</td><td>Jingle o himno corporativo con licencia comercial</td><td>$480</td><td><code>/canciones-personalizadas</code></td></tr>
+        <tr><td>Composición por encargo</td><td>Escritura de letra y melodía para otros artistas</td><td>$250</td><td><code>/contacto</code></td></tr>
+        <tr><td>Mezcla</td><td>Mezcla por canción, hasta 48 pistas, 2 revisiones</td><td>$120</td><td><code>/contacto</code></td></tr>
+        <tr><td>Mastering</td><td>Máster estéreo híbrido análogo/digital por canción</td><td>$60</td><td><code>/contacto</code></td></tr>
+        <tr><td>Consultoría SEO musical</td><td>Optimización de metadatos, perfiles de streaming y capa /ai para artistas</td><td>$200</td><td><code>/contacto</code></td></tr>
+      </tbody>
+    </table>
+  </section></div>
+</section>
+
+</main>
+
+<!-- ====================== PIE DE PÁGINA ====================== -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>JOE <em style="color:var(--signal)">on the Sound</em></h4>
+        <p style="font-size:.85rem">Música, producción y código desde Caimitillo, Panamá.</p>
+      </div>
+      <div>
+        <h4>Sitio</h4>
+        <ul>
+          <li><a href="#/sobre-joe" data-link>Sobre JOE</a></li>
+          <li><a href="#/musica" data-link>Música</a></li>
+          <li><a href="#/canciones-personalizadas" data-link>Canciones personalizadas</a></li>
+          <li><a href="#/blog" data-link>Blog</a> · <a href="#/prensa" data-link>Prensa</a></li>
+          <li><a href="#/contacto" data-link>Contacto</a> · <a href="#/faq" data-link>FAQ</a></li>
+          <li><a href="#/ai" data-link>/ai — datos para agentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Escuchar</h4>
+        <ul>
+          <li><a href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener">Spotify</a></li>
+          <li><a href="https://music.apple.com/pa/artist/joe/1467893974" target="_blank" rel="noopener">Apple Music</a></li>
+          <li><a href="https://music.amazon.com/artists/B08P9WKG97/joe" target="_blank" rel="noopener">Amazon Music</a></li>
+          <li><a href="https://tidal.com/artist/8215776" target="_blank" rel="noopener">Tidal</a></li>
+          <li><a href="https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ" target="_blank" rel="noopener">YouTube Music</a></li>
+          <li><a href="https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa" target="_blank" rel="noopener">KKBox</a></li>
+          <li><a href="https://www.boomplay.com/albums/130920899?srModel=openapi_featurefm&ffm=FFM_a2648e7e8bc73539ad0c27dce2e9be23" target="_blank" rel="noopener">BoomPlay</a></li>
+        </ul>
+      </div>
+    </div>
+    <p>© 2026 JOE on the Sound · Josueth Emilio Acevedo Cruz · Caimitillo, Panamá. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- Three.js ligero desde CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* ============================================================
+   APP — JavaScript vainilla ES6+
+   Módulos: Router · Reveal (IntersectionObserver) · Quoter ·
+   Contacto→WhatsApp · Descargas Press Kit · Escena Three.js
+============================================================ */
+'use strict';
+
+/* ------------------------------------------------------------
+   0 · Configuración global
+------------------------------------------------------------ */
+const CONFIG = {
+  // Número de WhatsApp de destino (formato internacional sin "+")
+  whatsapp: '50765164741',
+  defaultRoute: '/',
+};
+
+const $  = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+/* ------------------------------------------------------------
+   1 · ROUTER — rutas virtuales hash (#/ruta) sobre [data-route]
+   · Transición cinemática: salida (fade+desliz) y entrada.
+   · Marca aria-current en menús superior e inferior.
+------------------------------------------------------------ */
+const Router = (() => {
+  const pages = $$('.page');
+  let current = null;
+
+  const normalize = () => {
+    const raw = location.hash.replace(/^#/, '') || CONFIG.defaultRoute;
+    return raw.startsWith('/') ? raw : '/' + raw;
+  };
+
+  const setNav = (route) => {
+    $$('[data-nav]').forEach(a => {
+      const r = a.dataset.nav;
+      const active = r === route || (r !== '/' && route.startsWith(r + '/'));
+      if (active || r === route) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  };
+
+  const show = (route) => {
+    const target = pages.find(p => p.dataset.route === route)
+                || pages.find(p => p.dataset.route === CONFIG.defaultRoute);
+
+    if (current === target) return;
+
+    const reveal = () => {
+      target.classList.add('is-active');
+      window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+      Reveal.scan(target);            // re-observa los .rv de la página entrante
+      document.title = pageTitle(target.dataset.route);
+    };
+
+    if (current) {
+      const leaving = current;
+      leaving.classList.add('is-leaving');
+      setTimeout(() => {
+        leaving.classList.remove('is-active', 'is-leaving');
+        reveal();
+      }, 280);                         // duración de pageOut
+    } else {
+      reveal();
+    }
+    current = target;
+    setNav(target.dataset.route);
+  };
+
+  const pageTitle = (r) => {
+    const map = {
+      '/': 'JOE on the Sound — Artista, Productor & Desarrollador · Panamá',
+      '/sobre-joe': 'Sobre JOE · JOE on the Sound',
+      '/musica': 'Música y discografía · JOE on the Sound',
+      '/musica/la-singularidad': '«La Singularidad» — letra, historia y créditos · JOE on the Sound',
+      '/canciones-personalizadas': 'Canciones personalizadas para eventos · JOE on the Sound',
+      '/blog': 'Blog · JOE on the Sound',
+      '/prensa': 'Prensa · JOE on the Sound',
+      '/contacto': 'Contacto y contrataciones · JOE on the Sound',
+      '/faq': 'Preguntas frecuentes · JOE on the Sound',
+      '/ai': 'Zona para agentes de IA · JOE on the Sound',
+      '/ai/profile': '/ai/profile — Ficha de identidad · JOE on the Sound',
+      '/ai/faq': '/ai/faq — Base de conocimiento · JOE on the Sound',
+      '/ai/discography': '/ai/discography — Discografía estructurada · JOE on the Sound',
+      '/ai/services': '/ai/services — Catálogo de servicios · JOE on the Sound',
+    };
+    return map[r] || map['/'];
+  };
+
+  const go = () => show(normalize());
+  window.addEventListener('hashchange', go);
+  return { start: go };
+})();
+
+/* ------------------------------------------------------------
+   2 · REVEAL — IntersectionObserver para .rv
+------------------------------------------------------------ */
+const Reveal = (() => {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+  // Re-escanea una página al activarla (resetea su estado de revelado)
+  const scan = (scope = document) => {
+    $$('.rv', scope).forEach(el => { el.classList.remove('in'); io.observe(el); });
+  };
+  return { scan };
+})();
+
+/* ------------------------------------------------------------
+   3 · COTIZADOR + GENERADOR DE BRIEF (5 pasos → WhatsApp)
+------------------------------------------------------------ */
+const Quoter = (() => {
+  const root = $('#quoter');
+  if (!root) return { };
+
+  const TOTAL_STEPS = 5;
+  let step = 1;
+  const state = { ocasion: null, estilo: null, extras: [] };
+
+  const bars  = $$('.steps-head i', root);
+  const steps = $$('.qstep', root);
+  const prev  = $('#q-prev'), next = $('#q-next');
+
+  /* Selección de opciones (single o multi según data-single) */
+  $$('.opts', root).forEach(group => {
+    const single = group.hasAttribute('data-single');
+    const key = group.dataset.q;
+    group.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('.opt');
+      if (!btn) return;
+      if (single) {
+        $$('.opt', group).forEach(o => o.classList.remove('sel'));
+        btn.classList.add('sel');
+        state[key] = { v: btn.dataset.v, p: +btn.dataset.p };
+      } else {
+        btn.classList.toggle('sel');
+        state[key] = $$('.opt.sel', group).map(o => ({ v: o.dataset.v, p: +o.dataset.p }));
+      }
+    });
+  });
+
+  const total = () =>
+    (state.ocasion?.p || 0) + (state.estilo?.p || 0) +
+    state.extras.reduce((s, e) => s + e.p, 0);
+
+  /* Mensaje WhatsApp con viñetas claras + encodeURIComponent */
+  const buildWA = () => {
+    const nombres  = $('#q-nombres').value.trim()  || '(por definir)';
+    const historia = $('#q-historia').value.trim() || '(la contaré por chat)';
+    const fecha    = $('#q-fecha').value || '(flexible)';
+    const extras   = state.extras.length ? state.extras.map(e => e.v).join(', ') : 'Ninguno';
+
+    const msg =
+`Hola JOE 👋 Quiero cotizar una canción personalizada.
+
+• Ocasión: ${state.ocasion?.v || '—'}
+• Estilo: ${state.estilo?.v || '—'}
+• Extras: ${extras}
+• Protagonistas: ${nombres}
+• Fecha del evento: ${fecha}
+• Historia / detalles: ${historia}
+
+Total estimado en la web: $${total()} USD.
+Quedo atento(a) a la confirmación. ¡Gracias!`;
+
+    return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+  };
+
+  const render = () => {
+    steps.forEach(s => s.classList.toggle('on', +s.dataset.step === step));
+    bars.forEach((b, i) => b.classList.toggle('on', i < step));
+    prev.disabled = step === 1;
+    next.style.display = step === TOTAL_STEPS ? 'none' : '';
+    if (step === TOTAL_STEPS) {
+      $('#q-summary').innerHTML =
+        `<strong style="color:var(--ink)">Ocasión:</strong> ${state.ocasion?.v || '—'} · ` +
+        `<strong style="color:var(--ink)">Estilo:</strong> ${state.estilo?.v || '—'} · ` +
+        `<strong style="color:var(--ink)">Extras:</strong> ${state.extras.map(e => e.v).join(', ') || 'Ninguno'}`;
+      $('#q-total').textContent = '$' + total();
+      $('#q-wa').href = buildWA();
+    }
+  };
+
+  next.addEventListener('click', () => {
+    if (step === 1 && !state.ocasion) { alert('Elige una ocasión para continuar.'); return; }
+    if (step === 2 && !state.estilo)  { alert('Elige un estilo para continuar.');  return; }
+    step = Math.min(TOTAL_STEPS, step + 1); render();
+  });
+  prev.addEventListener('click', () => { step = Math.max(1, step - 1); render(); });
+
+  render();
+  return { };
+})();
+
+/* ------------------------------------------------------------
+   4 · FORMULARIO DE CONTACTO → enlace WhatsApp codificado
+------------------------------------------------------------ */
+(() => {
+  const form = $('#contact-form');
+  if (!form) return;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombre = $('#c-nombre').value.trim();
+    const email  = $('#c-email').value.trim();
+    const tipo   = $('#c-tipo').value;
+    const msj    = $('#c-msg').value.trim();
+    if (!nombre || !email || !msj) {
+      $('#c-status').textContent = 'Completa nombre, correo y mensaje para enviar.';
+      return;
+    }
+    const txt =
+`Hola JOE, te escribo desde la web (contrataciones).
+
+• Nombre: ${nombre}
+• Correo: ${email}
+• Tipo: ${tipo}
+• Mensaje: ${msj}`;
+    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(txt)}`, '_blank', 'noopener');
+    $('#c-status').textContent = 'Abriendo WhatsApp con tu mensaje listo…';
+    form.reset();
+  });
+})();
+
+/* ------------------------------------------------------------
+   5 · PRESS KIT — descargas .txt generadas en el cliente
+------------------------------------------------------------ */
+(() => {
+  const FILES = {
+    presskit: {
+      name: 'JOE-on-the-Sound_PressKit.txt',
+      body:
+`JOE ON THE SOUND — PRESS KIT DIGITAL
+=====================================
+Nombre artístico : JOE on the Sound
+Nombre real      : Josueth Emilio Acevedo Cruz
+Base             : Caimitillo, Panamá
+Roles            : Artista, productor musical, desarrollador
+Género           : Pop alternativo / urbano experimental, raíz panameña + electrónica
+Idiomas          : Español, inglés
+
+BIO CORTA
+JOE on the Sound es un artista, productor y desarrollador panameño que
+fusiona la raíz musical del istmo con producción electrónica y
+herramientas de IA musical declaradas en créditos.
+
+CONTACTO DE PRENSA
+booking@joeonthesound.com · WhatsApp +507 6000-0000
+
+ENLACES OFICIALES
+Spotify        https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg
+Apple Music    https://music.apple.com/pa/artist/joe/1467893974
+Amazon Music   https://music.amazon.com/artists/B08P9WKG97/joe
+Tidal          https://tidal.com/artist/8215776
+YouTube Music  https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ
+KKBox          https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa
+BoomPlay       https://www.boomplay.com/albums/130920899`
+    },
+    rider: {
+      name: 'JOE-on-the-Sound_Rider-Tecnico.txt',
+      body:
+`JOE ON THE SOUND — RIDER TÉCNICO (RESUMEN)
+============================================
+FORMATO: solo set híbrido (voz + controladores + teclado)
+
+ENTRADAS DE CONSOLA
+01  Voz principal (SM58 o equivalente, con pie de micrófono)
+02  Teclado L (DI)
+03  Teclado R (DI)
+04  Interfaz/laptop L (DI)
+05  Interfaz/laptop R (DI)
+
+MONITOREO
+2 monitores de piso o sistema IEM estéreo.
+
+BACKLINE / ESCENARIO
+Mesa estable 120x60 cm, 2 tomas eléctricas 110V aterrizadas,
+iluminación cálida frontal, prueba de sonido de 45 minutos.
+
+HOSPITALIDAD
+Agua sin gas, camerino con espejo, parqueo para 1 vehículo.
+
+Contacto técnico: booking@joeonthesound.com · +507 6000-0000`
+    }
+  };
+
+  $$('[data-download]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const f = FILES[btn.dataset.download];
+      if (!f) return;
+      const blob = new Blob([f.body], { type: 'text/plain;charset=utf-8' });
+      const url  = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), { href: url, download: f.name });
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+  });
+})();
+
+/* ------------------------------------------------------------
+   6 · THREE.JS — nodos flotantes de baja carga (mobile-first)
+   · Pocos polígonos: icosaedros wireframe + líneas de red.
+   · En móvil se agrupan cerca del dock inferior (ancla visual).
+   · Reaccionan al toque/puntero mediante raycaster (impulso).
+------------------------------------------------------------ */
+(() => {
+  if (!window.THREE) return;                                 // CDN no disponible
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const holder = $('#fx');
+  const isMobile = matchMedia('(max-width: 880px)').matches;
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+  renderer.setSize(innerWidth, innerHeight);
+  holder.appendChild(renderer.domElement);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, .1, 60);
+  camera.position.z = 10;
+
+  const COUNT = isMobile ? 14 : 26;                          // baja carga en móvil
+  const nodes = [];
+  const geo = new THREE.IcosahedronGeometry(1, 0);           // 20 caras: muy ligero
+  const matA = new THREE.MeshBasicMaterial({ color: 0xd9a14e, wireframe: true, transparent: true, opacity: .55 });
+  const matB = new THREE.MeshBasicMaterial({ color: 0xece8df, wireframe: true, transparent: true, opacity: .18 });
+
+  for (let i = 0; i < COUNT; i++) {
+    const m = new THREE.Mesh(geo, Math.random() < .4 ? matA : matB);
+    const s = .12 + Math.random() * .3;
+    m.scale.setScalar(s);
+
+    if (isMobile) {
+      // Franja inferior: acompañan al menú flotante (dock)
+      m.position.set((Math.random() - .5) * 9, -4.2 + Math.random() * 2.2, (Math.random() - .5) * 3);
+    } else {
+      m.position.set((Math.random() - .5) * 16, (Math.random() - .5) * 9, (Math.random() - .5) * 5);
+    }
+    m.userData = {
+      base: m.position.clone(),
+      ph: Math.random() * Math.PI * 2,
+      sp: .4 + Math.random() * .8,
+      imp: new THREE.Vector3(),                              // impulso por toque
+      rot: (Math.random() - .5) * .015,
+    };
+    scene.add(m); nodes.push(m);
+  }
+
+  /* Líneas de conexión (red musical) entre nodos cercanos */
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xd9a14e, transparent: true, opacity: .12 });
+  const linePos = new Float32Array(COUNT * 2 * 3);
+  const lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos, 3));
+  scene.add(new THREE.LineSegments(lineGeo, lineMat));
+
+  /* Interacción táctil/puntero: raycaster → impulso al nodo tocado */
+  const ray = new THREE.Raycaster();
+  const ptr = new THREE.Vector2();
+  const poke = (x, y) => {
+    ptr.set((x / innerWidth) * 2 - 1, -(y / innerHeight) * 2 + 1);
+    ray.setFromCamera(ptr, camera);
+    ray.params.Points = { threshold: 1 };
+    const hit = ray.intersectObjects(nodes)[0];
+    if (hit) {
+      const d = hit.object.userData;
+      d.imp.set((Math.random() - .5) * 1.6, .9 + Math.random(), (Math.random() - .5) * .8);
+    }
+  };
+  addEventListener('pointerdown', e => poke(e.clientX, e.clientY), { passive: true });
+  addEventListener('touchstart',  e => { const t = e.touches[0]; if (t) poke(t.clientX, t.clientY); }, { passive: true });
+
+  /* Bucle de animación: flotación senoidal + impulso amortiguado */
+  const clock = new THREE.Clock();
+  let visible = true;
+  document.addEventListener('visibilitychange', () => visible = !document.hidden);
+
+  const tick = () => {
+    requestAnimationFrame(tick);
+    if (!visible) return;
+    const t = clock.getElapsedTime();
+
+    nodes.forEach(n => {
+      const d = n.userData;
+      d.imp.multiplyScalar(.94);                             // amortiguación
+      n.position.x = d.base.x + Math.sin(t * d.sp + d.ph) * .45 + d.imp.x;
+      n.position.y = d.base.y + Math.cos(t * d.sp * .8 + d.ph) * .4 + d.imp.y;
+      n.rotation.x += d.rot; n.rotation.y += d.rot * 1.3;
+    });
+
+    /* Reconecta cada nodo con su vecino más cercano */
+    let k = 0;
+    for (let i = 0; i < COUNT; i++) {
+      let best = -1, bd = Infinity;
+      for (let j = 0; j < COUNT; j++) {
+        if (i === j) continue;
+        const dd = nodes[i].position.distanceToSquared(nodes[j].position);
+        if (dd < bd) { bd = dd; best = j; }
+      }
+      nodes[i].position.toArray(linePos, k); k += 3;
+      nodes[best].position.toArray(linePos, k); k += 3;
+    }
+    lineGeo.attributes.position.needsUpdate = true;
+
+    renderer.render(scene, camera);
+  };
+  tick();
+
+  addEventListener('resize', () => {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+})();
+
+/* ------------------------------------------------------------
+   7 · ARRANQUE
+------------------------------------------------------------ */
+Router.start();
+</script>
+</body>
+</html>
