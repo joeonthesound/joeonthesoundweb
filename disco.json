@@ -1,0 +1,278 @@
+{
+    "artist": {
+        "name": "Joe",
+        "id": "0WolrewBAIYhWwzN5Z5Csg",
+        "uri": "spotify:artist:0WolrewBAIYhWwzN5Z5Csg",
+        "social": []
+    },
+    "stats": {
+        "total_albums": 2,
+        "total_singles_eps": 75
+    },
+    "releases": [
+        {
+            "id": "5woYLYxkgEqUeQw8EipT2d",
+            "name": "El País de los Primos",
+            "type": "SINGLE",
+            "release_date": "2026-06-10",
+            "label": "Joe",
+            "track_count": 1,
+            "spotify_url": "https://open.spotify.com/intl-es/album/5woYLYxkgEqUeQw8EipT2d?si=-zP2GwJbTRayKvr8d5thTQ",
+            "uri": "spotify:album:5woYLYxkgEqUeQw8EipT2d",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e02330b25ddfb34ad7dc5bcb16a",
+                "medium": "https://i.scdn.co/image/ab67616d00001e02330b25ddfb34ad7dc5bcb16a",
+                "64x64": "https://i.scdn.co/image/ab67616d00004851330b25ddfb34ad7dc5bcb16a",
+                "small": "https://i.scdn.co/image/ab67616d00004851330b25ddfb34ad7dc5bcb16a",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b273330b25ddfb34ad7dc5bcb16a",
+                "large": "https://i.scdn.co/image/ab67616d0000b273330b25ddfb34ad7dc5bcb16a"
+            },
+            "copyright": [
+                "2026 Joe",
+                "2026 Joe"
+            ]
+        },
+        {
+            "id": "0BvbYFp1LOHRMMwIDbNROF",
+            "name": "Vamo pa Panamá",
+            "type": "SINGLE",
+            "release_date": "2026-06-08",
+            "label": "Joe on the Sound",
+            "track_count": 1,
+            "spotify_url": "https://open.spotify.com/intl-es/album/0BvbYFp1LOHRMMwIDbNROF?si=BHaXX9kyTOeRjfFGZedJFg",
+            "uri": "spotify:album:0BvbYFp1LOHRMMwIDbNROF",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e023a2ba44a0145272f6d83f025",
+                "medium": "https://i.scdn.co/image/ab67616d00001e023a2ba44a0145272f6d83f025",
+                "64x64": "https://i.scdn.co/image/ab67616d000048513a2ba44a0145272f6d83f025",
+                "small": "https://i.scdn.co/image/ab67616d000048513a2ba44a0145272f6d83f025",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b2733a2ba44a0145272f6d83f025",
+                "large": "https://i.scdn.co/image/ab67616d0000b2733a2ba44a0145272f6d83f025"
+            },
+            "copyright": [
+                "2026 Josueth Emilio Acevedo Cruz",
+                "2026 Josueth Emilio Acevedo Cruz"
+            ]
+        },
+        {
+            "id": "4h1FyT0tNjbO6W1twWXDGr",
+            "name": "JOTSDOC",
+            "type": "EP",
+            "release_date": "2026-05-31",
+            "label": "Joe on the Sound",
+            "track_count": 6,
+            "spotify_url": "https://open.spotify.com/intl-es/album/4h1FyT0tNjbO6W1twWXDGr?si=G_R6ADmXRbu16myAfiFy3A",
+            "uri": "spotify:album:4h1FyT0tNjbO6W1twWXDGr",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e0265c20ba7c8acbf6a92528be3",
+                "medium": "https://i.scdn.co/image/ab67616d00001e0265c20ba7c8acbf6a92528be3",
+                "64x64": "https://i.scdn.co/image/ab67616d0000485165c20ba7c8acbf6a92528be3",
+                "small": "https://i.scdn.co/image/ab67616d0000485165c20ba7c8acbf6a92528be3",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b27365c20ba7c8acbf6a92528be3",
+                "large": "https://i.scdn.co/image/ab67616d0000b27365c20ba7c8acbf6a92528be3"
+            },
+            "copyright": [
+                "2026 Josueth Emilio Acevedo Cruz",
+                "2026 Josueth Emilio Acevedo Cruz"
+            ]
+        },
+        {
+            "id": "7gsnWUzf84aElDhDZtJJSI",
+            "name": "Comiendo y Soplando",
+            "type": "SINGLE",
+            "release_date": "2026-05-27",
+            "label": "Joe on the Sound",
+            "track_count": 1,
+            "spotify_url": "https://open.spotify.com/intl-es/album/7gsnWUzf84aElDhDZtJJSI?si=tWJrbGPdRGOO5mzMKaVyiA",
+            "uri": "spotify:album:7gsnWUzf84aElDhDZtJJSI",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e028f50e861d274727aa1aa92e0",
+                "medium": "https://i.scdn.co/image/ab67616d00001e028f50e861d274727aa1aa92e0",
+                "64x64": "https://i.scdn.co/image/ab67616d000048518f50e861d274727aa1aa92e0",
+                "small": "https://i.scdn.co/image/ab67616d000048518f50e861d274727aa1aa92e0",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b2738f50e861d274727aa1aa92e0",
+                "large": "https://i.scdn.co/image/ab67616d0000b2738f50e861d274727aa1aa92e0"
+            },
+            "copyright": [
+                "2026 Josueth Emilio Acevedo Cruz",
+                "2026 Josueth Emilio Acevedo Cruz"
+            ]
+        },
+        {
+            "id": "1lVnKKDYkxYSNr0vM88lqE",
+            "name": "MIsmo Camino",
+            "type": "SINGLE",
+            "release_date": "2026-05-21",
+            "label": "Joe",
+            "track_count": 1,
+            "spotify_url": "https://open.spotify.com/intl-es/album/1lVnKKDYkxYSNr0vM88lqE?si=hqVum732TaCaK4NLtwnLtg",
+            "uri": "spotify:album:1lVnKKDYkxYSNr0vM88lqE",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e02fd1753a268b0a431e0437c47",
+                "medium": "https://i.scdn.co/image/ab67616d00001e02fd1753a268b0a431e0437c47",
+                "64x64": "https://i.scdn.co/image/ab67616d00004851fd1753a268b0a431e0437c47",
+                "small": "https://i.scdn.co/image/ab67616d00004851fd1753a268b0a431e0437c47",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b273fd1753a268b0a431e0437c47",
+                "large": "https://i.scdn.co/image/ab67616d0000b273fd1753a268b0a431e0437c47"
+            },
+            "copyright": [
+                "2026 Joe",
+                "2026 Joe"
+            ]
+        },
+        {
+            "id": "7bIigMxdtHknaJQyeUOvLG",
+            "name": "Fe",
+            "type": "SINGLE",
+            "release_date": "2026-05-17",
+            "label": "Joe",
+            "track_count": 1,
+            "spotify_url": "https://open.spotify.com/intl-es/album/7bIigMxdtHknaJQyeUOvLG?si=JWF9YAB_S36CA8YhXitrxQ",
+            "uri": "spotify:album:7bIigMxdtHknaJQyeUOvLG",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e02486df5413b8f7bd5443bf85d",
+                "medium": "https://i.scdn.co/image/ab67616d00001e02486df5413b8f7bd5443bf85d",
+                "64x64": "https://i.scdn.co/image/ab67616d00004851486df5413b8f7bd5443bf85d",
+                "small": "https://i.scdn.co/image/ab67616d00004851486df5413b8f7bd5443bf85d",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b273486df5413b8f7bd5443bf85d",
+                "large": "https://i.scdn.co/image/ab67616d0000b273486df5413b8f7bd5443bf85d"
+            },
+            "copyright": [
+                "2026 Joe",
+                "2026 Joe"
+            ]
+        },
+        {
+            "id": "7ohCQucuMJhZ7T97RQNsqf",
+            "name": "月が綺麗ですね",
+            "type": "EP",
+            "release_date": "2026-05-07",
+            "label": "Joe on the Sound",
+            "track_count": 6,
+            "spotify_url": "https://open.spotify.com/intl-es/album/7ohCQucuMJhZ7T97RQNsqf?si=_yzo20XVTweOYjZRMJhV_g",
+            "uri": "spotify:album:7ohCQucuMJhZ7T97RQNsqf",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e020992e99df14f86916779744d",
+                "medium": "https://i.scdn.co/image/ab67616d00001e020992e99df14f86916779744d",
+                "64x64": "https://i.scdn.co/image/ab67616d000048510992e99df14f86916779744d",
+                "small": "https://i.scdn.co/image/ab67616d000048510992e99df14f86916779744d",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b2730992e99df14f86916779744d",
+                "large": "https://i.scdn.co/image/ab67616d0000b2730992e99df14f86916779744d"
+            },
+            "copyright": [
+                "2026 Josueth E Acevedo C",
+                "2026 Josueth E Acevedo C"
+            ]
+        },
+        {
+            "id": "0UlP7tBAvyDZkKP4MTwiFw",
+            "name": "Lido 84",
+            "type": "EP",
+            "release_date": "2026-05-01",
+            "label": "Joe",
+            "track_count": 4,
+            "spotify_url": "https://open.spotify.com/intl-es/album/0UlP7tBAvyDZkKP4MTwiFw?si=aeoIFdtxQGOV4spvp9C68w",
+            "uri": "spotify:album:0UlP7tBAvyDZkKP4MTwiFw",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e021324c2f6fdd734f5e3961110",
+                "medium": "https://i.scdn.co/image/ab67616d00001e021324c2f6fdd734f5e3961110",
+                "64x64": "https://i.scdn.co/image/ab67616d000048511324c2f6fdd734f5e3961110",
+                "small": "https://i.scdn.co/image/ab67616d000048511324c2f6fdd734f5e3961110",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b2731324c2f6fdd734f5e3961110",
+                "large": "https://i.scdn.co/image/ab67616d0000b2731324c2f6fdd734f5e3961110"
+            },
+            "copyright": [
+                "2026 Joe",
+                "2026 Joe"
+            ]
+        },
+        {
+            "id": "0o6WHKoEyzZzFWO7f0ZYVH",
+            "name": "ASICALAO",
+            "type": "EP",
+            "release_date": "2026-04-26",
+            "label": "Joe",
+            "track_count": 4,
+            "spotify_url": "https://open.spotify.com/intl-es/album/0o6WHKoEyzZzFWO7f0ZYVH?si=AKmveHfXRemBEeO2V0QZLw",
+            "uri": "spotify:album:0o6WHKoEyzZzFWO7f0ZYVH",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e0292a6f8ca029a99d9ae681e26",
+                "medium": "https://i.scdn.co/image/ab67616d00001e0292a6f8ca029a99d9ae681e26",
+                "64x64": "https://i.scdn.co/image/ab67616d0000485192a6f8ca029a99d9ae681e26",
+                "small": "https://i.scdn.co/image/ab67616d0000485192a6f8ca029a99d9ae681e26",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b27392a6f8ca029a99d9ae681e26",
+                "large": "https://i.scdn.co/image/ab67616d0000b27392a6f8ca029a99d9ae681e26"
+            },
+            "copyright": [
+                "2026 Joe",
+                "2026 Joe"
+            ]
+        },
+        {
+            "id": "2DcGwIpjfuO98CsGMrt4i6",
+            "name": "Iré a Irán",
+            "type": "EP",
+            "release_date": "2026-04-22",
+            "label": "Joe on the Sound",
+            "track_count": 3,
+            "spotify_url": "https://open.spotify.com/intl-es/album/2DcGwIpjfuO98CsGMrt4i6?si=_GUrza1VRvO9TOcyJD9GvQ",
+            "uri": "spotify:album:2DcGwIpjfuO98CsGMrt4i6",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e0243a256d5f88fc45a37d83c3b",
+                "medium": "https://i.scdn.co/image/ab67616d00001e0243a256d5f88fc45a37d83c3b",
+                "64x64": "https://i.scdn.co/image/ab67616d0000485143a256d5f88fc45a37d83c3b",
+                "small": "https://i.scdn.co/image/ab67616d0000485143a256d5f88fc45a37d83c3b",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b27343a256d5f88fc45a37d83c3b",
+                "large": "https://i.scdn.co/image/ab67616d0000b27343a256d5f88fc45a37d83c3b"
+            },
+            "copyright": [
+                "2026 Josueth E. Acevedo C.",
+                "2026 Josueth E. Acevedo C."
+            ]
+        },
+        {
+            "id": "76mO36mWXXrQaJ6ItQnQDP",
+            "name": "2025",
+            "type": "ALBUM",
+            "release_date": "2026-02-15",
+            "label": "Joe on the Sound",
+            "track_count": 16,
+            "spotify_url": "https://open.spotify.com/intl-es/album/76mO36mWXXrQaJ6ItQnQDP?si=YkXeo7iORTSSM9sMyC1f1Q",
+            "uri": "spotify:album:76mO36mWXXrQaJ6ItQnQDP",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e02a42c6710c9ea6d4068dcf93b",
+                "medium": "https://i.scdn.co/image/ab67616d00001e02a42c6710c9ea6d4068dcf93b",
+                "64x64": "https://i.scdn.co/image/ab67616d00004851a42c6710c9ea6d4068dcf93b",
+                "small": "https://i.scdn.co/image/ab67616d00004851a42c6710c9ea6d4068dcf93b",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b273a42c6710c9ea6d4068dcf93b",
+                "large": "https://i.scdn.co/image/ab67616d0000b273a42c6710c9ea6d4068dcf93b"
+            },
+            "copyright": [
+                "2026 Josueth Acevedo",
+                "2026 Joe on the sound"
+            ]
+        },
+        {
+            "id": "6cVUCDFLYoCeai5RfvEaqF",
+            "name": "ILE",
+            "type": "ALBUM",
+            "release_date": "2025-10-16",
+            "label": "Joe on the Sound",
+            "track_count": 10,
+            "spotify_url": "https://open.spotify.com/intl-es/album/6cVUCDFLYoCeai5RfvEaqF?si=tVZAnMiuTDKQYowvhrpqtA",
+            "uri": "spotify:album:6cVUCDFLYoCeai5RfvEaqF",
+            "covers": {
+                "300x300": "https://i.scdn.co/image/ab67616d00001e02e55d7da02499434ee84c5090",
+                "medium": "https://i.scdn.co/image/ab67616d00001e02e55d7da02499434ee84c5090",
+                "64x64": "https://i.scdn.co/image/ab67616d00004851e55d7da02499434ee84c5090",
+                "small": "https://i.scdn.co/image/ab67616d00004851e55d7da02499434ee84c5090",
+                "640x640": "https://i.scdn.co/image/ab67616d0000b273e55d7da02499434ee84c5090",
+                "large": "https://i.scdn.co/image/ab67616d0000b273e55d7da02499434ee84c5090"
+            },
+            "copyright": [
+                "© 2025 Josueth Acevedo",
+                "© 2025 Joe on the Sound"
+            ]
+        }
+    ]
+}
