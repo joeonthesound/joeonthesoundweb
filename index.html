@@ -2,7 +2,7 @@
 <html lang="es-PA">
 <head>
   <!-- ============================================================
-    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V9
+    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V10
     Identidad: Fondo Negro Profundo, Violeta Eléctrico, Amarillo Neón
     Enrutado: hash-routing (#/ruta) con secciones [data-route]
     Protección: Ofuscación activa anti-scraping para datos sensibles
@@ -1747,52 +1747,53 @@
       }
     };
 
-    // LIGHTBOX DEL REPRODUCTOR
+    // LIGHTBOX DEL REPRODUCTOR (REFACTORIZADO A PRUEBA DE ERRORES DEL DOM)
     const Lightbox = {
+      el: null,
+      container: null,
       init: function() {
-        if (!document.getElementById('youtubeLightbox')) {
-          const lightboxDiv = document.createElement('div');
-          lightboxDiv.className = 'lightbox-modal-backdrop';
-          lightboxDiv.id = 'youtubeLightbox';
-          lightboxDiv.setAttribute('role', 'dialog');
-          lightboxDiv.setAttribute('aria-modal', 'true');
-          lightboxDiv.setAttribute('aria-label', 'Reproductor de Video');
-          lightboxDiv.innerHTML = `
+        if (!this.el) {
+          this.el = document.createElement('div');
+          this.el.className = 'lightbox-modal-backdrop';
+          this.el.id = 'youtubeLightbox';
+          this.el.setAttribute('role', 'dialog');
+          this.el.setAttribute('aria-modal', 'true');
+          this.el.setAttribute('aria-label', 'Reproductor de Video');
+          this.el.innerHTML = `
             <div class="lightbox-video-frame">
               <button class="lightbox-close-trigger" id="closeLightboxBtn" aria-label="Cerrar reproductor">×</button>
               <div id="lightboxIframeContainer" style="width: 100%; height: 100%;"></div>
             </div>
           `;
-          document.body.appendChild(lightboxDiv);
+          document.body.appendChild(this.el);
           
-          document.getElementById('closeLightboxBtn').addEventListener('click', Lightbox.close);
-          lightboxDiv.addEventListener('click', function(e) {
-            if (e.target === this) Lightbox.close();
+          this.container = this.el.querySelector('#lightboxIframeContainer');
+          
+          this.el.querySelector('#closeLightboxBtn').addEventListener('click', () => this.close());
+          this.el.addEventListener('click', (e) => {
+            if (e.target === this.el) this.close();
           });
         }
       },
       open: function(videoId) {
-        Lightbox.init(); 
-        const container = document.getElementById('lightboxIframeContainer');
-        if (!container) return;
-        container.innerHTML = `
-          <iframe 
-            class="lightbox-iframe-embed"
-            src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
-            title="Youtube Video Player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-          </iframe>
-        `;
-        const modal = document.getElementById('youtubeLightbox');
-        if (modal) modal.classList.add('active');
+        this.init(); // Garantiza la creación e inserción sincronizada del elemento
+        if (this.container) {
+          this.container.innerHTML = `
+            <iframe 
+              class="lightbox-iframe-embed"
+              src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" 
+              title="Youtube Video Player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          `;
+        }
+        if (this.el) this.el.classList.add('active');
         document.body.style.overflow = 'hidden';
       },
       close: function() {
-        const modal = document.getElementById('youtubeLightbox');
-        if (modal) modal.classList.remove('active');
-        const container = document.getElementById('lightboxIframeContainer');
-        if (container) container.innerHTML = '';
+        if (this.el) this.el.classList.remove('active');
+        if (this.container) this.container.innerHTML = '';
         document.body.style.overflow = '';
       }
     };
@@ -2375,7 +2376,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
             </div>
             <div class="diff-brand-card">
               <span class="diff-brand-digit">06</span>
-              <h3 class="diff-card-header">IA como Herramienta</h3>
+              <h3 class="diff-brand-card-header">IA como Herramienta</h3>
               <p class="diff-card-desc">La inteligencia artificial no reemplaza el criterio artístico; amplifica la capacidad de producir, experimentar, analizar y distribuir.</p>
             </div>
           </div>
