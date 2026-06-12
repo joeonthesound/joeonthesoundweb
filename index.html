@@ -59,7 +59,7 @@
         "url": "https://joeonthesound.online/",
         "foundingLocation": {
           "@type": "Place",
-          "name": "Caimitillo, Panamá"
+          "name": "Panamá"
         },
         "sameAs": [
           "https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg",
@@ -2046,6 +2046,7 @@
         { val: "Cumpleaños", cost: 180 },
         { val: "Boda / Aniversario", cost: 320 },
         { val: "Empresa / Marca", cost: 480 },
+        { val: "Idea Personal", cost: 200 },
         { val: "Mascota", cost: 150 }
       ].map(o => `<option value="${o.val}" data-cost="${o.cost}" ${quoterState.ocasion.value === o.val ? 'selected' : ''}>${o.val} (Base $${o.cost})</option>`).join('');
 
@@ -2054,6 +2055,7 @@
         { val: "Pop / Urbano", cost: 40, label: "Pop / Urbano (+$40)" },
         { val: "Típico panameño", cost: 60, label: "Típico panameño (+$60)" },
         { val: "Electrónica cinematográfica", cost: 60, label: "Electrónica Cinematográfica (+$60)" }
+        { val: "Genero Experimenal", cost: 180, label: "Experimental, Te digo en el Estudio (+$180)" }
       ].map(s => `<option value="${s.val}" data-cost="${s.cost}" ${quoterState.estilo.value === s.val ? 'selected' : ''}>${s.label}</option>`).join('');
 
       return `
@@ -2228,7 +2230,7 @@
           <div class="home-hero-banner">
             <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo" loading="eager" fetchpriority="high" decoding="async">
             <div class="home-hero-info">
-              <span class="badge-location">Caimitillo, Panamá</span>
+              <span class="badge-location">Panamá Norte, Panamá</span>
               <h1 class="home-hero-title">JOE <span class="accent-phrase">on the Sound</span></h1>
               <p class="home-hero-desc">Ecosistema creativo, música independiente, house latino, afrobeat y experimentación tecnológica integrada desde Panamá al resto del mundo.</p>
               <div class="hero-btn-container">
@@ -2690,7 +2692,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
               <span class="badge-location">${release.type}</span>
               <h1 class="heading-primary" style="margin-bottom:1rem;"><span class="accent-phrase">${release.name}</span></h1>
               <p style="color:var(--text-muted); margin-bottom:1.5rem; line-height:1.6;">
-                Lanzamiento oficial distribuido globalmente. Grabado y procesado utilizando instrumentación orgánica y optimización digital avanzada en Caimitillo, Panamá.
+                Lanzamiento oficial distribuido globalmente. Grabado y procesado utilizando instrumentación orgánica y optimización digital avanzada en Panamá Norte, Panamá.
               </p>
               <ul style="list-style:none; display:flex; flex-direction:column; gap:0.5rem; margin-bottom:2rem; font-size:0.9rem; color:var(--text-light);">
                 <li><strong>Fecha:</strong> ${release.release_date}</li>
@@ -2816,7 +2818,25 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
               <span class="badge-location">Líder del Proyecto</span>
               <h2 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; margin-bottom:1rem;">JOE on the Sound</h2>
               <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
-                JOE es un multiinstrumentista, productor independiente y desarrollador de software con base en Caimitillo, Panamá. Su propuesta se define por un fuerte trasfondo profesional y tecnológico: además de la composición, cuenta con una sólida trayectoria diseñando arquitecturas web, analizando métricas de audiencia y programando herramientas DSP (Procesamiento Digital de Señales) a medida.
+                JOE es una persona profundamente curiosa, amante de la música y de todo lo que ocurre detrás del sonido.
+              </p>
+              <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+                Su historia empezó en 2009, produciendo su primer disco con las primeras versiones de FL Studio, más entusiasmo que técnica y una necesidad real de experimentar. Aquel proyecto se lanzó bajo el nombre Música Para Las Discotecas: algo que nació como un hobby, creció más de lo esperado y terminó antes de lo que le gusta admitir.
+              </p>
+              <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+                Mitad por falta de creer en sí mismo. Mitad porque, en ese momento, el mercado local parecía no creer demasiado en los suyos.
+              </p>
+              <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">                
+                De esa etapa quedó una anécdota que todavía aparece como una marca personal en muchas de sus canciones: el grito de estudio “¡No quiero cinta!”. Una frase espontánea, casi absurda, pero cargada de identidad: la señal de alguien que no quería quedarse quieto, que prefería seguir buscando hasta encontrar algo propio.
+              </p>
+              <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+                
+
+JOE nunca dejó de experimentar. Con los años, la música se mezcló con la tecnología, el desarrollo de software, la producción digital, la inteligencia artificial y la construcción de herramientas creativas. Cada intento se volvió más complejo, cada idea abrió otra puerta, y todo ese camino terminó tomando forma en un proyecto más grande: Joe on the Sound.
+
+La historia completa es larga. De esas que no se explican en una biografía.
+
+Se cuentan mejor con una copa de vino entre amigos.                                
               </p>
               <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
                 Esta combinación híbrida de ingeniero y artista le permite configurar su propio estudio físico y digital, automatizar flujos de trabajo eficientes, y aplicar la Inteligencia Artificial no como un sustituto perezoso de la creatividad, sino como una herramienta avanzada para la modulación armónica, síntesis de texturas generativas y optimización técnica de metadatos.
@@ -2859,7 +2879,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
       let content = type === 'EPK' ? 
 `JOE ON THE SOUND — EPK DE PRENSA
 ====================================
-Base: Caimitillo, Panamá
+Base:   Panamá
 Géneros: House Latino, Afrobeat, Electrónica Experimental
 Descripción: Proyecto independiente que fusiona composición folclórica panameña con tecnología avanzada de síntesis e inteligencia artificial.` : 
 `RIDER TÉCNICO DE JOE ON THE SOUND
@@ -2993,7 +3013,7 @@ CH4/CH5 - Interfaz L/R`;
                 </tr>
                 <tr>
                   <td><strong>Ubicación Base</strong></td>
-                  <td>Caimitillo, Provincia de Panamá, Panamá</td>
+                  <td>Panamá Norte, Provincia de Panamá, Panamá</td>
                 </tr>
                 <tr>
                   <td><strong>Música Base / Estilos</strong></td>
