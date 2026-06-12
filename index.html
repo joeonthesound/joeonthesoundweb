@@ -2,7 +2,7 @@
 <html lang="es-PA">
 <head>
   <!-- ============================================================
-    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V4
+    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V6
     Identidad: Fondo Negro Profundo, Violeta Eléctrico, Amarillo Neón
     Enrutado: hash-routing (#/ruta) con secciones [data-route]
     Protección: Ofuscación activa anti-scraping para datos sensibles
@@ -16,9 +16,9 @@
   <meta name="author" content="JOE on the Sound">
   <meta name="theme-color" content="#050508">
 
-  <!-- Favicons oficiales cargando /logo.png de la raíz -->
-  <link rel="icon" type="image/png" href="/logo.png">
-  <link rel="apple-touch-icon" href="/logo.png">
+  <!-- Favicons oficiales cargando el activo directo de la raíz -->
+  <link rel="icon" type="image/png" href="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
+  <link rel="apple-touch-icon" href="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
 
   <!-- Open Graph y Twitter Card para Previews -->
   <meta property="og:type" content="website">
@@ -50,7 +50,7 @@
         "alternateName": "JOE",
         "description": "Ecosistema creativo panameño e identidad artística que integra composición, producción y tecnología musical avanzada.",
         "genre": ["Latin House", "Afrobeat Latino", "Experimental Electronic"],
-        "logo": "https://joeonthesound.online/logo.png",
+        "logo": "https://joeonthesound.online/{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png",
         "image": "https://joeonthesound.online/og-joeonthesound.jpg",
         "url": "https://joeonthesound.online/",
         "foundingLocation": {
@@ -1295,7 +1295,7 @@
     <!-- SIDEBAR NAVEGACIÓN DESKTOP -->
     <aside class="app-sidebar" role="complementary">
       <a href="#/" class="brand-box" aria-label="Regresar al inicio">
-        <img src="/logo.png" alt="JOE on the Sound" class="brand-logo-img" loading="eager" decoding="async">
+        <img src="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png" alt="JOE on the Sound" class="brand-logo-img" loading="eager" decoding="async">
         <div class="brand-info">
           <span class="brand-title-text">JOE on the Sound</span>
           <span class="brand-subtitle-text">Ecosistema Creativo</span>
@@ -1346,8 +1346,6 @@
     </main>
 
   </div>
-
-  <!-- CONTENEDOR CONTENEDOR DINÁMICO DEL LIGHTBOX (SE INYECTA EN TIEMPO DE EJECUCIÓN SI NO EXISTE) -->
 
   <script>
     // CONFIGURACIÓN GLOBAL E INFRAESTRUCTURA DE DATOS
@@ -1428,115 +1426,254 @@
       { id: 5, title: "Fire Don’t Hurt Me Now", duration: "3:27", cover: "https://i.scdn.co/image/ab67616d00001e021324c2f6fdd734f5e3961110" }
     ];
 
-    // DISCOGRAFÍA DINÁMICA DE RESPALDO (SE SOBREESCRIBE POR FETCH)
-    let discographyData = null;
+    // DISCOGRAFÍA INTEGRADA NATIVAMENTE (ELIMINA EL FETCH Y MEJORA EL CARGADO DEL INVENTARIO)
+    const INTEGRATED_DISCOGRAPHY = {
+      "artist": {
+        "name": "Joe",
+        "id": "0WolrewBAIYhWwzN5Z5Csg",
+        "uri": "spotify:artist:0WolrewBAIYhWwzN5Z5Csg",
+        "social": []
+      },
+      "stats": {
+        "total_albums": 2,
+        "total_singles_eps": 75
+      },
+      "releases": [
+        {
+          "id": "5woYLYxkgEqUeQw8EipT2d",
+          "name": "El País de los Primos",
+          "type": "SINGLE",
+          "release_date": "2026-06-10",
+          "label": "Joe",
+          "track_count": 1,
+          "spotify_url": "https://open.spotify.com/intl-es/album/5woYLYxkgEqUeQw8EipT2d?si=-zP2GwJbTRayKvr8d5thTQ",
+          "uri": "spotify:album:5woYLYxkgEqUeQw8EipT2d",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e02330b25ddfb34ad7dc5bcb16a",
+            "medium": "https://i.scdn.co/image/ab67616d00001e02330b25ddfb34ad7dc5bcb16a",
+            "64x64": "https://i.scdn.co/image/ab67616d00004851330b25ddfb34ad7dc5bcb16a",
+            "small": "https://i.scdn.co/image/ab67616d00004851330b25ddfb34ad7dc5bcb16a",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b273330b25ddfb34ad7dc5bcb16a",
+            "large": "https://i.scdn.co/image/ab67616d0000b273330b25ddfb34ad7dc5bcb16a"
+          },
+          "copyright": ["2026 Joe", "2026 Joe"]
+        },
+        {
+          "id": "0BvbYFp1LOHRMMwIDbNROF",
+          "name": "Vamo pa Panamá",
+          "type": "SINGLE",
+          "release_date": "2026-06-08",
+          "label": "Joe on the Sound",
+          "track_count": 1,
+          "spotify_url": "https://open.spotify.com/intl-es/album/0BvbYFp1LOHRMMwIDbNROF?si=BHaXX9kyTOeRjfFGZedJFg",
+          "uri": "spotify:album:0BvbYFp1LOHRMMwIDbNROF",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e023a2ba44a0145272f6d83f025",
+            "medium": "https://i.scdn.co/image/ab67616d00001e023a2ba44a0145272f6d83f025",
+            "64x64": "https://i.scdn.co/image/ab67616d000048513a2ba44a0145272f6d83f025",
+            "small": "https://i.scdn.co/image/ab67616d000048513a2ba44a0145272f6d83f025",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b2733a2ba44a0145272f6d83f025",
+            "large": "https://i.scdn.co/image/ab67616d0000b2733a2ba44a0145272f6d83f025"
+          },
+          "copyright": ["2026 Josueth Emilio Acevedo Cruz", "2026 Josueth Emilio Acevedo Cruz"]
+        },
+        {
+          "id": "4h1FyT0tNjbO6W1twWXDGr",
+          "name": "JOTSDOC",
+          "type": "EP",
+          "release_date": "2026-05-31",
+          "label": "Joe on the Sound",
+          "track_count": 6,
+          "spotify_url": "https://open.spotify.com/intl-es/album/4h1FyT0tNjbO6W1twWXDGr?si=G_R6ADmXRbu16myAfiFy3A",
+          "uri": "spotify:album:4h1FyT0tNjbO6W1twWXDGr",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e0265c20ba7c8acbf6a92528be3",
+            "medium": "https://i.scdn.co/image/ab67616d00001e0265c20ba7c8acbf6a92528be3",
+            "64x64": "https://i.scdn.co/image/ab67616d0000485165c20ba7c8acbf6a92528be3",
+            "small": "https://i.scdn.co/image/ab67616d0000485165c20ba7c8acbf6a92528be3",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b27365c20ba7c8acbf6a92528be3",
+            "large": "https://i.scdn.co/image/ab67616d0000b27365c20ba7c8acbf6a92528be3"
+          },
+          "copyright": ["2026 Josueth Emilio Acevedo Cruz", "2026 Josueth Emilio Acevedo Cruz"]
+        },
+        {
+          "id": "7gsnWUzf84aElDhDZtJJSI",
+          "name": "Comiendo y Soplando",
+          "type": "SINGLE",
+          "release_date": "2026-05-27",
+          "label": "Joe on the Sound",
+          "track_count": 1,
+          "spotify_url": "https://open.spotify.com/intl-es/album/7gsnWUzf84aElDhDZtJJSI?si=tWJrbGPdRGOO5mzMKaVyiA",
+          "uri": "spotify:album:7gsnWUzf84aElDhDZtJJSI",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e028f50e861d274727aa1aa92e0",
+            "medium": "https://i.scdn.co/image/ab67616d00001e028f50e861d274727aa1aa92e0",
+            "64x64": "https://i.scdn.co/image/ab67616d000048518f50e861d274727aa1aa92e0",
+            "small": "https://i.scdn.co/image/ab67616d000048518f50e861d274727aa1aa92e0",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b2738f50e861d274727aa1aa92e0",
+            "large": "https://i.scdn.co/image/ab67616d0000b2738f50e861d274727aa1aa92e0"
+          },
+          "copyright": ["2026 Josueth Emilio Acevedo Cruz", "2026 Josueth Emilio Acevedo Cruz"]
+        },
+        {
+          "id": "1lVnKKDYkxYSNr0vM88lqE",
+          "name": "Mismo Camino",
+          "type": "SINGLE",
+          "release_date": "2026-05-21",
+          "label": "Joe",
+          "track_count": 1,
+          "spotify_url": "https://open.spotify.com/intl-es/album/1lVnKKDYkxYSNr0vM88lqE?si=hqVum732TaCaK4NLtwnLtg",
+          "uri": "spotify:album:1lVnKKDYkxYSNr0vM88lqE",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e02fd1753a268b0a431e0437c47",
+            "medium": "https://i.scdn.co/image/ab67616d00001e02fd1753a268b0a431e0437c47",
+            "64x64": "https://i.scdn.co/image/ab67616d00004851fd1753a268b0a431e0437c47",
+            "small": "https://i.scdn.co/image/ab67616d00004851fd1753a268b0a431e0437c47",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b273fd1753a268b0a431e0437c47",
+            "large": "https://i.scdn.co/image/ab67616d0000b273fd1753a268b0a431e0437c47"
+          },
+          "copyright": ["2026 Joe", "2026 Joe"]
+        },
+        {
+          "id": "7bIigMxdtHknaJQyeUOvLG",
+          "name": "Fe",
+          "type": "SINGLE",
+          "release_date": "2026-05-17",
+          "label": "Joe",
+          "track_count": 1,
+          "spotify_url": "https://open.spotify.com/intl-es/album/7bIigMxdtHknaJQyeUOvLG?si=JWF9YAB_S36CA8YhXitrxQ",
+          "uri": "spotify:album:7bIigMxdtHknaJQyeUOvLG",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e02486df5413b8f7bd5443bf85d",
+            "medium": "https://i.scdn.co/image/ab67616d00001e02486df5413b8f7bd5443bf85d",
+            "64x64": "https://i.scdn.co/image/ab67616d00004851486df5413b8f7bd5443bf85d",
+            "small": "https://i.scdn.co/image/ab67616d00004851486df5413b8f7bd5443bf85d",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b273486df5413b8f7bd5443bf85d",
+            "large": "https://i.scdn.co/image/ab67616d0000b273486df5413b8f7bd5443bf85d"
+          },
+          "copyright": ["2026 Joe", "2026 Joe"]
+        },
+        {
+          "id": "7ohCQucuMJhZ7T97RQNsqf",
+          "name": "月が綺麗ですね",
+          "type": "EP",
+          "release_date": "2026-05-07",
+          "label": "Joe on the Sound",
+          "track_count": 6,
+          "spotify_url": "https://open.spotify.com/intl-es/album/7ohCQucuMJhZ7T97RQNsqf?si=_yzo20XVTweOYjZRMJhV_g",
+          "uri": "spotify:album:7ohCQucuMJhZ7T97RQNsqf",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e020992e99df14f86916779744d",
+            "medium": "https://i.scdn.co/image/ab67616d00001e020992e99df14f86916779744d",
+            "64x64": "https://i.scdn.co/image/ab67616d000048510992e99df14f86916779744d",
+            "small": "https://i.scdn.co/image/ab67616d000048510992e99df14f86916779744d",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b2730992e99df14f86916779744d",
+            "large": "https://i.scdn.co/image/ab67616d0000b2730992e99df14f86916779744d"
+          },
+          "copyright": ["2026 Josueth E Acevedo C", "2026 Josueth E Acevedo C"]
+        },
+        {
+          "id": "0UlP7tBAvyDZkKP4MTwiFw",
+          "name": "Lido 84",
+          "type": "EP",
+          "release_date": "2026-05-01",
+          "label": "Joe",
+          "track_count": 4,
+          "spotify_url": "https://open.spotify.com/intl-es/album/0UlP7tBAvyDZkKP4MTwiFw?si=aeoIFdtxQGOV4spvp9C68w",
+          "uri": "spotify:album:0UlP7tBAvyDZkKP4MTwiFw",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e021324c2f6fdd734f5e3961110",
+            "medium": "https://i.scdn.co/image/ab67616d00001e021324c2f6fdd734f5e3961110",
+            "64x64": "https://i.scdn.co/image/ab67616d000048511324c2f6fdd734f5e3961110",
+            "small": "https://i.scdn.co/image/ab67616d000048511324c2f6fdd734f5e3961110",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b2731324c2f6fdd734f5e3961110",
+            "large": "https://i.scdn.co/image/ab67616d0000b2731324c2f6fdd734f5e3961110"
+          },
+          "copyright": ["2026 Joe", "2026 Joe"]
+        },
+        {
+          "id": "0o6WHKoEyzZzFWO7f0ZYVH",
+          "name": "ASICALAO",
+          "type": "EP",
+          "release_date": "2026-04-26",
+          "label": "Joe",
+          "track_count": 4,
+          "spotify_url": "https://open.spotify.com/intl-es/album/0o6WHKoEyzZzFWO7f0ZYVH?si=AKmveHfXRemBEeO2V0QZLw",
+          "uri": "spotify:album:0o6WHKoEyzZzFWO7f0ZYVH",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e0292a6f8ca029a99d9ae681e26",
+            "medium": "https://i.scdn.co/image/ab67616d00001e0292a6f8ca029a99d9ae681e26",
+            "64x64": "https://i.scdn.co/image/ab67616d0000485192a6f8ca029a99d9ae681e26",
+            "small": "https://i.scdn.co/image/ab67616d0000485192a6f8ca029a99d9ae681e26",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b27392a6f8ca029a99d9ae681e26",
+            "large": "https://i.scdn.co/image/ab67616d0000b27392a6f8ca029a99d9ae681e26"
+          },
+          "copyright": ["2026 Joe", "2026 Joe"]
+        },
+        {
+          "id": "2DcGwIpjfuO98CsGMrt4i6",
+          "name": "Iré a Irán",
+          "type": "EP",
+          "release_date": "2026-04-22",
+          "label": "Joe on the Sound",
+          "track_count": 3,
+          "spotify_url": "https://open.spotify.com/intl-es/album/2DcGwIpjfuO98CsGMrt4i6?si=_GUrza1VRvO9TOcyJD9GvQ",
+          "uri": "spotify:album:2DcGwIpjfuO98CsGMrt4i6",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e0243a256d5f88fc45a37d83c3b",
+            "medium": "https://i.scdn.co/image/ab67616d00001e0243a256d5f88fc45a37d83c3b",
+            "64x64": "https://i.scdn.co/image/ab67616d0000485143a256d5f88fc45a37d83c3b",
+            "small": "https://i.scdn.co/image/ab67616d0000485143a256d5f88fc45a37d83c3b",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b27343a256d5f88fc45a37d83c3b",
+            "large": "https://i.scdn.co/image/ab67616d0000b27343a256d5f88fc45a37d83c3b"
+          },
+          "copyright": ["2026 Josueth E. Acevedo C.", "2026 Josueth E. Acevedo C."]
+        },
+        {
+          "id": "76mO36mWXXrQaJ6ItQnQDP",
+          "name": "2025",
+          "type": "ALBUM",
+          "release_date": "2026-02-15",
+          "label": "Joe on the Sound",
+          "track_count": 16,
+          "spotify_url": "https://open.spotify.com/intl-es/album/76mO36mWXXrQaJ6ItQnQDP?si=YkXeo7iORTSSM9sMyC1f1Q",
+          "uri": "spotify:album:76mO36mWXXrQaJ6ItQnQDP",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e02a42c6710c9ea6d4068dcf93b",
+            "medium": "https://i.scdn.co/image/ab67616d00001e02a42c6710c9ea6d4068dcf93b",
+            "64x64": "https://i.scdn.co/image/ab67616d00004851a42c6710c9ea6d4068dcf93b",
+            "small": "https://i.scdn.co/image/ab67616d00004851a42c6710c9ea6d4068dcf93b",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b273a42c6710c9ea6d4068dcf93b",
+            "large": "https://i.scdn.co/image/ab67616d0000b273a42c6710c9ea6d4068dcf93b"
+          },
+          "copyright": ["2026 Josueth Acevedo", "2026 Joe on the sound"]
+        },
+        {
+          "id": "6cVUCDFLYoCeai5RfvEaqF",
+          "name": "ILE",
+          "type": "ALBUM",
+          "release_date": "2025-10-16",
+          "label": "Joe on the Sound",
+          "track_count": 10,
+          "spotify_url": "https://open.spotify.com/intl-es/album/6cVUCDFLYoCeai5RfvEaqF?si=tVZAnMiuTDKQYowvhrpqtA",
+          "uri": "spotify:album:6cVUCDFLYoCeai5RfvEaqF",
+          "covers": {
+            "300x300": "https://i.scdn.co/image/ab67616d00001e02e55d7da02499434ee84c5090",
+            "medium": "https://i.scdn.co/image/ab67616d00001e02e55d7da02499434ee84c5090",
+            "64x64": "https://i.scdn.co/image/ab67616d00004851e55d7da02499434ee84c5090",
+            "small": "https://i.scdn.co/image/ab67616d00004851e55d7da02499434ee84c5090",
+            "640x640": "https://i.scdn.co/image/ab67616d0000b273e55d7da02499434ee84c5090",
+            "large": "https://i.scdn.co/image/ab67616d0000b273e55d7da02499434ee84c5090"
+          },
+          "copyright": ["© 2025 Josueth Acevedo", "© 2025 Joe on the Sound"]
+        }
+      ]
+    };
 
+    let discographyData = INTEGRATED_DISCOGRAPHY;
+
+    // Retorna la discografía instantáneamente sin latencia
     async function loadDiscography() {
-      if (discographyData) return discographyData;
-      try {
-        const response = await fetch('disco.json');
-        if (!response.ok) throw new Error('Carga fallida o CORS restrictivo');
-        discographyData = await response.json();
-        console.log('Catálogo cargado con éxito desde disco.json.');
-      } catch (error) {
-        console.warn('Utilizando base de datos local de respaldo para la discografía.');
-        // Base de datos de fallback idéntica a disco.json
-        discographyData = {
-          "artist": {
-            "name": "Joe",
-            "id": "0WolrewBAIYhWwzN5Z5Csg",
-            "uri": "spotify:artist:0WolrewBAIYhWwzN5Z5Csg",
-            "social": []
-          },
-          "stats": {
-            "total_albums": 2,
-            "total_singles_eps": 75
-          },
-          "releases": [
-            {
-              "id": "5woYLYxkgEqUeQw8EipT2d",
-              "name": "El País de los Primos",
-              "type": "SINGLE",
-              "release_date": "2026-06-10",
-              "label": "Joe",
-              "track_count": 1,
-              "spotify_url": "https://open.spotify.com/intl-es/album/5woYLYxkgEqUeQw8EipT2d?si=-zP2GwJbTRayKvr8d5thTQ",
-              "uri": "spotify:album:5woYLYxkgEqUeQw8EipT2d",
-              "covers": {
-                "300x300": "https://i.scdn.co/image/ab67616d00001e02330b25ddfb34ad7dc5bcb16a"
-              },
-              "copyright": ["2026 Joe", "2026 Joe"]
-            },
-            {
-              "id": "0BvbYFp1LOHRMMwIDbNROF",
-              "name": "Vamo pa Panamá",
-              "type": "SINGLE",
-              "release_date": "2026-06-08",
-              "label": "Joe on the Sound",
-              "track_count": 1,
-              "spotify_url": "https://open.spotify.com/intl-es/album/0BvbYFp1LOHRMMwIDbNROF?si=BHaXX9kyTOeRjfFGZedJFg",
-              "uri": "spotify:album:0BvbYFp1LOHRMMwIDbNROF",
-              "covers": {
-                "300x300": "https://i.scdn.co/image/ab67616d00001e023a2ba44a0145272f6d83f025"
-              },
-              "copyright": ["2026 Josueth Emilio Acevedo Cruz", "2026 Josueth Emilio Acevedo Cruz"]
-            },
-            {
-              "id": "4h1FyT0tNjbO6W1twWXDGr",
-              "name": "JOTSDOC",
-              "type": "EP",
-              "release_date": "2026-05-31",
-              "label": "Joe on the Sound",
-              "track_count": 6,
-              "spotify_url": "https://open.spotify.com/intl-es/album/4h1FyT0tNjbO6W1twWXDGr?si=G_R6ADmXRbu16myAfiFy3A",
-              "uri": "spotify:album:4h1FyT0tNjbO6W1twWXDGr",
-              "covers": {
-                "300x300": "https://i.scdn.co/image/ab67616d00001e0265c20ba7c8acbf6a92528be3"
-              },
-              "copyright": ["2026 Josueth Emilio Acevedo Cruz", "2026 Josueth Emilio Acevedo Cruz"]
-            },
-            {
-              "id": "7gsnWUzf84aElDhDZtJJSI",
-              "name": "Comiendo y Soplando",
-              "type": "SINGLE",
-              "release_date": "2026-05-27",
-              "label": "Joe on the Sound",
-              "track_count": 1,
-              "spotify_url": "https://open.spotify.com/intl-es/album/7gsnWUzf84aElDhDZtJJSI",
-              "covers": {
-                "300x300": "https://i.scdn.co/image/ab67616d00001e028f50e861d274727aa1aa92e0"
-              },
-              "copyright": ["2026 Joe on the Sound"]
-            },
-            {
-              "id": "1lVnKKDYkxYSNr0vM88lqE",
-              "name": "Mismo Camino",
-              "type": "SINGLE",
-              "release_date": "2026-05-21",
-              "label": "Joe on the Sound",
-              "track_count": 1,
-              "spotify_url": "https://open.spotify.com/intl-es/album/1lVnKKDYkxYSNr0vM88lqE",
-              "covers": {
-                "300x300": "https://i.scdn.co/image/ab67616d00001e02fd1753a268b0a431e0437c47"
-              },
-              "copyright": ["2026 Joe on the Sound"]
-            },
-            {
-              "id": "7bIigMxdtHknaJQyeUOvLG",
-              "name": "Fe",
-              "type": "SINGLE",
-              "release_date": "2026-05-17",
-              "label": "Joe on the Sound",
-              "track_count": 1,
-              "spotify_url": "https://open.spotify.com/intl-es/album/7bIigMxdtHknaJQyeUOvLG",
-              "covers": {
-                "300x300": "https://i.scdn.co/image/ab67616d00001e02486df5413b8f7bd5443bf85d"
-              },
-              "copyright": ["2026 Joe on the Sound"]
-            }
-          ]
-        };
-      }
       return discographyData;
     }
 
@@ -1560,7 +1697,7 @@
       }
     };
 
-    // LIGHTBOX TOTALMENTE PROTEGIDO CONTRA NULL EXCEPTIONS (SAFE AUTOMATIC INJECTION)
+    // LIGHTBOX TOTALMENTE PROTEGIDO
     const Lightbox = {
       init: function() {
         if (!document.getElementById('youtubeLightbox')) {
@@ -1627,7 +1764,7 @@
       }, 3500);
     }
 
-    // STATE DEL COTIZADOR DE COSTOS (VARIABLE GLOBAL DEL MÓDULO)
+    // STATE DEL COTIZADOR DE COSTOS CON PERSISTENCIA DE RUTA
     let currentQuoterStep = 1;
     const quoterState = {
       formato: { value: "SINGLE", multiplier: 1.4 },
@@ -1687,8 +1824,36 @@
       }
     };
 
-    // MODULARIZACIÓN EXCLUSIVA DE LA ESTRUCTURA DEL COTIZADOR
+    // MODULARIZACIÓN DINÁMICA DEL COTIZADOR (Sincroniza y recuerda lo que seleccionó el usuario)
     function getQuoterHTML() {
+      const isFormatSingle = quoterState.formato.value === "SINGLE" ? "selected" : "";
+      const isFormatAlbum = quoterState.formato.value === "ALBUM" ? "selected" : "";
+
+      const isVocalPrincipiante = quoterState.vocal.value === "PRINCIPIANTE" ? "selected" : "";
+      const isVocalIntermedio = quoterState.vocal.value === "INTERMEDIO" ? "selected" : "";
+      const isVocalProfesional = quoterState.vocal.value === "PROFESIONAL" ? "selected" : "";
+      const isVocalInstrumental = quoterState.vocal.value === "INSTRUMENTAL" ? "selected" : "";
+
+      const isPerfilNo = quoterState.tienePerfil === "NO" ? "selected" : "";
+      const isPerfilSi = quoterState.tienePerfil === "SI" ? "selected" : "";
+      const displayPlatformFields = quoterState.tienePerfil === "SI" ? "block" : "none";
+
+      const hasExtra = (val) => quoterState.extras.some(e => e.value === val) ? "checked" : "";
+
+      const occasionOptions = [
+        { val: "Cumpleaños", cost: 180 },
+        { val: "Boda / Aniversario", cost: 320 },
+        { val: "Empresa / Marca", cost: 480 },
+        { val: "Mascota", cost: 150 }
+      ].map(o => `<option value="${o.val}" data-cost="${o.cost}" ${quoterState.ocasion.value === o.val ? 'selected' : ''}>${o.val} (Base $${o.cost})</option>`).join('');
+
+      const styleOptions = [
+        { val: "Balada acústica", cost: 0, label: "Balada Acústica (Base)" },
+        { val: "Pop / Urbano", cost: 40, label: "Pop / Urbano (+$40)" },
+        { val: "Típico panameño", cost: 60, label: "Típico panameño (+$60)" },
+        { val: "Electrónica cinematográfica", cost: 60, label: "Electrónica Cinematográfica (+$60)" }
+      ].map(s => `<option value="${s.val}" data-cost="${s.cost}" ${quoterState.estilo.value === s.val ? 'selected' : ''}>${s.label}</option>`).join('');
+
       return `
         <div class="quoter-header-track">
           <i class="active" id="qBar1"></i>
@@ -1699,16 +1864,16 @@
           <i id="qBar6"></i>
         </div>
 
-        <!-- PASO 1: FORMATO DEL PROYECTO -->
+        <!-- PASO 1: FORMATO -->
         <div class="quoter-slide active" id="quoterStep1">
           <h3>1 · Formato del Proyecto</h3>
           <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Las canciones de un álbum disfrutan de una estructura de producción por lote. Contratar un single individual cuenta con un recargo promedio del +40% debido a costes de calibración del estudio.</p>
           <div class="quoter-options-container" data-quoter-var="formato">
-            <div class="quoter-option-btn selected" data-value="SINGLE" data-multiplier="1.4">
+            <div class="quoter-option-btn ${isFormatSingle}" data-value="SINGLE" data-multiplier="1.4">
               <h4>Canción Única</h4>
               <p>Ajustes específicos (+40% Recargo)</p>
             </div>
-            <div class="quoter-option-btn" data-value="ALBUM" data-multiplier="1.0">
+            <div class="quoter-option-btn ${isFormatAlbum}" data-value="ALBUM" data-multiplier="1.0">
               <h4>Proyecto de Álbum</h4>
               <p>Tarifa base reducida por volumen</p>
             </div>
@@ -1720,47 +1885,47 @@
           <h3>2 · Experiencia Vocal del Cantante</h3>
           <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Cada hora de grabación de cabina e ingeniería cuesta $200 USD. Un menor nivel de entrenamiento vocal requiere más horas de estudio, afinamiento y corrección tímbrica avanzada.</p>
           <div class="quoter-options-container" data-quoter-var="vocal">
-            <div class="quoter-option-btn selected" data-value="PRINCIPIANTE" data-hours="10">
+            <div class="quoter-option-btn ${isVocalPrincipiante}" data-value="PRINCIPIANTE" data-hours="10">
               <h4>Principiante</h4>
               <p>Est. 10 horas de estudio ($2,000)</p>
             </div>
-            <div class="quoter-option-btn" data-value="INTERMEDIO" data-hours="5">
+            <div class="quoter-option-btn ${isVocalIntermedio}" data-value="INTERMEDIO" data-hours="5">
               <h4>Intermedio</h4>
               <p>Est. 5 horas de estudio ($1,000)</p>
             </div>
-            <div class="quoter-option-btn" data-value="PROFESIONAL" data-hours="2">
+            <div class="quoter-option-btn ${isVocalProfesional}" data-value="PROFESIONAL" data-hours="2">
               <h4>Profesional</h4>
               <p>Est. 2 horas de estudio ($400)</p>
             </div>
-            <div class="quoter-option-btn" data-value="INSTRUMENTAL" data-hours="0">
+            <div class="quoter-option-btn ${isVocalInstrumental}" data-value="INSTRUMENTAL" data-hours="0">
               <h4>Instrumental / Sin Voz</h4>
               <p>0 horas de grabación de voz ($0)</p>
             </div>
           </div>
         </div>
 
-        <!-- PASO 3: PLATAFORMAS ARTÍSTICAS -->
+        <!-- PASO 3: PLATAFORMAS -->
         <div class="quoter-slide" id="quoterStep3">
           <h3>3 · Perfil de Artista Activo</h3>
           <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Por favor indícanos si tienes presencia activa para estudiar tu propuesta de valor, identidad y estilo musical preexistente.</p>
           <div class="quoter-options-container" data-quoter-var="perfil_plataformas">
-            <div class="quoter-option-btn selected" data-value="NO" onclick="togglePlatformFields(false)">
+            <div class="quoter-option-btn ${isPerfilNo}" data-value="NO" onclick="togglePlatformFields(false)">
               <h4>No tengo perfil</h4>
               <p>Creación de marca sonora desde cero</p>
             </div>
-            <div class="quoter-option-btn" data-value="SI" onclick="togglePlatformFields(true)">
+            <div class="quoter-option-btn ${isPerfilSi}" data-value="SI" onclick="togglePlatformFields(true)">
               <h4>Sí tengo perfil</h4>
               <p>Proporcionar enlaces de verificación</p>
             </div>
           </div>
-          <div id="wrapperPlatformInputs" style="display:none; margin-top:1rem;">
+          <div id="wrapperPlatformInputs" style="display:${displayPlatformFields}; margin-top:1rem;">
             <div class="input-field-element">
               <label>¿En qué plataforma estás? (ej. Spotify, YouTube, Soundcloud)</label>
-              <input type="text" id="quoterPlatformName" placeholder="Plataforma de streaming">
+              <input type="text" id="quoterPlatformName" placeholder="Plataforma de streaming" value="${quoterState.plataformaName}">
             </div>
             <div class="input-field-element">
               <label>Enlace oficial de tu perfil / Nombre de usuario</label>
-              <input type="text" id="quoterPlatformLink" placeholder="https://...">
+              <input type="text" id="quoterPlatformLink" placeholder="https://..." value="${quoterState.plataformaLink}">
             </div>
           </div>
         </div>
@@ -1771,19 +1936,13 @@
           <div class="input-field-element">
             <label>Ocasión / Propósito</label>
             <select id="quoterOccasionSelect" onchange="updateQuoterStateFromInputs()">
-              <option value="Cumpleaños" data-cost="180">Cumpleaños (Base $180)</option>
-              <option value="Boda / Aniversario" data-cost="320">Boda / Aniversario (Base $320)</option>
-              <option value="Empresa / Marca" data-cost="480">Empresa / Marca (Base $480)</option>
-              <option value="Mascota" data-cost="150">Mascota (Base $150)</option>
+              ${occasionOptions}
             </select>
           </div>
           <div class="input-field-element">
             <label>Dirección Estilística</label>
             <select id="quoterStyleSelect" onchange="updateQuoterStateFromInputs()">
-              <option value="Balada acústica" data-cost="0">Balada Acústica (Base)</option>
-              <option value="Pop / Urbano" data-cost="40">Pop / Urbano (+$40)</option>
-              <option value="Típico panameño" data-cost="60">Típico panameño (+$60)</option>
-              <option value="Electrónica cinematográfica" data-cost="60">Electrónica Cinematográfica (+$60)</option>
+              ${styleOptions}
             </select>
           </div>
         </div>
@@ -1794,19 +1953,19 @@
           <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Optimiza el alcance e impacto de tu canción personalizada agregando activos complementarios.</p>
           <div style="display:flex; flex-direction:column; gap:0.6rem;">
             <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-              <input type="checkbox" class="quoter-extra-cb" data-value="Video lyric" data-cost="90" onchange="updateQuoterExtras()">
+              <input type="checkbox" class="quoter-extra-cb" data-value="Video lyric" data-cost="90" onchange="updateQuoterExtras()" ${hasExtra("Video lyric")}>
               <span>Video Lyric Premium (+$90)</span>
             </label>
             <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-              <input type="checkbox" class="quoter-extra-cb" data-value="Entrega exprés 72h" data-cost="120" onchange="updateQuoterExtras()">
+              <input type="checkbox" class="quoter-extra-cb" data-value="Entrega exprés 72h" data-cost="120" onchange="updateQuoterExtras()" ${hasExtra("Entrega exprés 72h")}>
               <span>Entrega exprés en 72 horas (+$120)</span>
             </label>
             <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-              <input type="checkbox" class="quoter-extra-cb" data-value="Segunda voz invitada" data-cost="80" onchange="updateQuoterExtras()">
+              <input type="checkbox" class="quoter-extra-cb" data-value="Segunda voz invitada" data-cost="80" onchange="updateQuoterExtras()" ${hasExtra("Segunda voz invitada")}>
               <span>Segunda voz profesional invitada (+$80)</span>
             </label>
             <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-              <input type="checkbox" class="quoter-extra-cb" data-value="Registro de obra" data-cost="50" onchange="updateQuoterExtras()">
+              <input type="checkbox" class="quoter-extra-cb" data-value="Registro de obra" data-cost="50" onchange="updateQuoterExtras()" ${hasExtra("Registro de obra")}>
               <span>Registro formal de derechos de autor (+$50)</span>
             </label>
           </div>
@@ -1834,8 +1993,6 @@
     // ==========================================
     Router.addRoute('#/', async function() {
       const randomVideo = YOUTUBE_VIDEOS[Math.floor(Math.random() * YOUTUBE_VIDEOS.length)];
-      
-      // Esperar o cargar la discografía dinámicamente
       await loadDiscography();
       const latestRelease = discographyData.releases[0];
 
@@ -1845,7 +2002,7 @@
           <div class="track-row" onclick="window.open('https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg', '_blank')">
             <div class="track-index-num">${idx + 1}</div>
             <div class="track-info-cell">
-              <div class="track-cover-miniature"><img src="${song.cover}" alt="${song.title}" onerror="this.src='/logo.png'"></div>
+              <div class="track-cover-miniature"><img src="${song.cover}" alt="${song.title}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'"></div>
               <div class="track-titles">
                 <span class="track-main-title">${song.title}</span>
                 <span class="track-artist-sub">${CONFIG.artistName}</span>
@@ -1862,7 +2019,7 @@
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <div class="home-hero-banner">
-            <img src="/logo.png" alt="JOE on the Sound" class="home-hero-logo">
+            <img src="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png" alt="JOE on the Sound" class="home-hero-logo">
             <div class="home-hero-info">
               <span class="badge-location">Caimitillo, Panamá</span>
               <h1 class="home-hero-title">JOE <span class="accent-phrase">on the Sound</span></h1>
@@ -1899,7 +2056,7 @@
               <h2 class="heading-primary">Novedades</h2>
               <a href="#/release/${latestRelease.id}" class="visual-card" style="padding:2rem; text-align:center;">
                 <div class="card-cover-wrapper" style="max-width:200px; margin:0 auto 1.5rem;">
-                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.src='/logo.png'">
+                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
                 </div>
                 <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--accent); text-transform:uppercase;">${latestRelease.name}</h3>
                 <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.5rem;">${latestRelease.release_date} · Sello: ${latestRelease.label}</p>
@@ -1907,9 +2064,7 @@
             </div>
           </div>
 
-          <!-- ============================================================
-            SECCIÓN DEL COTIZADOR PRESTABLECIDO ANTES DEL PIE DE PÁGINA (HOME)
-          ============================================================ -->
+          <!-- SECCIÓN DEL COTIZADOR PRESTABLECIDO EN EL HOME (Sincronizado) -->
           <h2 class="heading-primary" id="calculadora-costos">Cotizador & <span class="accent-phrase">Calculadora de Presupuestos</span></h2>
           <div class="quoter-component-panel" id="premiumQuoter">
             ${getQuoterHTML()}
@@ -1918,12 +2073,11 @@
       `;
 
       setupQuoterListeners();
-      currentQuoterStep = 1;
       updateQuoterUI();
     });
 
     // ==========================================
-    // RUTA VIRTUAL: PÁGINA INTERNA DE COTIZADOR
+    // RUTA VIRTUAL: PÁGINA INDEPENDIENTE DE COTIZADOR
     // ==========================================
     Router.addRoute('#/cotizador', function() {
       document.getElementById('viewport').innerHTML = `
@@ -1937,11 +2091,10 @@
       `;
 
       setupQuoterListeners();
-      currentQuoterStep = 1;
       updateQuoterUI();
     });
 
-    // MANEJADORES DE LA CALCULADORA DE COSTOS
+    // MANEJADORES DE LA CALCULADORA DE COSTOS (Sincronización del estado global)
     window.togglePlatformFields = function(show) {
       const inputs = document.getElementById('wrapperPlatformInputs');
       if (inputs) inputs.style.display = show ? 'block' : 'none';
@@ -1994,6 +2147,8 @@
             } else if (key === 'vocal') {
               quoterState.vocal.value = btn.getAttribute('data-value');
               quoterState.vocal.hours = parseInt(btn.getAttribute('data-hours'));
+            } else if (key === 'perfil_plataformas') {
+              quoterState.tienePerfil = btn.getAttribute('data-value');
             }
           });
         });
@@ -2002,15 +2157,19 @@
 
     window.navigateQuoter = function(dir) {
       if (dir === 1) {
-        if (currentQuoterStep === 3 && quoterState.tienePerfil === "SI") {
-          const platName = document.getElementById('quoterPlatformName').value.trim();
-          const platLink = document.getElementById('quoterPlatformLink').value.trim();
-          if (!platName || !platLink) {
-            showToast('Por favor introduce tu plataforma principal y el enlace a tu perfil.');
-            return;
+        if (currentQuoterStep === 3) {
+          const nameInput = document.getElementById('quoterPlatformName');
+          const linkInput = document.getElementById('quoterPlatformLink');
+          if (quoterState.tienePerfil === "SI" && nameInput && linkInput) {
+            const platName = nameInput.value.trim();
+            const platLink = linkInput.value.trim();
+            if (!platName || !platLink) {
+              showToast('Por favor introduce tu plataforma principal y el enlace a tu perfil.');
+              return;
+            }
+            quoterState.plataformaName = platName;
+            quoterState.plataformaLink = platLink;
           }
-          quoterState.plataformaName = platName;
-          quoterState.plataformaLink = platLink;
         }
         currentQuoterStep = Math.min(6, currentQuoterStep + 1);
       } else {
@@ -2148,7 +2307,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
             <div class="diff-brand-card">
               <span class="diff-brand-digit">06</span>
               <h3 class="diff-brand-card-header">IA como Herramienta</h3>
-              <p class="diff-brand-card-desc">La inteligencia artificial no reemplaza el criterio artístico; amplifica la capacidad de producir, experimentar, analizar y distribuir.</p>
+              <p class="diff-card-desc">La inteligencia artificial no reemplaza el criterio artístico; amplifica la capacidad de producir, experimentar, analizar y distribuir.</p>
             </div>
           </div>
 
@@ -2190,7 +2349,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     });
 
     // ==========================================
-    // RUTA VIRTUAL: MÚSICA & DISCOGRAFÍA CON CARGA DINÁMICA Y FILTROS
+    // RUTA VIRTUAL: MÚSICA & DISCOGRAFÍA CON FILTROS
     // ==========================================
     let activeReleaseFilter = 'ALL';
 
@@ -2220,7 +2379,6 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
       const filterContainer = document.getElementById('releasesFilterContainer');
       if (filterContainer) filterContainer.style.display = 'flex';
 
-      // Configurar eventos para los botones de filtrado
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           activeReleaseFilter = btn.getAttribute('data-filter');
@@ -2263,11 +2421,11 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
 
       let html = '';
       releases.forEach(r => {
-        const coverUrl = r.covers && r.covers["300x300"] ? r.covers["300x300"] : '/logo.png';
+        const coverUrl = r.covers && r.covers["300x300"] ? r.covers["300x300"] : '{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png';
         html += `
           <a href="#/release/${r.id}" class="visual-card">
             <div class="card-cover-wrapper">
-              <img src="${coverUrl}" alt="${r.name}" onerror="this.src='/logo.png'" loading="lazy">
+              <img src="${coverUrl}" alt="${r.name}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'" loading="lazy">
               <span class="card-badge">${r.type}</span>
             </div>
             <h3 class="card-title">${r.name}</h3>
@@ -2289,14 +2447,14 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         return;
       }
 
-      const coverUrl = release.covers && release.covers["300x300"] ? release.covers["300x300"] : '/logo.png';
+      const coverUrl = release.covers && release.covers["300x300"] ? release.covers["300x300"] : '{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png';
 
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <div style="margin-bottom:2rem;"><a href="#/musica" style="color:var(--accent); text-decoration:none;">← Volver al Catálogo</a></div>
           <div class="release-details-flex">
             <div class="release-details-cover">
-              <img src="${coverUrl}" alt="${release.name}" onerror="this.src='/logo.png'">
+              <img src="${coverUrl}" alt="${release.name}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
             </div>
             <div class="release-details-info">
               <span class="badge-location">${release.type}</span>
@@ -2411,7 +2569,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         <section class="view-container">
           <h1 class="heading-primary">Sobre <span class="accent-phrase">Joe</span></h1>
           <div class="home-hero-banner" style="background: radial-gradient(circle at top right, rgba(82,0,255,0.08) 0%, transparent 80%), var(--panel)">
-            <img src="/logo.png" alt="JOE on the Sound" class="home-hero-logo">
+            <img src="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png" alt="JOE on the Sound" class="home-hero-logo">
             <div class="home-hero-info">
               <span class="badge-location">Líder del Proyecto</span>
               <h2 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; margin-bottom:1rem;">JOE on the Sound</h2>
@@ -2565,7 +2723,7 @@ CH4/CH5 - Interfaz L/R`;
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <h1 class="heading-primary">AI Agents <span class="accent-phrase">Profile & Metadata</span></h1>
-          <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1.5rem; font-size:0.9rem;">Este perfil expone metadatos limpios, estables y formateados semánticamente en HTML de alto contraste para ser recopilados de forma rápida por agentes de IA, LLMs y herramientas conversacionales.</p>
+          <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem; font-size:0.9rem;">Este perfil expone metadatos limpios, estables y formateados semánticamente en HTML de alto contraste para ser recopilados de forma rápida por agentes de IA, LLMs y herramientas conversacionales.</p>
           
           <div class="metrics-visual-wrapper">
             <table class="metrics-table" style="min-width:100%;">
@@ -2639,7 +2797,6 @@ CH4/CH5 - Interfaz L/R`;
 
     // INICIALIZADORES DEL SISTEMA Y EVENTOS GLOBALIZADOS
     document.addEventListener('DOMContentLoaded', () => {
-      // Registrar inicialización del Lightbox
       Lightbox.init();
     });
 
@@ -2649,7 +2806,6 @@ CH4/CH5 - Interfaz L/R`;
 
     window.addEventListener('hashchange', () => Router.resolve());
     window.addEventListener('load', () => {
-      // Realizar la precarga asincrónica de la discografía oficial
       loadDiscography();
       Router.resolve();
     });
