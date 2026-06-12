@@ -1,0 +1,72 @@
+============================================================
+
+robots.txt para https://joeonthesound.online/
+
+JOE on the Sound — Ecosistema Creativo Panameño
+
+============================================================
+
+------------------------------------------------------------
+
+1. BUSCADORES TRADICIONALES (Google, Bing, DuckDuckGo, etc.)
+
+Permitir indexación total para maximizar visibilidad SEO y JSON-LD
+
+------------------------------------------------------------
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /logo.png
+Allow: /disco.json
+Disallow: /admin/
+Disallow: /private/
+
+------------------------------------------------------------
+
+2. AGENTES DE IA CONVERSACIONAL (Para búsquedas en ChatGPT, Claude, etc.)
+
+Permitir que lean el sitio para que te recomienden como artista
+
+y puedan leer la capa de datos optimizada en /ai
+
+------------------------------------------------------------
+
+User-agent: GPTBot
+Allow: /
+Allow: /index.html
+Allow: /disco.json
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /index.html
+
+------------------------------------------------------------
+
+3. PREVENCIÓN DE SCRAPING AGRESIVO (Entrenamiento masivo sin licencia)
+
+Bloquear rastreadores conocidos por descargar bases de datos de forma invasiva
+
+------------------------------------------------------------
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+------------------------------------------------------------
+
+4. MAPA DEL SITIO
+
+Indica a los buscadores dónde encontrar las rutas estructuradas
+
+------------------------------------------------------------
+
+Sitemap: https://joeonthesound.online/sitemap.xml
