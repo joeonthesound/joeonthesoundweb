@@ -2,7 +2,7 @@
 <html lang="es-PA">
 <head>
   <!-- ============================================================
-    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V6
+    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V7
     Identidad: Fondo Negro Profundo, Violeta Eléctrico, Amarillo Neón
     Enrutado: hash-routing (#/ruta) con secciones [data-route]
     Protección: Ofuscación activa anti-scraping para datos sensibles
@@ -16,7 +16,7 @@
   <meta name="author" content="JOE on the Sound">
   <meta name="theme-color" content="#050508">
 
-  <!-- Favicons oficiales cargando el activo directo de la raíz -->
+  <!-- Favicons oficiales cargando el activo directo de la plataforma -->
   <link rel="icon" type="image/png" href="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
   <link rel="apple-touch-icon" href="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
 
@@ -25,13 +25,13 @@
   <meta property="og:url" content="https://joeonthesound.online/">
   <meta property="og:title" content="JOE on the Sound — Ecosistema Creativo Panameño">
   <meta property="og:description" content="Ecosistema vanguardista de música, tecnología y cultura latinoamericana independiente desde Panamá.">
-  <meta property="og:image" content="https://joeonthesound.online/og-joeonthesound.jpg">
+  <meta property="og:image" content="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="JOE on the Sound — Ecosistema Creativo">
   <meta name="twitter:description" content="Producción musical, cultura digital y desarrollo artístico con identidad latinoamericana liderado por JOE on the Sound.">
-  <meta name="twitter:image" content="https://joeonthesound.online/og-joeonthesound.jpg">
+  <meta name="twitter:image" content="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
 
   <!-- Tipografías: Space Grotesk + Inter para alta legibilidad -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +51,7 @@
         "description": "Ecosistema creativo panameño e identidad artística que integra composición, producción y tecnología musical avanzada.",
         "genre": ["Latin House", "Afrobeat Latino", "Experimental Electronic"],
         "logo": "https://joeonthesound.online/{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png",
-        "image": "https://joeonthesound.online/og-joeonthesound.jpg",
+        "image": "https://joeonthesound.online/{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png",
         "url": "https://joeonthesound.online/",
         "foundingLocation": {
           "@type": "Place",
@@ -81,7 +81,7 @@
         "@type": "Service",
         "@id": "https://joeonthesound.online/#custom-songs",
         "name": "Canciones personalizadas para eventos",
-        "description": "Composición, producción y mezcla de canciones personalizadas a la medida para marcas, bodas, aniversarios y mascotas.",
+        "description": "Composición, producción y mezcla de canciones personalizadas a la medida para marcas, bodas, anniversarios y mascotas.",
         "provider": { "@id": "https://joeonthesound.online/#artist" },
         "areaServed": "Worldwide"
       }
@@ -1426,8 +1426,10 @@
       { id: 5, title: "Fire Don’t Hurt Me Now", duration: "3:27", cover: "https://i.scdn.co/image/ab67616d00001e021324c2f6fdd734f5e3961110" }
     ];
 
-    // DISCOGRAFÍA INTEGRADA NATIVAMENTE (ELIMINA EL FETCH Y MEJORA EL CARGADO DEL INVENTARIO)
-    const INTEGRATED_DISCOGRAPHY = {
+    // ============================================================
+    // DISCOGRAFÍA INTEGRADA NATIVAMENTE
+    // ============================================================
+    const DISCOGRAPHY_DATA = {
       "artist": {
         "name": "Joe",
         "id": "0WolrewBAIYhWwzN5Z5Csg",
@@ -1670,11 +1672,12 @@
       ]
     };
 
-    let discographyData = INTEGRATED_DISCOGRAPHY;
+    // ALINEACIÓN DE REFERENCIAS DE NOMENCLATURA (Resuelve el ReferenceError del enrutador)
+    const discographyData = DISCOGRAPHY_DATA;
 
-    // Retorna la discografía instantáneamente sin latencia
-    async function loadDiscography() {
-      return discographyData;
+    // Retorno nativo sin esperas ni llamadas a servicios externos
+    function loadDiscography() {
+      return DISCOGRAPHY_DATA;
     }
 
     // OFUSCADOR DE CONTACTO ANTI-SPAM
@@ -1697,7 +1700,7 @@
       }
     };
 
-    // LIGHTBOX TOTALMENTE PROTEGIDO
+    // LIGHTBOX DEL REPRODUCTOR
     const Lightbox = {
       init: function() {
         if (!document.getElementById('youtubeLightbox')) {
@@ -1824,7 +1827,7 @@
       }
     };
 
-    // MODULARIZACIÓN DINÁMICA DEL COTIZADOR (Sincroniza y recuerda lo que seleccionó el usuario)
+    // MODULARIZACIÓN DINÁMICA DEL COTIZADOR
     function getQuoterHTML() {
       const isFormatSingle = quoterState.formato.value === "SINGLE" ? "selected" : "";
       const isFormatAlbum = quoterState.formato.value === "ALBUM" ? "selected" : "";
@@ -1993,7 +1996,6 @@
     // ==========================================
     Router.addRoute('#/', async function() {
       const randomVideo = YOUTUBE_VIDEOS[Math.floor(Math.random() * YOUTUBE_VIDEOS.length)];
-      await loadDiscography();
       const latestRelease = discographyData.releases[0];
 
       let popularHTML = '';
@@ -2002,7 +2004,9 @@
           <div class="track-row" onclick="window.open('https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg', '_blank')">
             <div class="track-index-num">${idx + 1}</div>
             <div class="track-info-cell">
-              <div class="track-cover-miniature"><img src="${song.cover}" alt="${song.title}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'"></div>
+              <div class="track-cover-miniature">
+                <img src="${song.cover}" alt="${song.title}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
+              </div>
               <div class="track-titles">
                 <span class="track-main-title">${song.title}</span>
                 <span class="track-artist-sub">${CONFIG.artistName}</span>
@@ -2056,7 +2060,7 @@
               <h2 class="heading-primary">Novedades</h2>
               <a href="#/release/${latestRelease.id}" class="visual-card" style="padding:2rem; text-align:center;">
                 <div class="card-cover-wrapper" style="max-width:200px; margin:0 auto 1.5rem;">
-                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
+                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
                 </div>
                 <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--accent); text-transform:uppercase;">${latestRelease.name}</h3>
                 <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.5rem;">${latestRelease.release_date} · Sello: ${latestRelease.label}</p>
@@ -2064,7 +2068,7 @@
             </div>
           </div>
 
-          <!-- SECCIÓN DEL COTIZADOR PRESTABLECIDO EN EL HOME (Sincronizado) -->
+          <!-- SECCIÓN DEL COTIZADOR PRESTABLECIDO EN EL HOME -->
           <h2 class="heading-primary" id="calculadora-costos">Cotizador & <span class="accent-phrase">Calculadora de Presupuestos</span></h2>
           <div class="quoter-component-panel" id="premiumQuoter">
             ${getQuoterHTML()}
@@ -2094,7 +2098,7 @@
       updateQuoterUI();
     });
 
-    // MANEJADORES DE LA CALCULADORA DE COSTOS (Sincronización del estado global)
+    // MANEJADORES DE LA CALCULADORA DE COSTOS
     window.togglePlatformFields = function(show) {
       const inputs = document.getElementById('wrapperPlatformInputs');
       if (inputs) inputs.style.display = show ? 'block' : 'none';
@@ -2286,17 +2290,17 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
             </div>
             <div class="diff-brand-card">
               <span class="diff-card-digit">02</span>
-              <h3 class="diff-brand-card-header">Enfoque Humano</h3>
+              <h3 class="diff-card-header">Enfoque Humano</h3>
               <p class="diff-card-desc">Música impregnada de historia, propósito, exploración emocional y visión latinoamericana.</p>
             </div>
             <div class="diff-brand-card">
               <span class="diff-card-digit">03</span>
-              <h3 class="diff-brand-card-header">Infraestructura propia</h3>
+              <h3 class="diff-card-header">Infraestructura propia</h3>
               <p class="diff-card-desc">Análisis, creación, entorno natural, contenido digital y espacio residencial como base del ecosistema.</p>
             </div>
             <div class="diff-brand-card">
               <span class="diff-card-digit">04</span>
-              <h3 class="diff-brand-card-header">Escalabilidad auténtica</h3>
+              <h3 class="diff-card-header">Escalabilidad auténtica</h3>
               <p class="diff-card-desc">Expansión desde Panamá hacia México y Colombia, con una narrativa cultural adaptable a nuevos mercados.</p>
             </div>
             <div class="diff-brand-card">
@@ -2306,7 +2310,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
             </div>
             <div class="diff-brand-card">
               <span class="diff-brand-digit">06</span>
-              <h3 class="diff-brand-card-header">IA como Herramienta</h3>
+              <h3 class="diff-card-header">IA como Herramienta</h3>
               <p class="diff-card-desc">La inteligencia artificial no reemplaza el criterio artístico; amplifica la capacidad de producir, experimentar, analizar y distribuir.</p>
             </div>
           </div>
@@ -2358,9 +2362,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         <section class="view-container">
           <h1 class="heading-primary">Catálogo & <span class="accent-phrase">Discografía</span></h1>
           
-          <div id="releasesLoading" style="color:var(--text-muted); font-size:0.95rem; margin-bottom:2rem;">Cargando catálogo oficial...</div>
-          
-          <div id="releasesFilterContainer" style="display:none; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
+          <div id="releasesFilterContainer" style="display:flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
             <button class="action-btn filter-btn" data-filter="ALL" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Todos</button>
             <button class="action-btn filter-btn" data-filter="SINGLE" style="padding: 0.5rem 1rem; font-size: 0.75rem;">Singles</button>
             <button class="action-btn filter-btn" data-filter="EP" style="padding: 0.5rem 1rem; font-size: 0.75rem;">EPs</button>
@@ -2370,14 +2372,6 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
           <div id="releasesCatalogGrid" class="card-grid"></div>
         </section>
       `;
-
-      await loadDiscography();
-
-      const loadingEl = document.getElementById('releasesLoading');
-      if (loadingEl) loadingEl.style.display = 'none';
-
-      const filterContainer = document.getElementById('releasesFilterContainer');
-      if (filterContainer) filterContainer.style.display = 'flex';
 
       document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2408,7 +2402,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
       const container = document.getElementById('releasesCatalogGrid');
       if (!container) return;
 
-      let releases = discographyData ? discographyData.releases : [];
+      let releases = discographyData.releases;
 
       if (activeReleaseFilter !== 'ALL') {
         releases = releases.filter(r => r.type.toUpperCase() === activeReleaseFilter.toUpperCase());
@@ -2425,7 +2419,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         html += `
           <a href="#/release/${r.id}" class="visual-card">
             <div class="card-cover-wrapper">
-              <img src="${coverUrl}" alt="${r.name}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'" loading="lazy">
+              <img src="${coverUrl}" alt="${r.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'" loading="lazy">
               <span class="card-badge">${r.type}</span>
             </div>
             <h3 class="card-title">${r.name}</h3>
@@ -2437,11 +2431,10 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     }
 
     // ==========================================
-    // DETALLE INTERNO DE LANZAMIENTOS (DINÁMICO DESDE JSON)
+    // DETALLE INTERNO DE LANZAMIENTOS (DINÁMICO)
     // ==========================================
     Router.addRoute('#/release/:id', async function(params) {
-      await loadDiscography();
-      const release = discographyData && discographyData.releases ? discographyData.releases.find(r => r.id === params.id) : null;
+      const release = discographyData.releases.find(r => r.id === params.id);
       if (!release) {
         document.getElementById('viewport').innerHTML = `<p style="padding:4rem;">Lanzamiento no disponible.</p>`;
         return;
@@ -2454,7 +2447,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
           <div style="margin-bottom:2rem;"><a href="#/musica" style="color:var(--accent); text-decoration:none;">← Volver al Catálogo</a></div>
           <div class="release-details-flex">
             <div class="release-details-cover">
-              <img src="${coverUrl}" alt="${release.name}" onerror="this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
+              <img src="${coverUrl}" alt="${release.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
             </div>
             <div class="release-details-info">
               <span class="badge-location">${release.type}</span>
@@ -2806,7 +2799,6 @@ CH4/CH5 - Interfaz L/R`;
 
     window.addEventListener('hashchange', () => Router.resolve());
     window.addEventListener('load', () => {
-      loadDiscography();
       Router.resolve();
     });
   </script>
