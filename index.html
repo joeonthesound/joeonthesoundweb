@@ -2,11 +2,11 @@
 <html lang="es-PA">
 <head>
   <!-- ============================================================
-    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V10
-    Identidad: Fondo Negro Profundo, Violeta Eléctrico, Amarillo Neón
+    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V11
+    Identidad: Negro Profundo, Violeta Eléctrico, Amarillo Neón + Rosa Fucsia
+    Performance: GPU-only animations, lazy media, content-visibility
+    Motion: Scroll-trigger reveals (IntersectionObserver) + capa ambiental
     Enrutado: hash-routing (#/ruta) con secciones [data-route]
-    Protección: Ofuscación activa anti-scraping para datos sensibles
-    Capa de Datos: /ai semántica para indexación limpia
   ============================================================ -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -16,11 +16,11 @@
   <meta name="author" content="JOE on the Sound">
   <meta name="theme-color" content="#050508">
 
-  <!-- Favicons oficiales cargando el activo directo de la plataforma -->
+  <!-- Favicons oficiales -->
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
 
-  <!-- Open Graph y Twitter Card para Previews -->
+  <!-- Open Graph y Twitter Card -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://joeonthesound.online/">
   <meta property="og:title" content="JOE on the Sound — Ecosistema Creativo Panameño">
@@ -33,9 +33,13 @@
   <meta name="twitter:description" content="Producción musical, cultura digital y desarrollo artístico con identidad latinoamericana liderado por JOE on the Sound.">
   <meta name="twitter:image" content="logo.png">
 
-  <!-- Tipografías: Space Grotesk + Inter para alta legibilidad -->
+  <!-- Performance: preconexiones a CDNs de imágenes y tipografías -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://i.scdn.co">
+  <link rel="preconnect" href="https://i.ytimg.com">
+  <link rel="dns-prefetch" href="https://i.scdn.co">
+  <link rel="dns-prefetch" href="https://i.ytimg.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- SCHEMA.ORG JSON-LD MULTI-ENTIDAD -->
@@ -99,22 +103,25 @@
       --primary-glow: rgba(82, 0, 255, 0.4);
       --accent: #f2ff5e;
       --accent-hover: #e1ff00;
+      --fucsia: #ff2bd6;
+      --fucsia-soft: #ff6ae4;
+      --fucsia-glow: rgba(255, 43, 214, 0.35);
+      --grad-brand: linear-gradient(100deg, var(--accent) 0%, var(--fucsia) 65%, var(--primary-hover) 110%);
+      --grad-line: linear-gradient(90deg, var(--fucsia), var(--primary) 60%, transparent);
       --text-main: #ffffff;
       --text-muted: #8a8a9e;
       --text-light: #d8d8e5;
       --border: rgba(255, 255, 255, 0.05);
       --border-accent: rgba(242, 255, 94, 0.2);
+      --border-fucsia: rgba(255, 43, 214, 0.28);
       --font-sans: 'Inter', sans-serif;
       --font-display: 'Space Grotesk', sans-serif;
       --sidebar-w: 280px;
       --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%;
@@ -126,18 +133,166 @@
       scroll-behavior: smooth;
     }
 
-    ::-webkit-scrollbar {
-      width: 6px;
+    ::selection { background: var(--fucsia); color: #050508; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--panel); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--fucsia); }
+
+    /* ============================================================
+       CAPA AMBIENTAL ARTÍSTICA (aurora violeta + fucsia)
+       Solo transform/opacity → composición GPU, sin repaints.
+    ============================================================ */
+    .bg-aura {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
     }
-    ::-webkit-scrollbar-track {
-      background: var(--bg);
+
+    .bg-aura span {
+      position: absolute;
+      width: 55vmax;
+      height: 55vmax;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.16;
+      will-change: transform;
     }
-    ::-webkit-scrollbar-thumb {
-      background: var(--panel);
-      border-radius: 3px;
+
+    .bg-aura .aura-violet {
+      background: radial-gradient(circle, #5200ff 0%, transparent 65%);
+      top: -20vmax;
+      right: -15vmax;
+      animation: auraDriftA 26s ease-in-out infinite alternate;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--primary);
+
+    .bg-aura .aura-fucsia {
+      background: radial-gradient(circle, #ff2bd6 0%, transparent 65%);
+      bottom: -22vmax;
+      left: -18vmax;
+      animation: auraDriftB 32s ease-in-out infinite alternate;
+    }
+
+    @keyframes auraDriftA {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to   { transform: translate3d(-10vmax, 12vmax, 0) scale(1.18); }
+    }
+
+    @keyframes auraDriftB {
+      from { transform: translate3d(0, 0, 0) scale(1.1); }
+      to   { transform: translate3d(12vmax, -10vmax, 0) scale(0.92); }
+    }
+
+    @media (max-width: 768px) {
+      .bg-aura span { filter: blur(48px); opacity: 0.13; }
+    }
+
+    /* ============================================================
+       SCROLL-TRIGGER REVEALS (clase .rv aplicada por JS)
+    ============================================================ */
+    .rv {
+      opacity: 0;
+      transform: translateY(26px);
+    }
+
+    .rv.in-view {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity 0.7s var(--ease-out),
+        transform 0.8s var(--ease-out);
+      transition-delay: calc(var(--rv-i, 0) * 80ms);
+    }
+
+    .rv-scale { transform: translateY(18px) scale(0.97); }
+    .rv-scale.in-view { transform: translateY(0) scale(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .rv, .rv.in-view { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .bg-aura span, .ticker-track, .eq i, .home-hero-logo { animation: none !important; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ============================================================
+       TICKER EDITORIAL (cinta tipográfica infinita)
+    ============================================================ */
+    .editorial-ticker {
+      overflow: hidden;
+      border-top: 1px solid var(--border-fucsia);
+      border-bottom: 1px solid var(--border-fucsia);
+      margin: 0 0 2.5rem 0;
+      padding: 0.7rem 0;
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 2.5rem;
+      width: max-content;
+      animation: tickerScroll 28s linear infinite;
+      will-change: transform;
+    }
+
+    @keyframes tickerScroll {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
+    }
+
+    .ticker-item {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--fucsia-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .ticker-item em {
+      font-style: normal;
+      -webkit-text-stroke: 0;
+      color: var(--accent);
+    }
+
+    .ticker-dot { color: var(--fucsia); -webkit-text-stroke: 0; }
+
+    /* ============================================================
+       ECUALIZADOR ANIMADO (firma sonora de la marca)
+    ============================================================ */
+    .eq {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 16px;
+    }
+
+    .eq i {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--grad-brand);
+      animation: eqPulse 1s ease-in-out infinite;
+      transform-origin: bottom;
+      height: 100%;
+      will-change: transform;
+    }
+
+    .eq i:nth-child(1) { animation-delay: 0s;    animation-duration: 0.9s; }
+    .eq i:nth-child(2) { animation-delay: 0.15s; animation-duration: 1.15s; }
+    .eq i:nth-child(3) { animation-delay: 0.3s;  animation-duration: 0.8s; }
+    .eq i:nth-child(4) { animation-delay: 0.1s;  animation-duration: 1.05s; }
+    .eq i:nth-child(5) { animation-delay: 0.25s; animation-duration: 0.95s; }
+
+    @keyframes eqPulse {
+      0%, 100% { transform: scaleY(0.25); }
+      50%      { transform: scaleY(1); }
     }
 
     /* APP CONTAINER LAYOUT */
@@ -145,12 +300,12 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      position: relative;
+      z-index: 1;
     }
 
     @media (min-width: 1024px) {
-      .app-container {
-        flex-direction: row;
-      }
+      .app-container { flex-direction: row; }
     }
 
     /* SIDEBAR NAVEGACIÓN DESKTOP */
@@ -194,10 +349,7 @@
       border-radius: 8px;
     }
 
-    .brand-info {
-      display: flex;
-      flex-direction: column;
-    }
+    .brand-info { display: flex; flex-direction: column; }
 
     .brand-title-text {
       font-family: var(--font-display);
@@ -209,22 +361,16 @@
 
     .brand-subtitle-text {
       font-size: 0.65rem;
-      color: var(--text-muted);
+      color: var(--fucsia-soft);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.18em;
     }
 
     /* ENLACES DE MENÚ (DESKTOP) */
-    .sidebar-menu {
-      display: none;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
+    .sidebar-menu { display: none; flex-direction: column; gap: 0.4rem; }
 
     @media (min-width: 1024px) {
-      .sidebar-menu {
-        display: flex;
-      }
+      .sidebar-menu { display: flex; }
     }
 
     .menu-link {
@@ -239,28 +385,28 @@
       font-size: 0.9rem;
       font-family: var(--font-display);
       transition: var(--transition);
+      position: relative;
     }
 
     .menu-link:hover, .menu-link.active {
       color: var(--text-main);
-      background-color: rgba(82, 0, 255, 0.12);
+      background: linear-gradient(90deg, rgba(82,0,255,0.18), rgba(255,43,214,0.06));
     }
 
     .menu-link.active {
-      border-left: 3px solid var(--accent);
+      border-left: 3px solid var(--fucsia);
       color: var(--accent);
     }
 
-    /* MENÚ MÓVIL (DOCK INFERIOR) */
+    /* MENÚ MÓVIL (DOCK INFERIOR) — sin backdrop-filter en móvil para máximo FPS */
     .mobile-menu-dock {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       height: 64px;
-      background-color: rgba(5, 5, 8, 0.98);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid var(--border);
+      background-color: rgba(5, 5, 8, 0.99);
+      border-top: 1px solid var(--border-fucsia);
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -269,9 +415,7 @@
     }
 
     @media (min-width: 1024px) {
-      .mobile-menu-dock {
-        display: none;
-      }
+      .mobile-menu-dock { display: none; }
     }
 
     .mobile-link-item {
@@ -287,38 +431,28 @@
       gap: 2px;
       flex: 1;
       height: 100%;
+      transition: color 0.25s ease, transform 0.25s var(--ease-out);
     }
 
-    .mobile-link-item svg {
-      width: 18px;
-      height: 18px;
-    }
+    .mobile-link-item svg { width: 18px; height: 18px; }
 
-    .mobile-link-item.active {
-      color: var(--accent);
-    }
+    .mobile-link-item.active { color: var(--fucsia); transform: translateY(-2px); }
 
     /* CONTENEDOR CENTRAL */
-    .app-main-content {
-      flex: 1;
-      padding-bottom: 130px;
-    }
+    .app-main-content { flex: 1; padding-bottom: 130px; }
 
     @media (min-width: 1024px) {
-      .app-main-content {
-        margin-left: var(--sidebar-w);
-        padding-bottom: 90px;
-      }
+      .app-main-content { margin-left: var(--sidebar-w); padding-bottom: 90px; }
     }
 
-    /* PERSISTENT STICKY DOCK */
+    /* PERSISTENT STICKY DOCK — degradado violeta → fucsia */
     .music-sticky-dock {
       position: fixed;
       bottom: 64px;
       left: 0;
       right: 0;
       height: 44px;
-      background: var(--primary);
+      background: linear-gradient(90deg, var(--primary) 0%, #8a14e8 55%, var(--fucsia) 130%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -328,7 +462,11 @@
       padding: 0 1rem;
       gap: 1.2rem;
       border-top: 1px solid var(--border-accent);
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
+
+    .music-sticky-dock::-webkit-scrollbar { display: none; }
 
     @media (min-width: 1024px) {
       .music-sticky-dock {
@@ -346,13 +484,12 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
     }
 
-    .sticky-dock-anchors {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
+    .sticky-dock-anchors { display: flex; align-items: center; gap: 1rem; }
 
     .sticky-dock-anchor {
       color: var(--text-main);
@@ -365,10 +502,7 @@
       transition: var(--transition);
     }
 
-    .sticky-dock-anchor:hover {
-      color: var(--accent);
-      transform: translateY(-1px);
-    }
+    .sticky-dock-anchor:hover { color: var(--accent); transform: translateY(-1px); }
 
     /* PÁGINAS VIRTUALES */
     .view-container {
@@ -379,9 +513,7 @@
     }
 
     @media (min-width: 1024px) {
-      .view-container {
-        padding: 3rem 2.5rem;
-      }
+      .view-container { padding: 3rem 2.5rem; }
     }
 
     @keyframes viewFadeIn {
@@ -389,6 +521,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* TITULARES EDITORIALES con subrayado-degradado animable */
     .heading-primary {
       font-family: var(--font-display);
       font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -396,15 +529,61 @@
       letter-spacing: -0.04em;
       margin-bottom: 1.5rem;
       text-transform: uppercase;
+      position: relative;
+      padding-bottom: 0.85rem;
     }
 
+    .heading-primary::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 88px;
+      height: 2px;
+      background: var(--grad-line);
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.9s var(--ease-out) 0.15s;
+    }
+
+    .rv.in-view .heading-primary::after,
+    .heading-primary.in-view::after { transform: scaleX(1); }
+
+    /* Frase acento ahora en degradado amarillo → fucsia (editorial premium) */
     .accent-phrase {
-      color: var(--accent);
+      background: var(--grad-brand);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Etiqueta "eyebrow" editorial */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--fucsia-soft);
+      margin-bottom: 0.9rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: var(--fucsia);
     }
 
     /* HERO BANNER */
     .home-hero-banner {
-      background: radial-gradient(circle at top right, rgba(82,0,255,0.15) 0%, transparent 80%), var(--panel);
+      background:
+        radial-gradient(circle at 85% 0%, rgba(82,0,255,0.18) 0%, transparent 55%),
+        radial-gradient(circle at 0% 100%, rgba(255,43,214,0.12) 0%, transparent 55%),
+        var(--panel);
       border-radius: 12px;
       border: 1px solid var(--border);
       padding: 2.5rem 1.5rem;
@@ -414,6 +593,24 @@
       margin-bottom: 2.5rem;
       position: relative;
       overflow: hidden;
+    }
+
+    /* Línea de horizonte fucsia animada dentro del hero */
+    .home-hero-banner::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--fucsia), var(--accent), transparent);
+      opacity: 0.7;
+      transform: translateX(-100%);
+      animation: heroSweep 5s var(--ease-out) infinite;
+    }
+
+    @keyframes heroSweep {
+      0%   { transform: translateX(-100%); }
+      55%  { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
     }
 
     @media (min-width: 768px) {
@@ -429,29 +626,27 @@
       height: 120px;
       border-radius: 12px;
       object-fit: cover;
-      border: 1px solid var(--accent);
-      box-shadow: 0 0 25px var(--primary-glow);
+      border: 1px solid var(--fucsia);
+      box-shadow: 0 0 25px var(--primary-glow), 0 0 45px var(--fucsia-glow);
       flex-shrink: 0;
       margin: 0 auto;
+      animation: heroFloat 7s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
     }
 
     @media (min-width: 768px) {
-      .home-hero-logo {
-        width: 160px;
-        height: 160px;
-        margin: 0;
-      }
+      .home-hero-logo { width: 160px; height: 160px; margin: 0; }
     }
 
-    .home-hero-info {
-      flex: 1;
-      text-align: center;
-    }
+    .home-hero-info { flex: 1; text-align: center; }
 
     @media (min-width: 768px) {
-      .home-hero-info {
-        text-align: left;
-      }
+      .home-hero-info { text-align: left; }
     }
 
     .home-hero-title {
@@ -471,11 +666,11 @@
       margin-bottom: 1.5rem;
     }
 
-    /* BADGE REGIONAL */
+    /* BADGE REGIONAL — toque fucsia */
     .badge-location {
-      background: rgba(82,0,255,0.25);
-      border: 1px solid var(--accent);
-      color: var(--accent);
+      background: rgba(255, 43, 214, 0.12);
+      border: 1px solid var(--fucsia);
+      color: var(--fucsia-soft);
       padding: 0.3rem 0.75rem;
       border-radius: 50px;
       font-size: 0.7rem;
@@ -504,14 +699,12 @@
       font-family: var(--font-display);
     }
 
-    .btn-solid-primary {
-      background-color: var(--accent);
-      color: #050508;
-    }
+    .btn-solid-primary { background-color: var(--accent); color: #050508; }
 
     .btn-solid-primary:hover {
       background-color: var(--accent-hover);
       transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--fucsia-glow);
     }
 
     .btn-outline-primary {
@@ -521,8 +714,8 @@
     }
 
     .btn-outline-primary:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+      border-color: var(--fucsia);
+      color: var(--fucsia-soft);
     }
 
     /* GRID DE DISCOS / TARJETAS */
@@ -549,12 +742,14 @@
       transition: var(--transition);
       display: flex;
       flex-direction: column;
+      content-visibility: auto;
+      contain-intrinsic-size: 280px;
     }
 
     .visual-card:hover {
-      border-color: var(--accent);
+      border-color: var(--fucsia);
       transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 30px rgba(255, 43, 214, 0.12);
     }
 
     .card-cover-wrapper {
@@ -571,14 +766,18 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.6s var(--ease-out);
     }
+
+    .visual-card:hover .card-cover-wrapper img { transform: scale(1.05); }
 
     .card-badge {
       position: absolute;
       top: 8px;
       right: 8px;
       background: rgba(5, 5, 8, 0.9);
-      color: var(--accent);
+      color: var(--fucsia-soft);
+      border: 1px solid var(--border-fucsia);
       padding: 0.25rem 0.5rem;
       font-size: 0.65rem;
       font-weight: 800;
@@ -595,12 +794,9 @@
       text-overflow: ellipsis;
     }
 
-    .card-meta {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+    .card-meta { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* SPOTIFY POPULAR TRACKS (DISEÑO PREMIUM) */
+    /* SPOTIFY POPULAR TRACKS */
     .spotify-tracklist {
       display: flex;
       flex-direction: column;
@@ -621,15 +817,9 @@
       transition: var(--transition);
     }
 
-    .track-row:hover {
-      background-color: var(--panel-hover);
-    }
+    .track-row:hover { background-color: var(--panel-hover); }
 
-    .track-index-num {
-      color: var(--text-muted);
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
+    .track-index-num { color: var(--text-muted); font-weight: 700; font-size: 0.85rem; }
 
     .track-info-cell {
       display: flex;
@@ -647,17 +837,9 @@
       flex-shrink: 0;
     }
 
-    .track-cover-miniature img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .track-cover-miniature img { width: 100%; height: 100%; object-fit: cover; }
 
-    .track-titles {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
+    .track-titles { display: flex; flex-direction: column; min-width: 0; }
 
     .track-main-title {
       font-weight: 700;
@@ -668,21 +850,11 @@
       color: var(--text-main);
     }
 
-    .track-artist-sub {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
+    .track-artist-sub { font-size: 0.75rem; color: var(--text-muted); }
 
-    .track-duration-val {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-align: right;
-    }
+    .track-duration-val { font-size: 0.8rem; color: var(--text-muted); text-align: right; }
 
-    .track-action-cell {
-      display: flex;
-      justify-content: flex-end;
-    }
+    .track-action-cell { display: flex; justify-content: flex-end; }
 
     .track-play-bubble {
       width: 24px;
@@ -699,9 +871,9 @@
     }
 
     .track-row:hover .track-play-bubble {
-      background-color: var(--accent);
+      background: var(--grad-brand);
       color: #050508;
-      border-color: var(--accent);
+      border-color: var(--fucsia);
     }
 
     /* GRID DE DIFERENCIACIÓN / CARDS */
@@ -713,15 +885,11 @@
     }
 
     @media (min-width: 768px) {
-      .grid-differentiator {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .grid-differentiator { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (min-width: 1200px) {
-      .grid-differentiator {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .grid-differentiator { grid-template-columns: repeat(3, 1fr); }
     }
 
     .diff-brand-card {
@@ -731,10 +899,12 @@
       padding: 2rem;
       transition: var(--transition);
       position: relative;
+      content-visibility: auto;
+      contain-intrinsic-size: 220px;
     }
 
     .diff-brand-card:hover {
-      border-color: var(--accent);
+      border-color: var(--fucsia);
       transform: translateY(-4px);
     }
 
@@ -744,7 +914,7 @@
       right: 1.5rem;
       font-size: 2.2rem;
       font-weight: 800;
-      color: rgba(255,255,255,0.02);
+      color: rgba(255, 43, 214, 0.07);
       font-family: var(--font-display);
     }
 
@@ -765,9 +935,9 @@
 
     /* MANIFIESTO MARCA */
     .brand-manifesto-quote {
-      border-left: 4px solid var(--accent);
+      border-left: 4px solid var(--fucsia);
       padding: 1.5rem;
-      background: rgba(242, 255, 94, 0.03);
+      background: linear-gradient(90deg, rgba(255,43,214,0.05), rgba(242,255,94,0.02));
       border-radius: 0 12px 12px 0;
       margin-bottom: 2.5rem;
     }
@@ -787,6 +957,7 @@
       border: 1px solid var(--border);
       overflow-x: auto;
       margin-bottom: 3rem;
+      -webkit-overflow-scrolling: touch;
     }
 
     .metrics-table {
@@ -796,28 +967,21 @@
       min-width: 600px;
     }
 
-    .metrics-table th, .metrics-table td {
-      padding: 1.2rem 1.5rem;
-    }
+    .metrics-table th, .metrics-table td { padding: 1.2rem 1.5rem; }
 
     .metrics-table th {
-      background: rgba(82, 0, 255, 0.1);
+      background: linear-gradient(90deg, rgba(82, 0, 255, 0.12), rgba(255, 43, 214, 0.08));
       color: var(--accent);
       text-transform: uppercase;
       font-family: var(--font-display);
       font-size: 0.75rem;
       font-weight: 800;
       letter-spacing: 0.05em;
-      border-bottom: 2px solid var(--border);
+      border-bottom: 2px solid var(--border-fucsia);
     }
 
-    .metrics-table tr {
-      border-bottom: 1px solid var(--border);
-    }
-
-    .metrics-table tr:last-child {
-      border-bottom: none;
-    }
+    .metrics-table tr { border-bottom: 1px solid var(--border); }
+    .metrics-table tr:last-child { border-bottom: none; }
 
     .metrics-platform {
       font-family: var(--font-display);
@@ -826,16 +990,9 @@
       font-size: 0.95rem;
     }
 
-    .metrics-past-stats {
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
+    .metrics-past-stats { color: var(--text-light); font-size: 0.9rem; }
 
-    .metrics-projection-stats {
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 1rem;
-    }
+    .metrics-projection-stats { color: var(--fucsia-soft); font-weight: 700; font-size: 1rem; }
 
     .metrics-footer-note {
       padding: 1rem 1.5rem;
@@ -859,24 +1016,18 @@
       overflow: hidden;
       cursor: pointer;
       transition: var(--transition);
+      content-visibility: auto;
+      contain-intrinsic-size: 260px;
     }
 
     .video-asset-card:hover {
-      border-color: var(--accent);
+      border-color: var(--fucsia);
       transform: translateY(-4px);
     }
 
-    .video-asset-preview {
-      position: relative;
-      aspect-ratio: 16/9;
-      background-color: #000;
-    }
+    .video-asset-preview { position: relative; aspect-ratio: 16/9; background-color: #000; }
 
-    .video-asset-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .video-asset-preview img { width: 100%; height: 100%; object-fit: cover; }
 
     .video-badge-duration {
       position: absolute;
@@ -901,18 +1052,11 @@
       transition: var(--transition);
     }
 
-    .video-asset-card:hover .video-play-overlay-trigger {
-      opacity: 1;
-    }
+    .video-asset-card:hover .video-play-overlay-trigger { opacity: 1; }
 
-    .video-icon-trigger {
-      font-size: 1.8rem;
-      color: var(--accent);
-    }
+    .video-icon-trigger { font-size: 1.8rem; color: var(--fucsia); }
 
-    .video-detail-box {
-      padding: 1rem;
-    }
+    .video-detail-box { padding: 1rem; }
 
     .video-display-title {
       font-size: 0.9rem;
@@ -925,15 +1069,9 @@
       overflow: hidden;
     }
 
-    .video-sub-stat {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.5rem;
-    }
+    .video-sub-stat { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; }
 
-    .library-search-box {
-      margin-bottom: 2rem;
-    }
+    .library-search-box { margin-bottom: 2rem; }
 
     .library-search-input {
       width: 100%;
@@ -944,11 +1082,13 @@
       color: white;
       font-size: 0.95rem;
       font-family: var(--font-sans);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .library-search-input:focus {
       outline: none;
-      border-color: var(--accent);
+      border-color: var(--fucsia);
+      box-shadow: 0 0 0 3px rgba(255, 43, 214, 0.12);
     }
 
     /* COTIZADOR MULTIPASOS PREMIUM */
@@ -961,11 +1101,7 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.25);
     }
 
-    .quoter-header-track {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 1.8rem;
-    }
+    .quoter-header-track { display: flex; gap: 0.4rem; margin-bottom: 1.8rem; }
 
     .quoter-header-track i {
       height: 3px;
@@ -975,18 +1111,10 @@
       transition: background 0.3s ease;
     }
 
-    .quoter-header-track i.active {
-      background: var(--accent);
-    }
+    .quoter-header-track i.active { background: var(--grad-brand); }
 
-    .quoter-slide {
-      display: none;
-      animation: quoterSlideIn 0.35s ease-out forwards;
-    }
-
-    .quoter-slide.active {
-      display: block;
-    }
+    .quoter-slide { display: none; animation: quoterSlideIn 0.35s ease-out forwards; }
+    .quoter-slide.active { display: block; }
 
     @keyframes quoterSlideIn {
       from { opacity: 0; transform: translateY(8px); }
@@ -1018,13 +1146,11 @@
       cursor: pointer;
     }
 
-    .quoter-option-btn:hover {
-      border-color: var(--primary);
-    }
+    .quoter-option-btn:hover { border-color: var(--primary); }
 
     .quoter-option-btn.selected {
-      border-color: var(--accent);
-      background: rgba(82, 0, 255, 0.15);
+      border-color: var(--fucsia);
+      background: linear-gradient(135deg, rgba(82, 0, 255, 0.16), rgba(255, 43, 214, 0.10));
     }
 
     .quoter-option-btn h4 {
@@ -1035,10 +1161,7 @@
       margin-bottom: 0.25rem;
     }
 
-    .quoter-option-btn p {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
+    .quoter-option-btn p { font-size: 0.75rem; color: var(--text-muted); }
 
     .quoter-navigation-tray {
       display: flex;
@@ -1077,7 +1200,7 @@
 
     .input-field-element input:focus, .input-field-element select:focus, .input-field-element textarea:focus {
       outline: none;
-      border-color: var(--accent);
+      border-color: var(--fucsia);
     }
 
     .quoter-summary-block {
@@ -1088,21 +1211,18 @@
       margin-bottom: 1.5rem;
     }
 
-    .quoter-summary-block p {
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-      color: var(--text-light);
-    }
+    .quoter-summary-block p { font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text-light); }
 
-    .quoter-summary-block p strong {
-      color: var(--accent);
-    }
+    .quoter-summary-block p strong { color: var(--fucsia-soft); }
 
     .quoter-cost-total {
       font-family: var(--font-display);
       font-size: 1.6rem;
       font-weight: 800;
-      color: var(--accent);
+      background: var(--grad-brand);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       margin-bottom: 0.5rem;
     }
 
@@ -1115,9 +1235,7 @@
     }
 
     @media (min-width: 1024px) {
-      .contact-layout-split {
-        grid-template-columns: 1fr 1.2fr;
-      }
+      .contact-layout-split { grid-template-columns: 1fr 1.2fr; }
     }
 
     .contact-detail-card {
@@ -1131,17 +1249,10 @@
     }
 
     /* DETALLE LANZAMIENTO INTERNO */
-    .release-details-flex {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
+    .release-details-flex { display: flex; flex-direction: column; gap: 2rem; }
 
     @media (min-width: 768px) {
-      .release-details-flex {
-        flex-direction: row;
-        align-items: flex-start;
-      }
+      .release-details-flex { flex-direction: row; align-items: flex-start; }
     }
 
     .release-details-cover {
@@ -1150,25 +1261,18 @@
       aspect-ratio: 1/1;
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-fucsia);
       margin: 0 auto;
+      box-shadow: 0 12px 40px rgba(255, 43, 214, 0.10);
     }
 
     @media (min-width: 768px) {
-      .release-details-cover {
-        margin: 0;
-      }
+      .release-details-cover { margin: 0; }
     }
 
-    .release-details-cover img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .release-details-cover img { width: 100%; height: 100%; object-fit: cover; }
 
-    .release-details-info {
-      flex: 1;
-    }
+    .release-details-info { flex: 1; }
 
     /* MODAL LIGHTBOX ACCESIBLE */
     .lightbox-modal-backdrop {
@@ -1180,12 +1284,13 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      backdrop-filter: blur(12px);
     }
 
-    .lightbox-modal-backdrop.active {
-      display: flex;
+    @media (min-width: 1024px) {
+      .lightbox-modal-backdrop { backdrop-filter: blur(12px); }
     }
+
+    .lightbox-modal-backdrop.active { display: flex; }
 
     .lightbox-video-frame {
       position: relative;
@@ -1195,7 +1300,7 @@
       background-color: #000;
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-fucsia);
       box-shadow: 0 12px 50px rgba(0,0,0,0.8);
     }
 
@@ -1218,16 +1323,9 @@
       z-index: 10;
     }
 
-    .lightbox-close-trigger:hover {
-      background-color: var(--accent);
-      color: #050508;
-    }
+    .lightbox-close-trigger:hover { background-color: var(--fucsia); color: #050508; }
 
-    .lightbox-iframe-embed {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+    .lightbox-iframe-embed { width: 100%; height: 100%; border: none; }
 
     /* TOAST ALERTA INTERACTIVA */
     .notification-toast {
@@ -1239,7 +1337,7 @@
       padding: 0.8rem 1.6rem;
       border-radius: 8px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-      border-left: 4px solid var(--accent);
+      border-left: 4px solid var(--fucsia);
       border-top: 1px solid var(--border);
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -1252,16 +1350,10 @@
       font-weight: 500;
     }
 
-    .notification-toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .notification-toast.show { opacity: 1; transform: translateY(0); }
 
     @media (min-width: 1024px) {
-      .notification-toast {
-        bottom: 24px;
-        right: 24px;
-      }
+      .notification-toast { bottom: 24px; right: 24px; }
     }
 
     .ai-metadata-headline {
@@ -1272,15 +1364,10 @@
       text-transform: uppercase;
     }
 
-    /* RESPONSIVE LAYOUT CLASSES (EVITA ESTILOS INLINE DE @MEDIA E INCONSISTENCIAS) */
-    .grid-featured-video {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
+    /* RESPONSIVE LAYOUT CLASSES */
+    .grid-featured-video { display: grid; grid-template-columns: 1fr; }
     @media (min-width: 768px) {
-      .grid-featured-video {
-        grid-template-columns: 1.2fr 1fr;
-      }
+      .grid-featured-video { grid-template-columns: 1.2fr 1fr; }
     }
 
     .grid-popular-news {
@@ -1290,9 +1377,7 @@
       margin-bottom: 4rem;
     }
     @media (min-width: 1024px) {
-      .grid-popular-news {
-        grid-template-columns: 1.4fr 1fr;
-      }
+      .grid-popular-news { grid-template-columns: 1.4fr 1fr; }
     }
 
     .grid-services {
@@ -1302,9 +1387,7 @@
       margin-bottom: 3rem;
     }
     @media (min-width: 768px) {
-      .grid-services {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      }
+      .grid-services { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
     }
 
     .hero-btn-container {
@@ -1314,20 +1397,27 @@
       justify-content: center;
     }
     @media (min-width: 768px) {
-      .hero-btn-container {
-        justify-content: flex-start;
-      }
+      .hero-btn-container { justify-content: flex-start; }
     }
   </style>
 </head>
 <body>
+
+  <!-- CAPA AMBIENTAL ANIMADA (aurora violeta + fucsia) -->
+  <div class="bg-aura" aria-hidden="true">
+    <span class="aura-violet"></span>
+    <span class="aura-fucsia"></span>
+  </div>
 
   <!-- CONTENEDOR APP GLOBAL -->
   <div class="app-container">
 
     <!-- BARRA DOCK FIJA DE STREAMING -->
     <div class="music-sticky-dock" role="navigation" aria-label="Enlaces rápidos de reproducción">
-      <span class="sticky-dock-label">Escuchar:</span>
+      <span class="sticky-dock-label">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        Escuchar:
+      </span>
       <div class="sticky-dock-anchors">
         <a href="https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg" target="_blank" rel="noopener" class="sticky-dock-anchor" aria-label="Escuchar en Spotify">Spotify</a>
         <a href="https://music.apple.com/pa/artist/joe/1467893974" target="_blank" rel="noopener" class="sticky-dock-anchor" aria-label="Escuchar en Apple Music">Apple Music</a>
@@ -1342,7 +1432,7 @@
     <!-- SIDEBAR NAVEGACIÓN DESKTOP -->
     <aside class="app-sidebar" role="complementary">
       <a href="#/" class="brand-box" aria-label="Regresar al inicio">
-        <img src="logo.png" alt="JOE on the Sound" class="brand-logo-img" loading="eager" decoding="async">
+        <img src="logo.png" alt="JOE on the Sound" class="brand-logo-img" loading="eager" fetchpriority="high" decoding="async">
         <div class="brand-info">
           <span class="brand-title-text">JOE on the Sound</span>
           <span class="brand-subtitle-text">Ecosistema Creativo</span>
@@ -1747,7 +1837,62 @@
       }
     };
 
-    // LIGHTBOX DEL REPRODUCTOR (REFACTORIZADO A PRUEBA DE ERRORES DEL DOM)
+    // ============================================================
+    // MOTOR DE ANIMACIONES SCROLL-TRIGGER (IntersectionObserver)
+    // Marca automáticamente el contenido de cada vista con .rv y
+    // lo revela al entrar al viewport. GPU-only (opacity/transform).
+    // ============================================================
+    const ScrollReveal = {
+      observer: null,
+      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      init: function() {
+        if (this.reducedMotion || !('IntersectionObserver' in window)) return;
+        this.observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              this.observer.unobserve(entry.target); // revela una sola vez → cero trabajo posterior
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      },
+      scan: function(root) {
+        if (!root) return;
+
+        // 1) Optimización de imágenes inyectadas dinámicamente
+        root.querySelectorAll('img').forEach(img => {
+          if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+          img.setAttribute('decoding', 'async');
+        });
+
+        if (this.reducedMotion || !this.observer) return;
+
+        // 2) Bloques de primer nivel de la vista
+        root.querySelectorAll('.view-container').forEach(section => {
+          Array.from(section.children).forEach((child, i) => {
+            child.classList.add('rv');
+            child.style.setProperty('--rv-i', Math.min(i, 3));
+            this.observer.observe(child);
+          });
+        });
+
+        // 3) Stagger fino en rejillas (tarjetas, videos, diferenciadores)
+        root.querySelectorAll('.card-grid, .video-library-grid, .grid-differentiator, .grid-services').forEach(grid => {
+          Array.from(grid.children).forEach((card, i) => {
+            card.classList.add('rv', 'rv-scale');
+            card.style.setProperty('--rv-i', i % 8);
+            this.observer.observe(card);
+          });
+        });
+      }
+    };
+
+    // Hook común tras renderizar cualquier ruta
+    function afterRender() {
+      ScrollReveal.scan(document.getElementById('viewport'));
+    }
+
+    // LIGHTBOX DEL REPRODUCTOR
     const Lightbox = {
       el: null,
       container: null,
@@ -1766,9 +1911,9 @@
             </div>
           `;
           document.body.appendChild(this.el);
-          
+
           this.container = this.el.querySelector('#lightboxIframeContainer');
-          
+
           this.el.querySelector('#closeLightboxBtn').addEventListener('click', () => this.close());
           this.el.addEventListener('click', (e) => {
             if (e.target === this.el) this.close();
@@ -1776,7 +1921,7 @@
         }
       },
       open: function(videoId) {
-        this.init(); // Garantiza la creación e inserción sincronizada del elemento
+        this.init();
         if (this.container) {
           this.container.innerHTML = `
             <iframe 
@@ -1798,7 +1943,7 @@
       }
     };
 
-    // ALERTAS TOAST PERSONALIZADAS (REEMPLAZO DE ALERT())
+    // ALERTAS TOAST PERSONALIZADAS
     function showToast(message) {
       const existingToast = document.querySelector('.notification-toast');
       if (existingToast) existingToast.remove();
@@ -1815,7 +1960,7 @@
       }, 3500);
     }
 
-    // STATE DEL COTIZADOR DE COSTOS CON PERSISTENCIA DE RUTA
+    // STATE DEL COTIZADOR
     let currentQuoterStep = 1;
     const quoterState = {
       formato: { value: "SINGLE", multiplier: 1.4 },
@@ -1849,7 +1994,13 @@
         }
 
         if (matchedHandler) {
-          matchedHandler(params);
+          const result = matchedHandler(params);
+          // Soporta handlers síncronos y asíncronos; revela contenido tras el render
+          if (result && typeof result.then === 'function') {
+            result.then(() => afterRender());
+          } else {
+            afterRender();
+          }
         } else {
           window.location.hash = '#/';
         }
@@ -2042,7 +2193,7 @@
     // ==========================================
     // RUTA VIRTUAL: INICIO (HOME PAGE)
     // ==========================================
-    Router.addRoute('#/', async function() {
+    Router.addRoute('#/', function() {
       const randomVideo = YOUTUBE_VIDEOS[Math.floor(Math.random() * YOUTUBE_VIDEOS.length)];
       const latestRelease = discographyData.releases[0];
 
@@ -2053,7 +2204,7 @@
             <div class="track-index-num">${idx + 1}</div>
             <div class="track-info-cell">
               <div class="track-cover-miniature">
-                <img src="${song.cover}" alt="${song.title}" onerror="this.onerror=null; this.src='logo.png'">
+                <img src="${song.cover}" alt="${song.title}" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='logo.png'">
               </div>
               <div class="track-titles">
                 <span class="track-main-title">${song.title}</span>
@@ -2068,10 +2219,14 @@
         `;
       });
 
+      const tickerSet = `
+        <span class="ticker-item">House Latino <span class="ticker-dot">◆</span> Afrobeat <span class="ticker-dot">◆</span> <em>Panamá → Mundo</em> <span class="ticker-dot">◆</span> Electrónica Experimental <span class="ticker-dot">◆</span> Ecosistema Creativo <span class="ticker-dot">◆</span></span>
+      `;
+
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <div class="home-hero-banner">
-            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo">
+            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo" loading="eager" fetchpriority="high" decoding="async">
             <div class="home-hero-info">
               <span class="badge-location">Caimitillo, Panamá</span>
               <h1 class="home-hero-title">JOE <span class="accent-phrase">on the Sound</span></h1>
@@ -2083,12 +2238,20 @@
             </div>
           </div>
 
-          <h2 class="heading-primary">Video <span class="accent-phrase">Destacado</span></h2>
+          <!-- Cinta editorial animada -->
+          <div class="editorial-ticker" aria-hidden="true">
+            <div class="ticker-track">${tickerSet}${tickerSet}</div>
+          </div>
+
+          <div>
+            <p class="eyebrow">Sesión visual</p>
+            <h2 class="heading-primary">Video <span class="accent-phrase">Destacado</span></h2>
+          </div>
           <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:3rem;">
             <div class="grid-featured-video">
               <div style="position:relative; aspect-ratio:16/9; background-image:url('${randomVideo.miniatura}'); background-size:cover; background-position:center; cursor:pointer;" onclick="Lightbox.open('${randomVideo.videoId}')">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center;">
-                  <span style="font-size:3.5rem; color:var(--accent);">▶</span>
+                  <span style="font-size:3.5rem; color:var(--fucsia);">▶</span>
                 </div>
               </div>
               <div style="padding:2rem; display:flex; flex-direction:column; justify-content:center;">
@@ -2101,14 +2264,16 @@
 
           <div class="grid-popular-news">
             <div>
+              <p class="eyebrow">En rotación</p>
               <h2 class="heading-primary">Temas <span class="accent-phrase">Populares</span></h2>
               <div class="spotify-tracklist">${popularHTML}</div>
             </div>
             <div>
+              <p class="eyebrow">Último lanzamiento</p>
               <h2 class="heading-primary">Novedades</h2>
               <a href="#/release/${latestRelease.id}" class="visual-card" style="padding:2rem; text-align:center;">
                 <div class="card-cover-wrapper" style="max-width:200px; margin: 0 auto 1.5rem auto;">
-                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.onerror=null; this.src='logo.png'">
+                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" loading="lazy" decoding="async" onerror="this.onerror=null; this.src='logo.png'">
                 </div>
                 <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--accent); text-transform:uppercase;">${latestRelease.name}</h3>
                 <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.5rem;">${latestRelease.release_date} · Sello: ${latestRelease.label}</p>
@@ -2117,7 +2282,10 @@
           </div>
 
           <!-- SECCIÓN DEL COTIZADOR PRESTABLECIDO EN EL HOME -->
-          <h2 class="heading-primary" id="calculadora-costos">Cotizador & <span class="accent-phrase">Calculadora de Presupuestos</span></h2>
+          <div>
+            <p class="eyebrow">Producción a medida</p>
+            <h2 class="heading-primary" id="calculadora-costos">Cotizador & <span class="accent-phrase">Calculadora de Presupuestos</span></h2>
+          </div>
           <div class="quoter-component-panel" id="premiumQuoter">
             ${getQuoterHTML()}
           </div>
@@ -2134,6 +2302,7 @@
     Router.addRoute('#/cotizador', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Calculadora asistida</p>
           <h1 class="heading-primary">Cotizador <span class="accent-phrase">Especializado</span></h1>
           <p style="color:var(--text-muted); margin-bottom:2rem; font-size:0.95rem;">Diseña tu presupuesto musical personalizado a través de nuestra calculadora asistida.</p>
           <div class="quoter-component-panel" id="premiumQuoterPage">
@@ -2152,7 +2321,6 @@
       if (inputs) inputs.style.display = show ? 'block' : 'none';
       quoterState.tienePerfil = show ? "SI" : "NO";
 
-      // Sincroniza dinámicamente las clases del selector visual
       const btns = document.querySelectorAll('[data-quoter-var="perfil_plataformas"] .quoter-option-btn');
       btns.forEach(b => {
         const val = b.getAttribute('data-value');
@@ -2206,7 +2374,7 @@
       const stepContainers = container.querySelectorAll('.quoter-options-container');
       stepContainers.forEach(group => {
         const key = group.getAttribute('data-quoter-var');
-        if (!key || key === 'perfil_plataformas') return; // Se maneja directamente en togglePlatformFields
+        if (!key || key === 'perfil_plataformas') return;
         const buttons = group.querySelectorAll('.quoter-option-btn');
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
@@ -2335,6 +2503,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     Router.addRoute('#/proyecto', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Manifiesto 2026–2029</p>
           <h1 class="heading-primary">El Proyecto — <span class="accent-phrase">Ecosistema Creativo</span></h1>
           
           <div class="brand-manifesto-quote">
@@ -2370,13 +2539,13 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
               <p class="diff-card-desc">Expansión desde Panamá hacia México y Colombia, con una narrativa cultural adaptable a nuevos mercados.</p>
             </div>
             <div class="diff-brand-card">
-              <span class="diff-brand-digit">05</span>
-              <h3 class="diff-brand-card-header">Marca Sólida</h3>
+              <span class="diff-card-digit">05</span>
+              <h3 class="diff-card-header">Marca Sólida</h3>
               <p class="diff-card-desc">Identidad visual integrada, lema, narrativa, comunidad genuina y presencia musical distribuida en múltiples plataformas.</p>
             </div>
             <div class="diff-brand-card">
-              <span class="diff-brand-digit">06</span>
-              <h3 class="diff-brand-card-header">IA como Herramienta</h3>
+              <span class="diff-card-digit">06</span>
+              <h3 class="diff-card-header">IA como Herramienta</h3>
               <p class="diff-card-desc">La inteligencia artificial no reemplaza el criterio artístico; amplifica la capacidad de producir, experimentar, analizar y distribuir.</p>
             </div>
           </div>
@@ -2423,9 +2592,10 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     // ==========================================
     let activeReleaseFilter = 'ALL';
 
-    Router.addRoute('#/musica', async function() {
+    Router.addRoute('#/musica', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Lanzamientos oficiales</p>
           <h1 class="heading-primary">Catálogo & <span class="accent-phrase">Discografía</span></h1>
           
           <div id="releasesFilterContainer" style="display:flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap;">
@@ -2485,7 +2655,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         html += `
           <a href="#/release/${r.id}" class="visual-card">
             <div class="card-cover-wrapper">
-              <img src="${coverUrl}" alt="${r.name}" onerror="this.onerror=null; this.src='logo.png'" loading="lazy">
+              <img src="${coverUrl}" alt="${r.name}" onerror="this.onerror=null; this.src='logo.png'" loading="lazy" decoding="async">
               <span class="card-badge">${r.type}</span>
             </div>
             <h3 class="card-title">${r.name}</h3>
@@ -2494,12 +2664,13 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         `;
       });
       container.innerHTML = html;
+      ScrollReveal.scan(container.parentElement); // re-escaneo tras filtrar
     }
 
     // ==========================================
     // DETALLE INTERNO DE LANZAMIENTOS (DINÁMICO)
     // ==========================================
-    Router.addRoute('#/release/:id', async function(params) {
+    Router.addRoute('#/release/:id', function(params) {
       const release = discographyData.releases.find(r => r.id === params.id);
       if (!release) {
         document.getElementById('viewport').innerHTML = `<p style="padding:4rem;">Lanzamiento no disponible.</p>`;
@@ -2510,14 +2681,14 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
 
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
-          <div style="margin-bottom:2rem;"><a href="#/musica" style="color:var(--accent); text-decoration:none;">← Volver al Catálogo</a></div>
+          <div style="margin-bottom:2rem;"><a href="#/musica" style="color:var(--fucsia-soft); text-decoration:none;">← Volver al Catálogo</a></div>
           <div class="release-details-flex">
             <div class="release-details-cover">
-              <img src="${coverUrl}" alt="${release.name}" onerror="this.onerror=null; this.src='logo.png'">
+              <img src="${coverUrl}" alt="${release.name}" loading="eager" decoding="async" onerror="this.onerror=null; this.src='logo.png'">
             </div>
             <div class="release-details-info">
               <span class="badge-location">${release.type}</span>
-              <h1 class="heading-primary" style="margin-bottom:1rem; color:var(--accent);">${release.name}</h1>
+              <h1 class="heading-primary" style="margin-bottom:1rem;"><span class="accent-phrase">${release.name}</span></h1>
               <p style="color:var(--text-muted); margin-bottom:1.5rem; line-height:1.6;">
                 Lanzamiento oficial distribuido globalmente. Grabado y procesado utilizando instrumentación orgánica y optimización digital avanzada en Caimitillo, Panamá.
               </p>
@@ -2539,19 +2710,21 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
 
     // ==========================================
     // RUTA VIRTUAL: VIDEOCLIPS (BIBLIOTECA INTERACTIVA)
+    // Búsqueda con debounce y re-render parcial (solo la rejilla)
+    // para mantener fluidez en móviles y conservar el foco.
     // ==========================================
     Router.addRoute('#/videos', function() {
       renderVideosView('');
     });
 
-    function renderVideosView(query) {
+    function buildVideosGridHTML(query) {
       const filtered = YOUTUBE_VIDEOS.filter(v => v.titulo.toLowerCase().includes(query.toLowerCase()));
       let videosHTML = '';
       filtered.forEach(v => {
         videosHTML += `
           <div class="video-asset-card" onclick="Lightbox.open('${v.videoId}')">
             <div class="video-asset-preview">
-              <img src="${v.miniatura}" alt="${v.titulo}" loading="lazy">
+              <img src="${v.miniatura}" alt="${v.titulo}" loading="lazy" decoding="async">
               <span class="video-badge-duration">${v.duracion}</span>
               <div class="video-play-overlay-trigger">
                 <span class="video-icon-trigger">▶</span>
@@ -2564,26 +2737,34 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
           </div>
         `;
       });
+      return videosHTML || '<p style="color:var(--text-muted);">No se encontraron videos coincidentes.</p>';
+    }
 
+    function renderVideosView(query) {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Archivo audiovisual</p>
           <h1 class="heading-primary">Biblioteca de <span class="accent-phrase">Videos</span></h1>
           <div class="library-search-box">
             <input type="search" class="library-search-input" id="videoSearchInput" placeholder="Escribe palabras clave para filtrar videoclips..." value="${query}">
           </div>
-          <div class="video-library-grid">${videosHTML || '<p style="color:var(--text-muted);">No se encontraron videos coincidentes.</p>'}</div>
+          <div class="video-library-grid" id="videoLibraryGrid">${buildVideosGridHTML(query)}</div>
         </section>
       `;
 
       const searchInput = document.getElementById('videoSearchInput');
       if (searchInput) {
+        let debounceTimer = null;
         searchInput.addEventListener('input', function(e) {
-          renderVideosView(e.target.value);
-          const activeInput = document.getElementById('videoSearchInput');
-          if (activeInput) {
-            activeInput.focus();
-            activeInput.setSelectionRange(activeInput.value.length, activeInput.value.length);
-          }
+          clearTimeout(debounceTimer);
+          const value = e.target.value;
+          debounceTimer = setTimeout(() => {
+            const grid = document.getElementById('videoLibraryGrid');
+            if (grid) {
+              grid.innerHTML = buildVideosGridHTML(value);
+              ScrollReveal.scan(grid.parentElement);
+            }
+          }, 160);
         });
       }
     }
@@ -2596,7 +2777,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
       SERVICES_DATA.forEach(s => {
         servicesHTML += `
           <div style="background:var(--panel); border:1px solid var(--border); padding:2rem; border-radius:12px;">
-            <div style="color:var(--accent); margin-bottom:1rem; width:40px; height:40px;">${s.icon}</div>
+            <div style="color:var(--fucsia); margin-bottom:1rem; width:40px; height:40px;">${s.icon}</div>
             <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--text-main); margin-bottom:1rem; text-transform:uppercase;">${s.title}</h3>
             <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; margin-bottom:1.5rem;">${s.desc}</p>
             <p style="color:var(--accent); font-size:0.8rem; font-weight:800; text-transform:uppercase;">Ideal para: ${s.for}</p>
@@ -2606,6 +2787,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
 
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Estudio & dirección</p>
           <h1 class="heading-primary">Servicios de <span class="accent-phrase">Producción</span></h1>
           <div class="grid-services">${servicesHTML}</div>
           <div style="background:var(--panel); border:1px solid var(--border); padding:2.5rem; border-radius:12px; text-align:center;">
@@ -2621,14 +2803,15 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     });
 
     // ==========================================
-    // RUTA VIRTUAL: SOBRE JOE (SENSILIBIDAD Y TECNOLOGÍA)
+    // RUTA VIRTUAL: SOBRE JOE (SENSIBILIDAD Y TECNOLOGÍA)
     // ==========================================
     Router.addRoute('#/sobre-joe', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Perfil del fundador</p>
           <h1 class="heading-primary">Sobre <span class="accent-phrase">Joe</span></h1>
-          <div class="home-hero-banner" style="background: radial-gradient(circle at top right, rgba(82,0,255,0.08) 0%, transparent 80%), var(--panel)">
-            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo">
+          <div class="home-hero-banner" style="background: radial-gradient(circle at 85% 0%, rgba(82,0,255,0.10) 0%, transparent 60%), radial-gradient(circle at 0% 100%, rgba(255,43,214,0.08) 0%, transparent 60%), var(--panel)">
+            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo" loading="lazy" decoding="async">
             <div class="home-hero-info">
               <span class="badge-location">Líder del Proyecto</span>
               <h2 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; margin-bottom:1rem;">JOE on the Sound</h2>
@@ -2653,11 +2836,12 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     Router.addRoute('#/prensa', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Medios & booking</p>
           <h1 class="heading-primary">Press Kit <span class="accent-phrase">Digital</span></h1>
           <div style="background:var(--panel); border:1px solid var(--border); padding:2.5rem; border-radius:12px; line-height:1.8;">
             <h2 style="font-family:var(--font-display); color:var(--accent); text-transform:uppercase; margin-bottom:1rem;">Dossier de Prensa Oficial</h2>
             <p style="color:var(--text-muted); margin-bottom:2rem; font-size:0.95rem;">Material verificado para su difusión en medios, curadores de playlist y booking de festivales.</p>
-            <div style="background:rgba(255,255,255,0.02); padding:1.5rem; border-radius:8px; border-left:4px solid var(--accent); margin-bottom:2.5rem;">
+            <div style="background:rgba(255,255,255,0.02); padding:1.5rem; border-radius:8px; border-left:4px solid var(--fucsia); margin-bottom:2.5rem;">
               <p style="font-size:0.9rem; color:var(--text-light);"><strong>Biografía Ejecutiva:</strong> Ecosistema vanguardista de creación que vincula el house latino, afrobeat y la herencia sonora de Panamá con tecnología de software avanzada y diseño de IA asistida.</p>
             </div>
             <div style="display:flex; gap:1rem; flex-wrap:wrap;">
@@ -2703,6 +2887,7 @@ CH4/CH5 - Interfaz L/R`;
     Router.addRoute('#/contacto', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Booking & licenciamiento</p>
           <h1 class="heading-primary">Canal de <span class="accent-phrase">Contacto</span></h1>
           <div class="contact-layout-split">
             <div class="contact-detail-card">
@@ -2711,15 +2896,15 @@ CH4/CH5 - Interfaz L/R`;
               
               <div style="display:flex; flex-direction:column; gap:1.25rem; font-size:0.95rem;">
                 <div>
-                  <span style="display:block; font-size:0.75rem; font-weight:800; color:var(--accent); text-transform:uppercase;">🇵🇦 WhatsApp Panamá:</span>
+                  <span style="display:block; font-size:0.75rem; font-weight:800; color:var(--fucsia-soft); text-transform:uppercase;">🇵🇦 WhatsApp Panamá:</span>
                   <a class="obfuscated-link-anchor" data-obf-phone="KzUwNyA2NTE2LTQ3NDE=" style="font-weight:700; text-decoration:none; color:#fff;"></a>
                 </div>
                 <div>
-                  <span style="display:block; font-size:0.75rem; font-weight:800; color:var(--accent); text-transform:uppercase;">🌍 WhatsApp Internacional:</span>
+                  <span style="display:block; font-size:0.75rem; font-weight:800; color:var(--fucsia-soft); text-transform:uppercase;">🌍 WhatsApp Internacional:</span>
                   <a class="obfuscated-link-anchor" data-obf-phone="KzMzIDcgNTkgNjQgMzQgNTM=" style="font-weight:700; text-decoration:none; color:#fff;"></a>
                 </div>
                 <div>
-                  <span style="display:block; font-size:0.75rem; font-weight:800; color:var(--accent); text-transform:uppercase;">✉️ Correo de Booking:</span>
+                  <span style="display:block; font-size:0.75rem; font-weight:800; color:var(--fucsia-soft); text-transform:uppercase;">✉️ Correo de Booking:</span>
                   <a class="obfuscated-link-anchor" data-obf-email="akBqb2VzaG9zdGVsLm9ubGluZQ==" style="font-weight:700; text-decoration:none; color:#fff;"></a>
                 </div>
               </div>
@@ -2781,6 +2966,7 @@ CH4/CH5 - Interfaz L/R`;
     Router.addRoute('#/ai', function() {
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
+          <p class="eyebrow">Capa semántica</p>
           <h1 class="heading-primary">AI Agents <span class="accent-phrase">Profile & Metadata</span></h1>
           <p style="color:var(--text-muted); line-height:1.6; margin-bottom:1rem; font-size:0.9rem;">Este perfil expone metadatos limpios, estables y formateados semánticamente en HTML de alto contraste para ser recopilados de forma rápida por agentes de IA, LLMs y herramientas conversacionales.</p>
           
@@ -2856,6 +3042,7 @@ CH4/CH5 - Interfaz L/R`;
 
     // INICIALIZADORES DEL SISTEMA Y EVENTOS GLOBALIZADOS
     document.addEventListener('DOMContentLoaded', () => {
+      ScrollReveal.init();
       Lightbox.init();
     });
 
@@ -2863,8 +3050,9 @@ CH4/CH5 - Interfaz L/R`;
       if (e.key === 'Escape') Lightbox.close();
     });
 
-    window.addEventListener('hashchange', () => Router.resolve());
+    window.addEventListener('hashchange', () => Router.resolve(), { passive: true });
     window.addEventListener('load', () => {
+      ScrollReveal.init(); // garantía si load llega antes que DOMContentLoaded en algunos navegadores embebidos
       Router.resolve();
     });
   </script>
