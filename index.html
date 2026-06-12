@@ -2,7 +2,7 @@
 <html lang="es-PA">
 <head>
   <!-- ============================================================
-    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V8
+    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V9
     Identidad: Fondo Negro Profundo, Violeta Eléctrico, Amarillo Neón
     Enrutado: hash-routing (#/ruta) con secciones [data-route]
     Protección: Ofuscación activa anti-scraping para datos sensibles
@@ -17,21 +17,21 @@
   <meta name="theme-color" content="#050508">
 
   <!-- Favicons oficiales cargando el activo directo de la plataforma -->
-  <link rel="icon" type="image/png" href="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
-  <link rel="apple-touch-icon" href="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <!-- Open Graph y Twitter Card para Previews -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://joeonthesound.online/">
   <meta property="og:title" content="JOE on the Sound — Ecosistema Creativo Panameño">
   <meta property="og:description" content="Ecosistema vanguardista de música, tecnología y cultura latinoamericana independiente desde Panamá.">
-  <meta property="og:image" content="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
+  <meta property="og:image" content="logo.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="JOE on the Sound — Ecosistema Creativo">
   <meta name="twitter:description" content="Producción musical, cultura digital y desarrollo artístico con identidad latinoamericana liderado por JOE on the Sound.">
-  <meta name="twitter:image" content="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png">
+  <meta name="twitter:image" content="logo.png">
 
   <!-- Tipografías: Space Grotesk + Inter para alta legibilidad -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,8 +50,8 @@
         "alternateName": "JOE",
         "description": "Ecosistema creativo panameño e identidad artística que integra composición, producción y tecnología musical avanzada.",
         "genre": ["Latin House", "Afrobeat Latino", "Experimental Electronic"],
-        "logo": "https://joeonthesound.online/{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png",
-        "image": "https://joeonthesound.online/{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png",
+        "logo": "https://joeonthesound.online/logo.png",
+        "image": "https://joeonthesound.online/logo.png",
         "url": "https://joeonthesound.online/",
         "foundingLocation": {
           "@type": "Place",
@@ -1342,7 +1342,7 @@
     <!-- SIDEBAR NAVEGACIÓN DESKTOP -->
     <aside class="app-sidebar" role="complementary">
       <a href="#/" class="brand-box" aria-label="Regresar al inicio">
-        <img src="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png" alt="JOE on the Sound" class="brand-logo-img" loading="eager" decoding="async">
+        <img src="logo.png" alt="JOE on the Sound" class="brand-logo-img" loading="eager" decoding="async">
         <div class="brand-info">
           <span class="brand-title-text">JOE on the Sound</span>
           <span class="brand-subtitle-text">Ecosistema Creativo</span>
@@ -2052,7 +2052,7 @@
             <div class="track-index-num">${idx + 1}</div>
             <div class="track-info-cell">
               <div class="track-cover-miniature">
-                <img src="${song.cover}" alt="${song.title}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
+                <img src="${song.cover}" alt="${song.title}" onerror="this.onerror=null; this.src='logo.png'">
               </div>
               <div class="track-titles">
                 <span class="track-main-title">${song.title}</span>
@@ -2070,7 +2070,7 @@
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <div class="home-hero-banner">
-            <img src="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png" alt="JOE on the Sound" class="home-hero-logo">
+            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo">
             <div class="home-hero-info">
               <span class="badge-location">Caimitillo, Panamá</span>
               <h1 class="home-hero-title">JOE <span class="accent-phrase">on the Sound</span></h1>
@@ -2107,7 +2107,7 @@
               <h2 class="heading-primary">Novedades</h2>
               <a href="#/release/${latestRelease.id}" class="visual-card" style="padding:2rem; text-align:center;">
                 <div class="card-cover-wrapper" style="max-width:200px; margin: 0 auto 1.5rem auto;">
-                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
+                  <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.onerror=null; this.src='logo.png'">
                 </div>
                 <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--accent); text-transform:uppercase;">${latestRelease.name}</h3>
                 <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.5rem;">${latestRelease.release_date} · Sello: ${latestRelease.label}</p>
@@ -2480,11 +2480,11 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
 
       let html = '';
       releases.forEach(r => {
-        const coverUrl = r.covers && r.covers["300x300"] ? r.covers["300x300"] : '{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png';
+        const coverUrl = r.covers && r.covers["300x300"] ? r.covers["300x300"] : 'logo.png';
         html += `
           <a href="#/release/${r.id}" class="visual-card">
             <div class="card-cover-wrapper">
-              <img src="${coverUrl}" alt="${r.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'" loading="lazy">
+              <img src="${coverUrl}" alt="${r.name}" onerror="this.onerror=null; this.src='logo.png'" loading="lazy">
               <span class="card-badge">${r.type}</span>
             </div>
             <h3 class="card-title">${r.name}</h3>
@@ -2505,14 +2505,14 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         return;
       }
 
-      const coverUrl = release.covers && release.covers["300x300"] ? release.covers["300x300"] : '{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png';
+      const coverUrl = release.covers && release.covers["300x300"] ? release.covers["300x300"] : 'logo.png';
 
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <div style="margin-bottom:2rem;"><a href="#/musica" style="color:var(--accent); text-decoration:none;">← Volver al Catálogo</a></div>
           <div class="release-details-flex">
             <div class="release-details-cover">
-              <img src="${coverUrl}" alt="${release.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
+              <img src="${coverUrl}" alt="${release.name}" onerror="this.onerror=null; this.src='logo.png'">
             </div>
             <div class="release-details-info">
               <span class="badge-location">${release.type}</span>
@@ -2627,7 +2627,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
         <section class="view-container">
           <h1 class="heading-primary">Sobre <span class="accent-phrase">Joe</span></h1>
           <div class="home-hero-banner" style="background: radial-gradient(circle at top right, rgba(82,0,255,0.08) 0%, transparent 80%), var(--panel)">
-            <img src="{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png" alt="JOE on the Sound" class="home-hero-logo">
+            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo">
             <div class="home-hero-info">
               <span class="badge-location">Líder del Proyecto</span>
               <h2 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; margin-bottom:1rem;">JOE on the Sound</h2>
