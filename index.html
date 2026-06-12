@@ -2,7 +2,7 @@
 <html lang="es-PA">
 <head>
   <!-- ============================================================
-    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V7
+    JOE on the Sound — Plataforma Oficial (SPA Autocontenida) V8
     Identidad: Fondo Negro Profundo, Violeta Eléctrico, Amarillo Neón
     Enrutado: hash-routing (#/ruta) con secciones [data-route]
     Protección: Ofuscación activa anti-scraping para datos sensibles
@@ -81,7 +81,7 @@
         "@type": "Service",
         "@id": "https://joeonthesound.online/#custom-songs",
         "name": "Canciones personalizadas para eventos",
-        "description": "Composición, producción y mezcla de canciones personalizadas a la medida para marcas, bodas, anniversarios y mascotas.",
+        "description": "Composición, producción y mezcla de canciones personalizadas a la medida para marcas, bodas, aniversarios y mascotas.",
         "provider": { "@id": "https://joeonthesound.online/#artist" },
         "areaServed": "Worldwide"
       }
@@ -1271,6 +1271,53 @@
       margin: 1.5rem 0 0.5rem 0;
       text-transform: uppercase;
     }
+
+    /* RESPONSIVE LAYOUT CLASSES (EVITA ESTILOS INLINE DE @MEDIA E INCONSISTENCIAS) */
+    .grid-featured-video {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .grid-featured-video {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+
+    .grid-popular-news {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 1024px) {
+      .grid-popular-news {
+        grid-template-columns: 1.4fr 1fr;
+      }
+    }
+
+    .grid-services {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 768px) {
+      .grid-services {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+    }
+
+    .hero-btn-container {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    @media (min-width: 768px) {
+      .hero-btn-container {
+        justify-content: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1672,7 +1719,7 @@
       ]
     };
 
-    // ALINEACIÓN DE REFERENCIAS DE NOMENCLATURA (Resuelve el ReferenceError del enrutador)
+    // ALINEACIÓN DE REFERENCIAS DE NOMENCLATURA
     const discographyData = DISCOGRAPHY_DATA;
 
     // Retorno nativo sin esperas ni llamadas a servicios externos
@@ -1924,11 +1971,11 @@
           <div id="wrapperPlatformInputs" style="display:${displayPlatformFields}; margin-top:1rem;">
             <div class="input-field-element">
               <label>¿En qué plataforma estás? (ej. Spotify, YouTube, Soundcloud)</label>
-              <input type="text" id="quoterPlatformName" placeholder="Plataforma de streaming" value="${quoterState.plataformaName}">
+              <input type="text" id="quoterPlatformName" placeholder="Plataforma de streaming" value="${quoterState.plataformaName}" oninput="updateQuoterStateFromInputs()">
             </div>
             <div class="input-field-element">
               <label>Enlace oficial de tu perfil / Nombre de usuario</label>
-              <input type="text" id="quoterPlatformLink" placeholder="https://..." value="${quoterState.plataformaLink}">
+              <input type="text" id="quoterPlatformLink" placeholder="https://..." value="${quoterState.plataformaLink}" oninput="updateQuoterStateFromInputs()">
             </div>
           </div>
         </div>
@@ -2028,7 +2075,7 @@
               <span class="badge-location">Caimitillo, Panamá</span>
               <h1 class="home-hero-title">JOE <span class="accent-phrase">on the Sound</span></h1>
               <p class="home-hero-desc">Ecosistema creativo, música independiente, house latino, afrobeat y experimentación tecnológica integrada desde Panamá al resto del mundo.</p>
-              <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; md:justify-content:flex-start;">
+              <div class="hero-btn-container">
                 <a href="#/proyecto" class="action-btn btn-solid-primary">Conocer Proyecto</a>
                 <a href="#/contacto" class="action-btn btn-outline-primary">Contacto Directo</a>
               </div>
@@ -2037,7 +2084,7 @@
 
           <h2 class="heading-primary">Video <span class="accent-phrase">Destacado</span></h2>
           <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:3rem;">
-            <div style="display:grid; grid-template-columns: 1fr; @media (min-width: 768px) { grid-template-columns: 1.2fr 1fr; }">
+            <div class="grid-featured-video">
               <div style="position:relative; aspect-ratio:16/9; background-image:url('${randomVideo.miniatura}'); background-size:cover; background-position:center; cursor:pointer;" onclick="Lightbox.open('${randomVideo.videoId}')">
                 <div style="position:absolute; inset:0; background:rgba(0,0,0,0.3); display:flex; align-items:center; justify-content:center;">
                   <span style="font-size:3.5rem; color:var(--accent);">▶</span>
@@ -2051,7 +2098,7 @@
             </div>
           </div>
 
-          <div style="display:grid; grid-template-columns:1fr; gap:2rem; margin-bottom:4rem; @media(min-width:1024px){ grid-template-columns:1.4fr 1fr; }">
+          <div class="grid-popular-news">
             <div>
               <h2 class="heading-primary">Temas <span class="accent-phrase">Populares</span></h2>
               <div class="spotify-tracklist">${popularHTML}</div>
@@ -2059,7 +2106,7 @@
             <div>
               <h2 class="heading-primary">Novedades</h2>
               <a href="#/release/${latestRelease.id}" class="visual-card" style="padding:2rem; text-align:center;">
-                <div class="card-cover-wrapper" style="max-width:200px; margin:0 auto 1.5rem;">
+                <div class="card-cover-wrapper" style="max-width:200px; margin: 0 auto 1.5rem auto;">
                   <img src="${latestRelease.covers["300x300"]}" alt="${latestRelease.name}" onerror="this.onerror=null; this.src='{A59FF3AA-F3FD-4B47-B6B6-0002040F6B9B}.png'">
                 </div>
                 <h3 style="font-family:var(--font-display); font-size:1.3rem; color:var(--accent); text-transform:uppercase;">${latestRelease.name}</h3>
@@ -2103,11 +2150,25 @@
       const inputs = document.getElementById('wrapperPlatformInputs');
       if (inputs) inputs.style.display = show ? 'block' : 'none';
       quoterState.tienePerfil = show ? "SI" : "NO";
+
+      // Sincroniza dinámicamente las clases del selector visual
+      const btns = document.querySelectorAll('[data-quoter-var="perfil_plataformas"] .quoter-option-btn');
+      btns.forEach(b => {
+        const val = b.getAttribute('data-value');
+        if ((show && val === "SI") || (!show && val === "NO")) {
+          b.classList.add('selected');
+        } else {
+          b.classList.remove('selected');
+        }
+      });
     };
 
     window.updateQuoterStateFromInputs = function() {
       const occasionSel = document.getElementById('quoterOccasionSelect');
       const styleSel = document.getElementById('quoterStyleSelect');
+      const nameInput = document.getElementById('quoterPlatformName');
+      const linkInput = document.getElementById('quoterPlatformLink');
+
       if (occasionSel) {
         quoterState.ocasion.value = occasionSel.value;
         quoterState.ocasion.cost = parseInt(occasionSel.options[occasionSel.selectedIndex].getAttribute('data-cost'));
@@ -2115,6 +2176,12 @@
       if (styleSel) {
         quoterState.estilo.value = styleSel.value;
         quoterState.estilo.cost = parseInt(styleSel.options[styleSel.selectedIndex].getAttribute('data-cost'));
+      }
+      if (nameInput) {
+        quoterState.plataformaName = nameInput.value.trim();
+      }
+      if (linkInput) {
+        quoterState.plataformaLink = linkInput.value.trim();
       }
     };
 
@@ -2138,7 +2205,7 @@
       const stepContainers = container.querySelectorAll('.quoter-options-container');
       stepContainers.forEach(group => {
         const key = group.getAttribute('data-quoter-var');
-        if (!key) return;
+        if (!key || key === 'perfil_plataformas') return; // Se maneja directamente en togglePlatformFields
         const buttons = group.querySelectorAll('.quoter-option-btn');
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
@@ -2151,8 +2218,6 @@
             } else if (key === 'vocal') {
               quoterState.vocal.value = btn.getAttribute('data-value');
               quoterState.vocal.hours = parseInt(btn.getAttribute('data-hours'));
-            } else if (key === 'perfil_plataformas') {
-              quoterState.tienePerfil = btn.getAttribute('data-value');
             }
           });
         });
@@ -2491,7 +2556,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
                 <span class="video-icon-trigger">▶</span>
               </div>
             </div>
-            <div class="video-asset-detail-box" style="padding:1rem;">
+            <div class="video-detail-box">
               <h3 class="video-display-title">${v.titulo}</h3>
               <p class="video-sub-stat">${v.vistas}</p>
             </div>
@@ -2541,7 +2606,7 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
       document.getElementById('viewport').innerHTML = `
         <section class="view-container">
           <h1 class="heading-primary">Servicios de <span class="accent-phrase">Producción</span></h1>
-          <div style="display:grid; grid-template-columns:1fr; gap:1.5rem; margin-bottom:3rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">${servicesHTML}</div>
+          <div class="grid-services">${servicesHTML}</div>
           <div style="background:var(--panel); border:1px solid var(--border); padding:2.5rem; border-radius:12px; text-align:center;">
             <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:1rem; text-transform:uppercase;">¿Deseas calcular un presupuesto?</h3>
             <p style="color:var(--text-muted); margin-bottom:1.5rem; max-width:600px; margin-inline:auto; font-size:0.95rem;">Hemos integrado nuestro cotizador interactivo inteligente directamente en su página de inicio y en su sección interna dedicada.</p>
