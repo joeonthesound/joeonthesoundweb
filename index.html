@@ -3202,30 +3202,47 @@ Quedo a la espera de la disponibilidad de tu agenda.`;
     // ==========================================
     // RUTA VIRTUAL: SOBRE JOE (SENSIBILIDAD Y TECNOLOGÍA)
     // ==========================================
-    Router.addRoute('#/sobre-joe', function() {
-      document.getElementById('viewport').innerHTML = `
-        <section class="view-container">
-          <p class="eyebrow">Perfil del fundador</p>
-          <h1 class="heading-primary">Sobre <span class="accent-phrase">Joe</span></h1>
-          <div class="home-hero-banner" style="background: radial-gradient(circle at 85% 0%, rgba(82,0,255,0.10) 0%, transparent 60%), radial-gradient(circle at 0% 100%, rgba(255,43,214,0.08) 0%, transparent 60%), var(--panel)">
-            <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo" loading="lazy" decoding="async">
-            <div class="home-hero-info">
-              <span class="badge-location">Líder del Proyecto</span>
-              <h2 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; margin-bottom:1rem;">JOE on the Sound</h2>
-              <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
-                JOE es un multiinstrumentista, productor independiente y desarrollador de software con base en Panamá Norte, Panamá. Su propuesta se define por un fuerte trasfondo profesional y tecnológico: además de la composición, cuenta con una sólida trayectoria diseñando arquitecturas web, analizando métricas de audiencia y programando herramientas DSP (Procesamiento Digital de Señales) a medida.
-              </p>
-              <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
-                Esta combinación híbrida de ingeniero y artista le permite configurar su propio estudio físico y digital, automatizar flujos de trabajo eficientes, y aplicar la Inteligencia Artificial no como un sustituto perezoso de la creatividad, sino como una herramienta avanzada para la modulación armónica, síntesis de texturas generativas y optimización técnica de metadatos.
-              </p>
-              <p style="color:var(--text-light); line-height:1.7;">
-                El núcleo del proyecto sigue siendo puramente sensible y latinoamericano: capturar el pulso de los tambores de Panamá, estructurar la expresividad tímbrica de teclados analógicos antiguos y componer líricas con un profundo sentido de propósito y pertenencia cultural para la distribución global.
-              </p>
-            </div>
-          </div>
-        </section>
-      `;
-    });
+   Router.addRoute('#/sobre-joe', function() {
+  document.getElementById('viewport').innerHTML = `
+    <section class="view-container">
+      <p class="eyebrow">Perfil del fundador</p>
+      <h1 class="heading-primary">Sobre <span class="accent-phrase">Joe</span></h1>
+
+      <div class="home-hero-banner" style="background: radial-gradient(circle at 85% 0%, rgba(82,0,255,0.10) 0%, transparent 60%), radial-gradient(circle at 0% 100%, rgba(255,43,214,0.08) 0%, transparent 60%), var(--panel)">
+        <img src="logo.png" alt="JOE on the Sound" class="home-hero-logo" loading="lazy" decoding="async">
+
+        <div class="home-hero-info">
+          <span class="badge-location">Líder del Proyecto</span>
+          <h2 style="font-family:var(--font-display); font-size:1.8rem; text-transform:uppercase; margin-bottom:1rem;">JOE on the Sound</h2>
+
+          <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+            JOE es una persona profundamente curiosa, amante de la música y de todo lo que ocurre detrás del sonido. Multiinstrumentista, productor independiente y desarrollador de software con base en Panamá Norte, Panamá, su propuesta nace de una mezcla poco común entre sensibilidad artística, tecnología aplicada y experimentación constante.
+          </p>
+
+          <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+            Su historia comenzó en 2009, produciendo su primer disco con las primeras versiones de FL Studio, con más entusiasmo que técnica y una necesidad real de explorar. Aquel proyecto se lanzó bajo el nombre <em>Música Para Las Discotecas</em>: una producción que empezó como un hobby, creció más de lo esperado y terminó mucho antes de lo que le gusta admitir.
+          </p>
+
+          <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+            Mitad por falta de creer en sí mismo. Mitad porque, en ese momento, el mercado local parecía no creer demasiado en los suyos. De esa etapa quedó una anécdota que todavía aparece como una marca personal en muchas de sus canciones: el grito de estudio <strong>“¡No quiero cinta!”</strong>, una frase espontánea que resume su impulso por no quedarse quieto y seguir buscando hasta encontrar algo propio.
+          </p>
+
+          <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+            Con el tiempo, JOE nunca dejó de experimentar. La música se mezcló con el desarrollo de software, las arquitecturas web, el análisis de métricas de audiencia y la programación de herramientas DSP —Procesamiento Digital de Señales— a medida. Esa combinación híbrida de ingeniero y artista le permite configurar su propio estudio físico y digital, automatizar flujos de trabajo y aplicar la Inteligencia Artificial no como sustituto de la creatividad, sino como una herramienta avanzada para la modulación armónica, la síntesis de texturas generativas y la optimización técnica de metadatos.
+          </p>
+
+          <p style="color:var(--text-light); line-height:1.7; margin-bottom:1rem;">
+            El núcleo del proyecto sigue siendo profundamente sensible y latinoamericano: capturar el pulso de los tambores de Panamá, estructurar la expresividad tímbrica de teclados analógicos antiguos y componer líricas con sentido de propósito, identidad y pertenencia cultural para una distribución global.
+          </p>
+
+          <p style="color:var(--text-light); line-height:1.7;">
+            Cada intento se volvió más complejo, cada idea abrió otra puerta, y todo ese camino terminó tomando forma en un proyecto más grande: <strong>Joe on the Sound</strong>. La historia completa es larga; de esas que no se explican en una biografía. Se cuentan mejor con una copa de vino entre amigos.
+          </p>
+        </div>
+      </div>
+    </section>
+  `;
+});
 
     // ==========================================
     // RUTA VIRTUAL: PRENSA / EPK
