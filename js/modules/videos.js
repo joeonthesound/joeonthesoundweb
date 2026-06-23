@@ -4,8 +4,16 @@ async function fetchVideos(endpoint, signal) {
   if (videoCache) return videoCache;
 
   const apiToken = window.ENV?.APIVIDEO;
-  if (!apiToken || apiToken === 'APIVIDEO_PLACEHOLDER') {
-    console.error("❌ [YouTube Module] Deployment Initialization Error: 'APIVIDEO' token is undefined or missing in window context.");
+
+  // 🔥 VALIDACIÓN ULTRA ROBUSTA: Intercepta strings vacíos, nulos, placeholders y la palabra de texto "undefined"
+  if (
+    !apiToken || 
+    apiToken === 'APIVIDEO_PLACEHOLDER' || 
+    apiToken === 'undefined' || 
+    apiToken === 'null' || 
+    apiToken.trim() === ''
+  ) {
+    console.error("❌ [YouTube Module] Deployment Initialization Error: 'APIVIDEO' token is undefined, null, or remains as a placeholder in window.ENV context. Fetch aborted to prevent API Bad Request.");
     return [];
   }
 
