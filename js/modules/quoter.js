@@ -7,11 +7,15 @@ const PRODUCT_ALIASES = {
 
 let paypalSdkPromise = null;
 
-function loadPayPalSdk(url) {
+function loadPayPalSdk(baseUrl, clientId, currency) {
   if (window.paypal?.Buttons) return Promise.resolve(window.paypal);
   if (paypalSdkPromise) return paypalSdkPromise;
 
   paypalSdkPromise = new Promise((resolve, reject) => {
+    if (!clientId || clientId === 'CLIENT_ID_PLACEHOLDER') {
+      reject(new Error('PayPal public Client ID is missing from window.ENV.AppPagoJoeontheSoundWebClientID.'));
+      return;
+    }
     const existing = document.querySelector('script[data-paypal-sdk]');
     if (existing) {
       existing.addEventListener('load', () => resolve(window.paypal), { once: true });
@@ -19,7 +23,10 @@ function loadPayPalSdk(url) {
       return;
     }
     const script = document.createElement('script');
-    script.src = url;
+    const sdkUrl = new URL(baseUrl);
+    sdkUrl.searchParams.set('client-id', clientId);
+    sdkUrl.searchParams.set('currency', currency);
+    script.src = sdkUrl.toString();
     script.async = true;
     script.dataset.paypalSdk = 'true';
     script.addEventListener('load', () => resolve(window.paypal), { once: true });
@@ -375,7 +382,8 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
 
     if (state.step === 5) {
       const paypalContainer = container.querySelector('#paypal-button-container');
-      loadPayPalSdk(config.paypalSdkUrl)
+      const livePayPalClientId = window.ENV?.AppPagoJoeontheSoundWebClientID;
+      loadPayPalSdk(config.paypalSdkUrl, livePayPalClientId, config.currency)
         .then(paypal => {
           if (!paypalContainer?.isConnected || !paypal?.Buttons) return;
           paypalContainer.replaceChildren();

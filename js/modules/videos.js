@@ -2,19 +2,40 @@ let videoCache = null;
 
 async function fetchVideos(endpoint, signal) {
   if (videoCache) return videoCache;
-  const params = new URLSearchParams({
-    part: 'snippet',
-    channelId: endpoint.channelId,
-    key: endpoint.apiKey,
-    maxResults: String(endpoint.maxResults),
-    order: 'date',
-    type: 'video'
-  });
-  const response = await fetch(`${endpoint.url}?${params}`, { signal });
-  if (!response.ok) throw new Error(`YouTube ${response.status}`);
-  const payload = await response.json();
-  videoCache = (payload.items || []).filter(item => item.id?.videoId);
-  return videoCache;
+
+  const apiToken = window.ENV?.APIVIDEO;
+  if (!apiToken || apiToken === 'APIVIDEO_PLACEHOLDER') {
+    console.error("❌ [YouTube Module] Deployment Initialization Error: 'APIVIDEO' token is undefined or missing in window context.");
+    return [];
+  }
+
+  try {
+    const params = new URLSearchParams({
+      part: 'snippet',
+      channelId: endpoint.channelId,
+      key: apiToken,
+      maxResults: String(endpoint.maxResults),
+      order: 'date',
+      type: 'video'
+    });
+
+    console.log('📡 [YouTube Module] Attempting network data fetch from Google API. Endpoint target is verified.');
+    const response = await fetch(`${endpoint.url}?${params}`, { signal });
+
+    if (!response.ok) {
+      console.error(`🚨 [YouTube Module] API Connection dropped! HTTP Error Code: ${response.status}. Verify domain restrictions inside Google Cloud Console for 'joeonthesound.online' with key 'APIVIDEO'.`);
+      throw new Error(`YouTube ${response.status}`);
+    }
+
+    const payload = await response.json();
+    videoCache = (payload.items || []).filter(item => item.id?.videoId);
+    return videoCache;
+  } catch (error) {
+    if (error.name !== 'AbortError') {
+      console.error('[YouTube Module] Network request failed:', error);
+    }
+    throw error;
+  }
 }
 
 function mediaText(template, title) {
@@ -48,28 +69,33 @@ export function renderVideoLibrary({ container, endpoint, dictionary, modalRoot,
   container.innerHTML = `<div class="status">${dictionary.videos.loading}</div>`;
 
   const draw = (videos, query = '') => {
-    const normalized = query.trim().toLocaleLowerCase();
-    const filtered = videos.filter(item => item.snippet.title.toLocaleLowerCase().includes(normalized));
-    const visible = compact ? filtered.slice(0, 3) : filtered;
-    container.innerHTML = `
-      ${compact ? '' : `<input class="search" type="search" placeholder="${dictionary.videos.search}" aria-label="${dictionary.videos.search}">`}
-      <div class="grid video-grid">
-        ${visible.map(item => `
-          <article class="card video-card">
-            <button type="button" data-video-id="${item.id.videoId}" aria-label="${dictionary.videos.open}: ${item.snippet.title}">
-              <div class="video-thumb">
-                <img src="${item.snippet.thumbnails.medium.url}" alt="${mediaText(dictionary.media.videoAlt, item.snippet.title)}" loading="lazy" decoding="async">
-                <span class="play" aria-hidden="true">▶</span>
-              </div>
-              <div class="video-title">${item.snippet.title}</div>
-            </button>
-          </article>`).join('')}
-      </div>
-      ${visible.length ? '' : `<div class="status">${dictionary.videos.empty}</div>`}`;
-    container.querySelectorAll('[data-video-id]').forEach(button => {
-      button.addEventListener('click', () => openLightbox({ videoId: button.dataset.videoId, dictionary, modalRoot, embedUrl }));
-    });
-    container.querySelector('.search')?.addEventListener('input', event => draw(videos, event.target.value));
+    try {
+      const normalized = query.trim().toLocaleLowerCase();
+      const filtered = videos.filter(item => item.snippet.title.toLocaleLowerCase().includes(normalized));
+      const visible = compact ? filtered.slice(0, 3) : filtered;
+      container.innerHTML = `
+        ${compact ? '' : `<input class="search" type="search" placeholder="${dictionary.videos.search}" aria-label="${dictionary.videos.search}">`}
+        <div class="grid video-grid">
+          ${visible.map(item => `
+            <article class="card video-card">
+              <button type="button" data-video-id="${item.id.videoId}" aria-label="${dictionary.videos.open}: ${item.snippet.title}">
+                <div class="video-thumb">
+                  <img src="${item.snippet.thumbnails.medium.url}" alt="${mediaText(dictionary.media.videoAlt, item.snippet.title)}" loading="lazy" decoding="async">
+                  <span class="play" aria-hidden="true">▶</span>
+                </div>
+                <div class="video-title">${item.snippet.title}</div>
+              </button>
+            </article>`).join('')}
+        </div>
+        ${visible.length ? '' : `<div class="status">${dictionary.videos.empty}</div>`}`;
+      container.querySelectorAll('[data-video-id]').forEach(button => {
+        button.addEventListener('click', () => openLightbox({ videoId: button.dataset.videoId, dictionary, modalRoot, embedUrl }));
+      });
+      container.querySelector('.search')?.addEventListener('input', event => draw(videos, event.target.value));
+    } catch (error) {
+      console.warn('⚠️ [YouTube Module] Payload received successfully, but DOM template injection crashed. Checking element nodes...', error);
+      throw error;
+    }
   };
 
   fetchVideos(endpoint, controller.signal)

@@ -24,12 +24,11 @@
   },
   "payments": {
     "paypal": "https://paypal.me/joeonthesound",
-    "paypalSdk": "https://www.paypal.com/sdk/js?client-id=AUz8YKv6l5HESyshwUalEf_SH4dy5gXPbrJnFLXgJyV1iPMtj0Xc6-6XGxSAupru-18Pf7Y-3t-VfFLm&currency=USD"
+    "paypalSdk": "https://www.paypal.com/sdk/js"
   },
   "endpoints": {
     "youtube": {
       "url": "https://www.googleapis.com/youtube/v3/search",
-      "apiKey": "AIzaSyDY0Sg_jso1wbeyQemAvvyQLQpXWwBEKjE",
       "channelId": "UC_M2kSgX8vN9g1u8T6gP7pQ",
       "maxResults": 6
     }

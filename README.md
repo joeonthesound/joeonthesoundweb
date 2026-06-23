@@ -14,11 +14,29 @@ Utiliza estos valores al conectar el repositorio:
 |---|---|
 | Production branch | `main` |
 | Framework preset | `None` |
-| Build command | vacío |
+| Build command | Ver comando de inyección inferior |
 | Build output directory | `/` |
 | Root directory | `/` |
 
 No es necesario ejecutar `npm install`, `npm run build` ni generar una carpeta `dist`.
+
+### Inyección de variables públicas en Cloudflare Pages
+
+Declara en **Cloudflare Pages → Settings → Environment variables**:
+
+- `logo`
+- `APIVIDEO`
+- `AppPagoJoeontheSoundWebClientID`
+
+Usa exactamente este **Build command**:
+
+```sh
+sed -i "s|logo.png|${logo}|g" index.html && sed -i "s|APIVIDEO_PLACEHOLDER|${APIVIDEO}|g" index.html && sed -i "s|CLIENT_ID_PLACEHOLDER|${AppPagoJoeontheSoundWebClientID}|g" index.html
+```
+
+`APIVIDEO` alimenta la consulta de YouTube y debe restringirse por dominio y cuota en Google Cloud Console. `AppPagoJoeontheSoundWebClientID` es el Client ID público utilizado para construir la URL del SDK de PayPal.
+
+**Nunca** declares, sustituyas, registres ni expongas `AppPagoJoeontheSoundWebSecret_key_1` en `index.html`, JavaScript, JSON, Git o DevTools. Ese secreto pertenece exclusivamente a un backend o Cloudflare Worker.
 
 ### Rutas localizadas y fallback SPA
 
@@ -98,30 +116,12 @@ To transition the interactive quoter from the Sandbox environment to live produc
 4. Click **Create App**, assign a name (e.g., `JOE on the Sound - Live Quoter`), and generate the credentials.
 5. Copy the long **Live Client ID** string. Do **not** copy or expose the Secret Key; the frontend only requires the public Client ID to render the SDK.
 
-### 2. Upgrading Configuration Scaffolding (`config/config.json`)
+### 2. Production Client ID injection
 
-To maintain absolute decoupling of data from the logic inside `js/modules/quoter.js`, map the PayPal environment through configuration:
-
-```json
-{
-  "paypal": {
-    "environment": "production",
-    "live_client_id": "PASTE_YOUR_LIVE_PRODUCTION_CLIENT_ID_HERE",
-    "sandbox_client_id": "AUz8YKv6l5HESyshwUalEf_SH4dy5gXPbrJnFLXgJyV1iPMtj0Xc6-6XGxSAupru-18Pf7Y-3t-VfFLm",
-    "currency": "USD"
-  }
-}
-```
-
-The application should select the appropriate public Client ID according to `environment` and construct the SDK URL dynamically:
+Cloudflare replaces `CLIENT_ID_PLACEHOLDER` during deployment. The calculator reads the resulting public value and constructs the SDK URL dynamically:
 
 ```js
-const clientId = paypal.environment === 'production'
-  ? paypal.live_client_id
-  : paypal.sandbox_client_id;
-
-const sdkUrl =
-  `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(paypal.currency)}`;
+const livePayPalClientId = window.ENV.AppPagoJoeontheSoundWebClientID;
 ```
 
 Never place a PayPal Secret Key, access token, webhook signing secret, private certificate, API password, or refresh token in `config/config.json`, Git, GitHub Pages, browser storage, or frontend JavaScript.
@@ -130,12 +130,11 @@ Never place a PayPal Secret Key, access token, webhook signing secret, private c
 
 Before deploying:
 
-1. Replace `PASTE_YOUR_LIVE_PRODUCTION_CLIENT_ID_HERE` with the Live Client ID.
-2. Set `environment` to `"production"`.
-3. Keep `currency` synchronized with the currency used by `createOrder`.
-4. Purge Cloudflare and browser caches so the previous Sandbox SDK URL is not reused.
-5. Confirm that the loaded PayPal script contains the Live Client ID and not the Sandbox identifier.
-6. Perform a small real transaction using a buyer account different from the receiving business account.
+1. Store the Live Client ID in Cloudflare as `AppPagoJoeontheSoundWebClientID`.
+2. Keep `currency` synchronized with the currency used by `createOrder`.
+3. Purge Cloudflare and browser caches so an earlier SDK URL is not reused.
+4. Confirm that the loaded PayPal script contains the Live Client ID.
+5. Perform a small real transaction using a buyer account different from the receiving business account.
 
 The calculator must continue reading the amount at the exact moment `createOrder` runs:
 
