@@ -29,7 +29,7 @@
   "endpoints": {
     "youtube": {
       "url": "https://www.googleapis.com/youtube/v3/search",
-      "channelId": "UC_M2kSgX8vN9g1u8T6gP7pQ",
+      "channelId": "UCtV8wVtkWeADxDrEz6k1YMA",
       "maxResults": 6
     }
   },
