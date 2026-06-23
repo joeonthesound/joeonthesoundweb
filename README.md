@@ -1,152 +1,230 @@
-# JOE on the Sound
+JOE on the Sound
 
-Sitio modular construido con JavaScript ES6, CSS nativo y configuración JSON dinámica. No requiere frameworks, bundlers ni compilación.
+Sitio modular de alto rendimiento construido con JavaScript ES6, CSS nativo y configuración JSON dinámica. No requiere frameworks, bundlers complejos, ni dependencias de ejecución de terceros.
 
-## Despliegue en Cloudflare Pages
+🚀 Despliegue en Cloudflare (Entorno Unificado Workers & Pages)
 
-El proyecto utiliza un paso de ensamblado nativo, sin bundler ni dependencias, para generar un artefacto estático seguro dentro de `dist`.
+El proyecto utiliza un pipeline de ensamblado ligero a través de Node.js que genera un artefacto estático seguro dentro de una carpeta intermedia dist, la cual es inmediatamente desplegada por Wrangler bajo el modelo unificado de activos estáticos de Cloudflare.
 
-### Configuración del proyecto
+Configuración del Panel de Control
 
-Utiliza estos valores al conectar el repositorio:
+Al conectar el repositorio en la interfaz unificada de Cloudflare, se deben utilizar los siguientes parámetros exactos:
 
-| Campo | Valor |
-|---|---|
-| Production branch | `main` |
-| Framework preset | `None` |
-| Build command | `node scripts/build.mjs` |
-| Build output directory | `dist` |
-| Root directory | `/` |
+Campo
 
-No es necesario ejecutar `npm install` ni utilizar un bundler. El script nativo genera una carpeta `dist` limpia a partir de `index.template.html`.
+Valor
 
-### Inyección de variables públicas en Cloudflare Pages
+Production branch
 
-Declara en **Cloudflare Pages → Settings → Environment variables**:
+main
 
-- `logo`
-- `APIVIDEO`
-- `AppPagoJoeontheSoundWebClientID`
+Framework preset
 
-Usa exactamente este **Build command**:
+None
 
-```sh
+Build command
+
 node scripts/build.mjs
-```
 
-El script nunca modifica la plantilla original. Lee `index.template.html`, valida que `APIVIDEO` y `AppPagoJoeontheSoundWebClientID` existan, escapa sus valores, genera `dist/index.html` y cancela el despliegue si el HTML queda incompleto. `logo` es opcional y utiliza `logo.png` como valor seguro.
+Deploy command
 
-`APIVIDEO` alimenta la consulta de YouTube y debe restringirse por dominio y cuota en Google Cloud Console. `AppPagoJoeontheSoundWebClientID` es el Client ID público utilizado para construir la URL del SDK de PayPal.
+npx wrangler deploy
 
-**Nunca** declares, sustituyas, registres ni expongas `AppPagoJoeontheSoundWebSecret_key_1` en `index.html`, JavaScript, JSON, Git o DevTools. Ese secreto pertenece exclusivamente a un backend o Cloudflare Worker.
+Root directory
 
-### Rutas localizadas y fallback SPA
+/
 
-La navegación utiliza History API y rutas reales:
+No es necesario ejecutar npm install en producción para compilar activos estáticos. El script nativo genera una estructura limpia a partir de index.template.html.
 
-```text
+Inyección de Variables Públicas y Sanidad del Build
+
+El script de compilación requiere la declaración de las siguientes variables en Settings → Environment variables:
+
+logo (Opcional, con fallback automático a logo.png)
+
+APIVIDEO (Obligatorio, inyecta la API Key de Google Cloud)
+
+AppPagoJoeontheSoundWebClientID (Obligatorio, inyecta el Client ID público de PayPal)
+
+⚠️ REGLA DE ORO DE SEGURIDAD (Joe Codex): Nunca declares, sustituyas ni expongas AppPagoJoeontheSoundWebSecret_key_1 (el Secret Key privado de PayPal) en archivos que viajen al cliente frontend (HTML, JS, JSON o repositorios Git públicos). Las operaciones que requieran este secreto deben delegarse exclusivamente a un entorno seguro del lado del servidor (como un Cloudflare Worker con secretos cifrados).
+
+🌐 Comportamiento del Sistema de Rutas y Fallback SPA NATIVO
+
+La navegación del sitio se controla por completo en el cliente mediante la History API y expone rutas virtuales limpias y localizadas:
+
 /es/
 /es/proyecto/
 /en/calculator/
-/fr/a-propos-de-joe/
-```
 
-Cloudflare Pages debe entregar el shell raíz cuando se recarga cualquier ruta de la SPA. El archivo `_redirects` contiene una única regla de proxy con estado `200`:
 
-```text
-/* /index.html 200
-```
+Configuración Correcta del Servidor (Evitando el Bucle Infinito)
 
-Esta regla entrega explícitamente el archivo físico `/index.html` para que `js/router.js` procese la URL solicitada. El proyecto no debe incluir un `404.html` raíz, ya que el router renderiza la vista 404 interna.
+Para que el servidor devuelva un estado HTTP 200 OK limpio en lugar de un error 404 duro del navegador cuando un usuario hace un hard refresh (F5) o ingresa desde un link externo compartido:
 
-Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json`, imágenes y diccionarios continúan sirviéndose normalmente.
+Sin archivos de redirección conflictivos: NO se debe generar ni incluir un archivo _redirects en la carpeta de salida dist. En la infraestructura moderna de Cloudflare Workers Assets, una regla genérica como /* /index.html 200 gatilla un bucle infinito a nivel de API (Error Code: 100324) bloqueando el deploy.
 
-### Caché y cabeceras
+Control por Wrangler: El comportamiento de Single Page Application se delega por completo a la especificación nativa del archivo wrangler.toml en la raíz del proyecto:
 
-El archivo especial `_headers` está temporalmente retirado para aislar el procesamiento de `_redirects` durante el diagnóstico de Cloudflare Pages. `_redirects` se copia automáticamente dentro de `dist`.
+#:schema node_modules/wrangler/config-schema.json
+name = "joeonthesoundweb"
+compatibility_date = "2026-06-23"
 
-Los archivos JavaScript y CSS no usan nombres con hash. No deben configurarse como `immutable` desde el panel.
-
-### Wrangler y fallback SPA
-
-`wrangler.toml` configura el modo SPA para despliegues mediante **Cloudflare Workers Static Assets**:
-
-```toml
 [assets]
-directory = "./dist"
+directory = "dist"
 not_found_handling = "single-page-application"
-```
 
-En Cloudflare Pages, esa propiedad de Workers no sustituye `_redirects`; Pages debe publicar `dist` y leer `dist/_redirects`. Para migrar a Workers Static Assets, utiliza el mismo directorio `dist` con Wrangler.
 
-Después de una publicación importante:
+Al omitir _redirects y activar not_found_handling = "single-page-application", Cloudflare intercepta de forma nativa las llamadas a rutas virtuales inexistentes en el disco y sirve el shell de index.html con un código de respuesta correcto, permitiendo que js/router.js despierte, procese el segmento (/es/, /en/) y pinte los componentes dinámicamente.
 
-1. Abre **Cloudflare Dashboard → Caching → Configuration**.
-2. Ejecuta **Purge Everything** si el navegador sigue recibiendo una versión anterior.
-3. Comprueba `/config/themes.json` directamente en producción.
-4. Recarga una ruta interna para confirmar el fallback:
+Caché y Cabeceras
 
-```text
-https://joeonthesound.online/es/proyecto/
-```
+Los archivos JavaScript y CSS no usan nombres con hash. No deben configurarse como immutable desde el panel. Si tras una publicación importante el navegador sigue recibiendo una versión anterior:
 
-### Variables y secretos
+Abre Cloudflare Dashboard → Caching → Configuration.
 
-El sitio es público y estático. Todo valor dentro de `config/*.json` puede ser leído por el navegador.
+Ejecuta Purge Everything.
 
-- El Client ID público de PayPal puede utilizarse en frontend.
-- Nunca almacenes el Secret de PayPal en el repositorio.
-- Las claves privadas, webhooks y creación autoritativa de órdenes deben vivir en un Cloudflare Worker usando secretos cifrados.
-- Las claves públicas de APIs deben restringirse por dominio y cuota desde sus consolas.
+🛠️ Archivo de Compilación: scripts/build.mjs
 
-### Verificación posterior al despliegue
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-- [ ] `/es/` carga sin redirecciones inesperadas.
-- [ ] Una recarga directa en `/en/calculator/` devuelve la aplicación.
-- [ ] CSS, módulos, locales y configuraciones responden con su MIME correcto.
-- [ ] `/robots.txt` responde y permite indexación pública del sitio.
-- [ ] El selector estacional conserva `jots:theme` y `jots:mode`.
-- [ ] El tema claro mantiene contraste suficiente.
-- [ ] Los siete perfiles musicales abren correctamente.
-- [ ] YouTube, TikTok e Instagram son responsivos.
-- [ ] PayPal Sandbox solo se utiliza mientras el entorno siga en pruebas.
-- [ ] No hay secretos privados en el código publicado.
+// ETAPA 1: Inicialización de Contexto y Rutas Absolutas
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const output = resolve(root, 'dist');
+const templatePath = resolve(root, 'index.template.html');
 
-## 🌐 Live Production Deployment Guide for PayPal SDK (v6)
+// ETAPA 2: Validación de Variables Críticas de Entorno
+const requiredVariables = [
+  'APIVIDEO',
+  'AppPagoJoeontheSoundWebClientID'
+];
 
-To transition the interactive quoter from the Sandbox environment to live production payments, follow these explicit instructions step-by-step:
+const missingVariables = requiredVariables.filter(name => !process.env[name]?.trim());
+if (missingVariables.length) {
+  throw new Error(`[BUILD FATAL] Faltan variables de entorno requeridas: ${missingVariables.join(', ')}`);
+}
 
-### 1. Obtaining Production Client ID Credentials
+const escapeHtmlAttribute = value => value
+  .replaceAll('&', '&amp;')
+  .replaceAll('"', '&quot;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;');
 
-1. Log into the [PayPal Developer Dashboard](https://developer.paypal.com/) using your live business account credentials.
-2. Navigate to the **Apps & Credentials** tab.
-3. Toggle the workspace switch from **Sandbox** to **Live** at the top header bar.
-4. Click **Create App**, assign a name (e.g., `JOE on the Sound - Live Quoter`), and generate the credentials.
-5. Copy the long **Live Client ID** string. Do **not** copy or expose the Secret Key; the frontend only requires the public Client ID to render the SDK.
+// ETAPA 3: Procesamiento e Inyección de la Plantilla
+let html = await readFile(templatePath, 'utf8');
+html = html
+  .replaceAll('APIVIDEO_PLACEHOLDER', JSON.stringify(process.env.APIVIDEO.trim()).slice(1, -1))
+  .replaceAll('CLIENT_ID_PLACEHOLDER', JSON.stringify(process.env.AppPagoJoeontheSoundWebClientID.trim()).slice(1, -1))
+  .replaceAll('logo.png', escapeHtmlAttribute(process.env.logo?.trim() || 'logo.png'));
 
-### 2. Production Client ID injection
+// ETAPA 4: Pruebas de Sanidad e Integridad del HTML
+const unresolvedTokens = ['APIVIDEO_PLACEHOLDER', 'CLIENT_ID_PLACEHOLDER']
+  .filter(token => html.includes(token));
+if (unresolvedTokens.length) {
+  throw new Error(`[BUILD ERROR] Quedaron placeholders sin resolver: ${unresolvedTokens.join(', ')}`);
+}
+if (!html.includes('<!doctype html>') || !html.includes('<script type="module" src="/js/app.js"></script>')) {
+  throw new Error('[BUILD ERROR] El HTML generado no superó la validación estructural básica.');
+}
 
-Cloudflare replaces `CLIENT_ID_PLACEHOLDER` during deployment. The calculator reads the resulting public value and constructs the SDK URL dynamically:
+// ETAPA 5: Preparación de Directorio Limpio (dist/)
+await rm(output, { recursive: true, force: true });
+await mkdir(output, { recursive: true });
 
-```js
+// ETAPA 6: Copia Modular de Activos del Frontend
+for (const directory of ['config', 'css', 'js', 'locales']) {
+  await cp(resolve(root, directory), resolve(output, directory), { recursive: true });
+}
+
+// Copiamos los archivos planos de configuración pública (Excluimos _redirects por diseño)
+for (const file of ['logo.png', 'robots.txt']) {
+  await cp(resolve(root, file), resolve(output, file));
+}
+
+// ETAPA 7: Generación del Shell de Entrada y Redundancia
+await writeFile(resolve(output, 'index.html'), html, 'utf8');
+await writeFile(resolve(output, '404.html'), html, 'utf8'); // Fallback estático de seguridad
+
+console.log('Build complete: dist/index.html and assets ready for Wrangler.');
+
+
+Variables y secretos
+
+El sitio es público y estático. Todo valor dentro de config/*.json puede ser leído por el navegador.
+
+El Client ID público de PayPal puede utilizarse en el frontend.
+
+Nunca almacenes el Secret de PayPal en el repositorio.
+
+Las claves privadas, webhooks y creación autoritativa de órdenes deben vivir en un Cloudflare Worker usando secretos cifrados.
+
+Las claves públicas de APIs deben restringirse por dominio y cuota desde sus consolas.
+
+Verificación posterior al despliegue
+
+[ ] /es/ carga sin redirecciones inesperadas.
+
+[ ] Una recarga directa en /en/calculator/ devuelve la aplicación.
+
+[ ] CSS, módulos, locales y configuraciones responden con su MIME correcto.
+
+[ ] /robots.txt responde y permite indexación pública del sitio.
+
+[ ] El selector estacional conserva jots:theme y jots:mode.
+
+[ ] El tema claro mantiene contraste suficiente.
+
+[ ] Los siete perfiles musicales abren correctamente.
+
+[ ] YouTube, TikTok e Instagram son responsivos.
+
+[ ] PayPal Sandbox solo se utiliza mientras el entorno siga en pruebas.
+
+[ ] No hay secretos privados en el código publicado.
+
+🌐 Live Production Deployment Guide for PayPal SDK (v6)
+
+To transition the interactive quoter from the Sandbox environment to live production payments, follow estas explicit instructions step-by-step:
+
+1. Obtaining Production Client ID Credentials
+
+Log into the PayPal Developer Dashboard using your live business account credentials.
+
+Navigate to the Apps & Credentials tab.
+
+Toggle the workspace switch from Sandbox to Live at the top header bar.
+
+Click Create App, assign a name (e.g., JOE on the Sound - Live Quoter), and generate the credentials.
+
+Copy the long Live Client ID string. Do not copy or expose the Secret Key; the frontend only requires the public Client ID to render the SDK.
+
+2. Production Client ID injection
+
+Cloudflare replaces CLIENT_ID_PLACEHOLDER during deployment. The calculator reads the resulting public value and constructs the SDK URL dynamically:
+
 const livePayPalClientId = window.ENV.AppPagoJoeontheSoundWebClientID;
-```
 
-Never place a PayPal Secret Key, access token, webhook signing secret, private certificate, API password, or refresh token in `config/config.json`, Git, GitHub Pages, browser storage, or frontend JavaScript.
 
-### 3. Switching from Sandbox to Live
+Never place a PayPal Secret Key, access token, webhook signing secret, private certificate, API password, or refresh token in config/config.json, Git, GitHub Pages, browser storage, or frontend JavaScript.
+
+3. Switching from Sandbox to Live
 
 Before deploying:
 
-1. Store the Live Client ID in Cloudflare as `AppPagoJoeontheSoundWebClientID`.
-2. Keep `currency` synchronized with the currency used by `createOrder`.
-3. Purge Cloudflare and browser caches so an earlier SDK URL is not reused.
-4. Confirm that the loaded PayPal script contains the Live Client ID.
-5. Perform a small real transaction using a buyer account different from the receiving business account.
+Store the Live Client ID in Cloudflare as AppPagoJoeontheSoundWebClientID.
 
-The calculator must continue reading the amount at the exact moment `createOrder` runs:
+Keep currency synchronized with the currency used by createOrder.
 
-```js
+Purge Cloudflare and browser caches so an earlier SDK URL is not reused.
+
+Confirm that the loaded PayPal script contains the Live Client ID.
+
+Perform a small real transaction using a buyer account different from the receiving business account.
+
+The calculator must continue reading the amount at the exact moment createOrder runs:
+
 createOrder(data, actions) {
   const finalAmount = calculateQuoterTotal().toFixed(2);
 
@@ -159,65 +237,78 @@ createOrder(data, actions) {
     }]
   });
 }
-```
 
-Do not cache, hardcode, or read the amount from visible DOM text. `calculateQuoterTotal()` is the authoritative client-side value.
 
-### 4. Production Security Requirements
+Do not cache, hardcode, or read the amount from visible DOM text. calculateQuoterTotal() is the authoritative client-side value.
+
+4. Production Security Requirements
 
 The current static implementation can create and capture orders through the browser SDK, but a high-security production deployment should move authoritative order creation and capture to a trusted backend or Cloudflare Worker.
 
 Recommended production flow:
 
-1. The browser sends the selected quote IDs and quantities to a server endpoint.
-2. The server recalculates the price from trusted pricing rules.
-3. The server obtains a PayPal OAuth access token using the Live Client ID and Secret.
-4. The server creates the PayPal order and returns only its order ID.
-5. After buyer approval, the server captures the order.
-6. The server verifies currency, amount, status, merchant account and order uniqueness.
-7. Only then should the project be marked as paid.
+The browser sends the selected quote IDs and quantities to a server endpoint.
+
+The server recalculates the price from trusted pricing rules.
+
+The server obtains a PayPal OAuth access token using the Live Client ID and Secret.
+
+The server creates the PayPal order and returns only its order ID.
+
+After buyer approval, the server captures the order.
+
+The server verifies currency, amount, status, merchant account and order uniqueness.
+
+Only then should the project be marked as paid.
 
 This prevents a visitor from modifying JavaScript or request values to pay an altered amount.
 
-### 5. Cloudflare Worker Secrets
+5. Cloudflare Worker Secrets
 
 When using a Cloudflare Worker, store confidential credentials as encrypted secrets:
 
-```bash
 wrangler secret put PAYPAL_CLIENT_SECRET
 wrangler secret put PAYPAL_WEBHOOK_ID
-```
+
 
 The public Live Client ID may remain in configuration, but the Secret must only be available to the server runtime. Restrict CORS to the official site origin and reject requests from unknown origins.
 
-### 6. Webhooks and Payment Reconciliation
+6. Webhooks and Payment Reconciliation
 
 Create a webhook in the PayPal Developer Dashboard for the production app. At minimum, monitor:
 
-- `PAYMENT.CAPTURE.COMPLETED`
-- `PAYMENT.CAPTURE.DENIED`
-- `PAYMENT.CAPTURE.REFUNDED`
-- `CHECKOUT.ORDER.APPROVED`
+PAYMENT.CAPTURE.COMPLETED
+
+PAYMENT.CAPTURE.DENIED
+
+PAYMENT.CAPTURE.REFUNDED
+
+CHECKOUT.ORDER.APPROVED
 
 Verify every webhook signature server-side using PayPal's verification API and the configured webhook ID. Webhook bodies must never be trusted solely because they reached the endpoint.
 
 Persist:
 
-- PayPal order ID.
-- Capture ID.
-- Gross amount and currency.
-- Payer identifier.
-- Payment status.
-- Quote/brief identifier.
-- Creation and capture timestamps.
+PayPal order ID.
+
+Capture ID.
+
+Gross amount and currency.
+
+Payer identifier.
+
+Payment status.
+
+Quote/brief identifier.
+
+Creation and capture timestamps.
 
 Make order and capture processing idempotent to prevent duplicate fulfillment when PayPal retries a webhook.
 
-### 7. Terms Interlock and UX Verification
+7. Terms Interlock and UX Verification
 
 The PayPal wrapper must remain inaccessible until the terms checkbox is accepted:
 
-```css
 #paypal-button-wrapper {
   opacity: 0.4;
   pointer-events: none;
@@ -227,58 +318,72 @@ The PayPal wrapper must remain inaccessible until the terms checkbox is accepted
   opacity: 1;
   pointer-events: auto;
 }
-```
+
 
 Before launch, verify:
 
-- WhatsApp, clipboard and PayPal are disabled before accepting terms.
-- All three actions activate immediately after acceptance.
-- The PayPal amount matches the sticky total.
-- Changing tiers, duration, vocals or add-ons changes the order amount.
-- Failed SDK loads and captures show a localized error.
-- A successful capture shows the localized success toast.
-- Double-clicking or reloading cannot create duplicate fulfillment.
+WhatsApp, clipboard and PayPal are disabled before accepting terms.
 
-### 8. Production Launch Checklist
+All three actions activate immediately after acceptance.
 
-- [ ] Business account is verified and able to receive the configured currency.
-- [ ] Live Client ID belongs to the intended merchant account.
-- [ ] No PayPal Secret is present in the repository or deployed frontend.
-- [ ] `environment` is set to `production`.
-- [ ] Sandbox Client ID is not loaded by the live page.
-- [ ] Server-side amount validation is enabled for authoritative payments.
-- [ ] Webhook signatures are verified.
-- [ ] Capture processing is idempotent.
-- [ ] HTTPS is active.
-- [ ] Cloudflare cache has been purged.
-- [ ] A low-value live transaction has been completed and reconciled.
-- [ ] Refund and denied-payment flows have been tested.
+The PayPal amount matches the sticky total.
 
-### 9. Rollback
+Changing tiers, duration, vocals or add-ons changes the order amount.
+
+Failed SDK loads and captures show a localized error.
+
+A successful capture shows the localized success toast.
+
+Double-clicking or reloading cannot create duplicate fulfillment.
+
+8. Production Launch Checklist
+
+[ ] Business account is verified and able to receive the configured currency.
+
+[ ] Live Client ID belongs to the intended merchant account.
+
+[ ] No PayPal Secret is present in the repository or deployed frontend.
+
+[ ] environment is set to production.
+
+[ ] Sandbox Client ID is not loaded by the live page.
+
+[ ] Server-side amount validation is enabled for authoritative payments.
+
+[ ] Webhook signatures are verified.
+
+[ ] Capture processing is idempotent.
+
+[ ] HTTPS is active.
+
+[ ] Cloudflare cache has been purged.
+
+[ ] A low-value live transaction has been completed and reconciled.
+
+[ ] Refund and denied-payment flows have been tested.
+
+9. Rollback
 
 If production payment behavior is incorrect:
 
-1. Disable the payment endpoint or PayPal wrapper.
-2. Set `environment` back to `"sandbox"`.
-3. Purge edge and browser caches.
-4. Investigate order IDs, capture responses and webhook logs.
-5. Do not fulfill work based only on a client-side success message.
+Disable the payment endpoint or PayPal wrapper.
+
+Set environment back to "sandbox".
+
+Purge edge and browser caches.
+
+Investigate order IDs, capture responses and webhook logs.
+
+Do not fulfill work based only on a client-side success message.
 
 The success toast is a user-interface acknowledgement, not authoritative accounting evidence. Production fulfillment must rely on a verified server-side capture or validated PayPal webhook.
 
-## Actualización de medios, perfiles musicales y temas
+Actualización de medios, perfiles musicales y temas
 
-### Video horizontal BBE
+Video horizontal BBE
 
-La sección **Sobre Joe** utiliza dos TikToks verticales y un video horizontal de YouTube. El video BBE se configura fuera del módulo en:
+La sección Sobre Joe utiliza dos TikToks verticales y un video horizontal de YouTube. El video BBE se configura fuera del módulo en config/images.json:
 
-```text
-config/images.json
-```
-
-Configuración actual:
-
-```json
 {
   "aboutMedia": {
     "landscapeVideo": {
@@ -288,332 +393,97 @@ Configuración actual:
     }
   }
 }
-```
 
-`js/modules/sobre-joe.js` consume este objeto y genera un `iframe` con carga diferida, permisos explícitos, `referrerpolicy="strict-origin-when-cross-origin"` y soporte de pantalla completa.
 
-Para reemplazar el video en el futuro, modifica únicamente `embedUrl` y `title`.
+js/modules/sobre-joe.js consume este objeto y genera un iframe con carga diferida y soporte de pantalla completa. Para reemplazar el video en el futuro, modifica únicamente embedUrl and title.
 
-### Política responsive para iframes
+Política responsive para iframes
 
-Todos los `iframe` tienen una regla global:
+Todos los iframe tienen una regla global:
 
-```css
 iframe {
   display: block;
   width: 100%;
   max-width: 100%;
   border: 0;
 }
-```
 
-Los videos horizontales usan:
 
-```css
-.responsive-embed--landscape {
-  aspect-ratio: 16 / 9;
-}
-```
-
-El `iframe` se posiciona dentro del wrapper y ocupa exactamente su ancho y alto. Los embeds verticales de TikTok e Instagram conservan wrappers específicos con límites de ancho para evitar desbordamientos en móviles.
+Los videos horizontales usan aspect-ratio: 16 / 9;. Los embeds verticales de TikTok e Instagram conservan wrappers específicos con límites de ancho para evitar desbordamientos en móviles.
 
 Reglas al añadir nuevos embeds:
 
-1. No incluir atributos `width` o `height` como fuente del layout.
-2. Envolver cada `iframe` en `.responsive-embed`.
-3. Utilizar `aspect-ratio: 16 / 9` para horizontal o `9 / 16` para vertical.
-4. Añadir `loading="lazy"` cuando el proveedor lo permita.
-5. Mantener un `title` descriptivo.
-6. Nunca permitir que el embed supere `max-width: 100%`.
+No incluir atributos width o height como fuente del layout.
 
-### Perfiles musicales oficiales
+Envolver cada iframe en .responsive-embed.
 
-Los enlaces se administran exclusivamente desde `config/config.json`, dentro de `links.social`:
+Utilizar aspect-ratio: 16 / 9 para horizontal o 9 / 16 para vertical.
 
-- Spotify
-- Apple Music
-- Amazon
-- Tidal
-- YouTube Music
-- KKBox
-- BoomPlay
+Añadir loading="lazy" cuando el proveedor lo permita.
 
-Estos datos alimentan automáticamente:
+Mantener un title descriptivo.
 
-- Barra social lateral.
-- Footer.
-- Página 404.
-- Datos estructurados Schema.org mediante `sameAs`.
-- Accesos rápidos móviles seleccionados.
+Nunca permitir que el embed supere max-width: 100%.
+
+Perfiles musicales oficiales
+
+Los enlaces se administran exclusivamente desde config/config.json, dentro de links.social: Spotify, Apple Music, Amazon, Tidal, YouTube Music, KKBox y BoomPlay. Estos datos alimentan automáticamente la barra social lateral, el footer, la página 404, y los datos estructurados Schema.org mediante sameAs.
 
 Para modificar un perfil, edita su objeto:
 
-```json
 {
   "id": "spotify",
   "label": "Spotify",
   "url": "https://open.spotify.com/intl-es/artist/0WolrewBAIYhWwzN5Z5Csg"
 }
-```
 
-No deben duplicarse estas URLs dentro de los módulos JavaScript.
 
-## Motor estacional de temas
+Motor estacional de temas
 
-### Configuración
+Configuración
 
-La matriz completa vive en:
+La matriz completa vive en config/themes.json. Cada temporada encapsula una versión oscura y una clara:
 
-```text
-config/themes.json
-```
-
-Cada temporada encapsula una versión oscura y una clara:
-
-```json
 {
   "activeSeason": "default",
   "activeMode": "dark",
   "seasons": {
-    "default": {
-      "dark": {},
-      "light": {}
-    },
-    "future-signal": {
-      "dark": {},
-      "light": {}
-    }
+    "default": { "dark": {}, "light": {} },
+    "future-signal": { "dark": {}, "light": {} }
   }
 }
-```
 
-Temporadas disponibles:
 
-- `default`
-- `future-signal`
-- `digital-coral`
-- `cosmic-luxury`
+Temporadas disponibles: default, future-signal, digital-coral, cosmic-luxury.
 
-Cada variante contiene:
+Selección de temporada y modo
 
-- Fondo principal.
-- Fondo elevado.
-- Panel translúcido.
-- Violeta, fucsia y cian en formato RGB.
-- Amarillo de acción.
-- Colores de error y PayPal.
-- Texto principal y secundario.
-- Color de bordes.
+La temporada se persiste en localStorage.setItem('jots:theme', 'future-signal'); mientras que el modo claro/oscuro se guarda por separado en jots:mode. El switch alternará entre dark y light dentro de la temporada activa y actualizará el atributo data-theme en <html> junto con el meta[name="theme-color"].
 
-### Selección de temporada
+Fondo ambiental animado
 
-La temporada se guarda en:
+mountAmbientLayer() crea una banda horizontal azul–violeta, dos auras desenfocadas y una cuadrícula editorial. Las animaciones usan únicamente transform y opacity favoreciendo la composición por GPU. El sistema respeta de manera nativa la regla @media (prefers-reduced-motion: reduce).
 
-```js
-localStorage.setItem('jots:theme', 'future-signal');
-```
-
-La clave `jots:theme` representa exclusivamente una temporada, no el modo claro/oscuro.
-
-Para activar otra temporada desde la consola:
-
-```js
-localStorage.setItem('jots:theme', 'digital-coral');
-location.reload();
-```
-
-También puede modificarse el valor predeterminado:
-
-```json
-"activeSeason": "cosmic-luxury"
-```
-
-Si la temporada guardada no existe, el motor utiliza `activeSeason`.
-
-### Selección de modo
-
-El modo se guarda separadamente:
-
-```js
-localStorage.setItem('jots:mode', 'light');
-```
-
-Valores válidos:
-
-- `dark`
-- `light`
-
-Si no existe un modo guardado, se utiliza `activeMode`.
-
-### Switch de interfaz
-
-El selector se genera dentro del header con:
-
-```html
-<button class="theme-switch" aria-pressed="false">
-  ...
-</button>
-```
-
-El botón claro/oscuro:
-
-- Actualiza inmediatamente todas las variables CSS.
-- Alterna únicamente entre `dark` y `light` dentro de la temporada activa.
-- Cambia `data-theme` en `<html>` al modo seleccionado.
-- Mantiene `data-season` con el nombre de la temporada.
-- Actualiza `meta[name="theme-color"]`.
-- Guarda el modo en `jots:mode`.
-- Expone etiquetas accesibles localizadas en ES, EN y FR.
-
-Los otros idiomas heredan las etiquetas inglesas mediante el sistema de fallback.
-
-### Prioridad de resolución
-
-El motor sigue este orden:
-
-1. Lee `jots:theme` y valida que sea una temporada existente.
-2. Si no es válida, utiliza `activeSeason`.
-3. Lee `jots:mode` y acepta solo `dark` o `light`.
-4. Si no es válido, utiliza `activeMode`.
-5. Aplica `seasons[temporada][modo]`.
-
-Las instalaciones antiguas que guardaban `dark` o `light` dentro de `jots:theme` se migran automáticamente a `jots:mode`.
-
-### Variables CSS inyectadas
-
-El motor mantiene las variables existentes para compatibilidad:
-
-```css
---violet
---fuchsia
---cyan
-```
-
-Y también inyecta los aliases de la nueva arquitectura:
-
-```css
---rgb-violet
---rgb-fuchsia
---rgb-cyan
-```
-
-Así, los componentes actuales, el fondo ambiental y Electric Border continúan funcionando durante la migración.
-
-### Fondo ambiental animado
-
-`mountAmbientLayer()` crea:
-
-- Una banda horizontal azul–violeta.
-- Dos auras desenfocadas.
-- Una cuadrícula editorial.
-
-Las animaciones usan únicamente `transform` y `opacity`, favoreciendo composición GPU. En el tema claro se reduce la intensidad para mantener legibilidad.
-
-El sistema respeta:
-
-```css
-@media (prefers-reduced-motion: reduce)
-```
-
-por lo que desactiva las animaciones para usuarios que solicitan movimiento reducido.
-
-## Archivos modificados por esta actualización
-
-- `config/config.json`: perfiles musicales oficiales.
-- `config/images.json`: video horizontal BBE y assets de embeds.
-- `config/themes.json`: paletas clara y oscura.
-- `locales/es.json`: etiquetas del tema y descripción BBE.
-- `locales/en.json`: traducción inglesa.
-- `locales/fr.json`: traducción francesa.
-- `js/app.js`: persistencia y control del tema.
-- `js/modules/uiEffects.js`: aplicación del tema y fondo ambiental.
-- `js/modules/sobre-joe.js`: iframe horizontal responsive.
-- `css/global.css`: switch, fondo animado y reglas universales para iframes.
-
-## Pruebas recomendadas
-
-Antes de publicar:
-
-- [ ] Cambiar a tema claro y navegar entre varias rutas.
-- [ ] Recargar y confirmar que el tema persiste.
-- [ ] Verificar el video BBE en móvil, tableta y escritorio.
-- [ ] Comprobar TikTok e Instagram sin desbordamiento horizontal.
-- [ ] Revisar los siete enlaces musicales.
-- [ ] Activar `prefers-reduced-motion` y comprobar que el fondo deja de moverse.
-- [ ] Probar contraste de botones, formularios y tablas en ambos temas.
-- [ ] Limpiar la caché de Cloudflare después de modificar JSON o CSS.
-
-## Electric Border — SVG Displacement System
+Electric Border — SVG Displacement System
 
 La plataforma utiliza un sistema centralizado de bordes eléctricos para estados interactivos y módulos editoriales.
 
-### Arquitectura
+Arquitectura
 
-`index.template.html` contiene un banco SVG oculto con el filtro reutilizable, que se conserva en el `dist/index.html` generado:
+index.template.html contiene un banco SVG oculto con el filtro reutilizable #turbulent-displace. El filtro combina dos señales feTurbulence, desplazamientos animados mediante feOffset y un feDisplacementMap.
 
-```text
-#turbulent-displace
-```
+El filtro nunca se aplica directamente al nodo que contiene texto para evitar problemas de legibilidad. css/global.css genera dos capas visuales independientes:
 
-El filtro combina dos señales `feTurbulence`, desplazamientos animados mediante `feOffset` y un `feDisplacementMap`. Se declara una sola vez en el shell y no necesita duplicarse dentro de los módulos.
+::before: línea de plasma nítida deformada por el filtro SVG.
 
-### Separación de capas
+::after: halo ambiental desenfocado.
 
-El filtro nunca se aplica al nodo que contiene texto. `css/global.css` genera dos capas visuales independientes:
-
-- `::before`: línea de plasma nítida deformada por el filtro SVG.
-- `::after`: halo ambiental desenfocado.
-- Contenido real: permanece fuera del filtro, limpio y legible.
-
-Los colores se sincronizan con el tema mediante:
-
-```css
---primary: rgb(var(--fuchsia));
---accent: var(--yellow);
---electric-glow: var(--primary);
---electric-halo: var(--accent);
-```
-
-Cuando se alterna entre tema claro y oscuro, el borde y el halo adoptan inmediatamente las nuevas variables sin recargar la página.
-
-### Elementos activos
-
-El efecto está aplicado a:
-
-- Botones durante `hover` y `focus-visible`.
-- Bloques `.project-copy.rv.is-visible`.
-- Cinta animada `.ticker-track`.
-
-Los componentes usan `isolation: isolate`; las capas tienen `pointer-events: none` y el contenido editorial se mantiene en una capa superior.
-
-### Rendimiento móvil
+Rendimiento móvil
 
 Para evitar microcortes durante el desplazamiento táctil:
 
-- En pantallas menores de 768 px o dispositivos sin hover se conserva el borde, pero se elimina la distorsión SVG continua de bloques editoriales y ticker.
-- Los botones solo activan el efecto interactivo cuando existe hover o foco.
-- El halo se contiene dentro de wrappers con control de overflow.
-- `prefers-reduced-motion: reduce` desactiva la distorsión animada.
+En pantallas menores de 768 px o dispositivos sin hover se conserva el borde, pero se elimina la distorsión SVG continua de bloques editoriales y ticker.
 
-### Contraste del tema claro
+Los botones solo activan el efecto interactivo cuando existe hover o foco.
 
-El tema claro incorpora reglas específicas para:
-
-- Líneas del menú hamburguesa.
-- Selector de idioma.
-- Switch de tema.
-- Iconos de luna y sol.
-- Barra social y dock móvil.
-- Botones circulares de reproducción.
-
-Estas reglas usan bordes más oscuros, sombras y texto de mayor contraste sin modificar los assets ni los módulos JavaScript.
-
-### Extensión segura
-
-Para añadir Electric Border a otro componente:
-
-1. El componente debe ser `position: relative` e `isolation: isolate`.
-2. La línea eléctrica debe vivir en `::before`.
-3. El halo debe vivir en `::after`.
-4. Ambos pseudo-elementos deben usar `pointer-events: none`.
-5. Nunca debe aplicarse `filter: url("#turbulent-displace")` al elemento de texto o a uno de sus padres directos.
+prefers-reduced-motion: reduce desactiva la distorsión animada.
