@@ -49,33 +49,21 @@ La navegación utiliza History API y rutas reales:
 /fr/a-propos-de-joe/
 ```
 
-Cloudflare Pages debe entregar el shell raíz cuando se recarga una ruta localizada. El archivo `_redirects` contiene reglas de proxy con estado `200` para cada idioma soportado:
+Cloudflare Pages debe entregar el shell raíz cuando se recarga cualquier ruta de la SPA. El archivo `_redirects` contiene una única regla de proxy con estado `200`:
 
 ```text
-/es/* /index.html 200
-/en/* /index.html 200
-/fr/* /index.html 200
-/de/* /index.html 200
-/it/* /index.html 200
-/ru/* /index.html 200
-/sw/* /index.html 200
-/zh/* /index.html 200
+/* /index.html 200
 ```
 
-Estas reglas entregan explícitamente el archivo físico `/index.html` para las rutas localizadas del router, sin interceptar archivos estáticos ni coincidir con su propio destino. No las reemplaces por `/* /index.html 200`: el patrón global también captura `/index.html` y Cloudflare lo rechaza con el error `100324` por bucle infinito. El proyecto tampoco debe incluir un `404.html` raíz, ya que `js/router.js` renderiza la vista 404 interna.
+Esta regla entrega explícitamente el archivo físico `/index.html` para que `js/router.js` procese la URL solicitada. El proyecto no debe incluir un `404.html` raíz, ya que el router renderiza la vista 404 interna.
 
 Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json`, imágenes y diccionarios continúan sirviéndose normalmente.
 
 ### Caché y cabeceras
 
-`_headers` define:
+El archivo especial `_headers` está temporalmente retirado para aislar el procesamiento de `_redirects` durante el diagnóstico de Cloudflare Pages. Las cabeceras personalizadas podrán restaurarse después de confirmar que el hard refresh funciona.
 
-- Revalidación inmediata para `index.html` y `config/*.json`.
-- Caché corta para diccionarios, CSS y módulos JavaScript.
-- Caché de un día para el logotipo.
-- Cabeceras defensivas que no interfieren con PayPal, YouTube, TikTok o Instagram.
-
-Los archivos JavaScript y CSS no usan nombres con hash. Por esa razón no deben marcarse como `immutable`.
+Los archivos JavaScript y CSS no usan nombres con hash. No deben configurarse como `immutable` desde el panel.
 
 Después de una publicación importante:
 
