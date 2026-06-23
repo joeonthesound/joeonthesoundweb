@@ -1,3 +1,16 @@
+/**
+ * ============================================================================
+ * JOE ON THE SOUND — MODULO CENTRAL DEL COTIZADOR Y PASARELA DE PAGOS (PAYPAL)
+ * ============================================================================
+ * * Arquitectura: JavaScript ES6 Nativo (Sin frameworks ni empaquetadores).
+ * Características: Estado reactivo mediante re-renderizado posicional,
+ * inyección asíncrona y segura del SDK de PayPal y validación por etapas.
+ */
+
+/**
+ * Mapeo de redirección para servicios preseleccionados desde rutas externas.
+ * Permite que enlaces de campañas carguen clasificaciones unificadas.
+ */
 const PRODUCT_ALIASES = {
   production: 'artistRelease',
   mixing: 'artistRelease',
@@ -5,42 +18,72 @@ const PRODUCT_ALIASES = {
   metadata: 'sonicIdentity'
 };
 
+// Referencia global de la promesa para evitar múltiples inyecciones del script de PayPal
 let paypalSdkPromise = null;
 
+/**
+ * Carga asíncrona y dinámica del SDK oficial de PayPal.
+ * @param {string} baseUrl - URL base leída desde la configuración (config.json).
+ * @param {string} clientId - Public Client ID inyectado en ventana por Cloudflare.
+ * @param {string} currency - Divisa de tres caracteres (ISO 4217).
+ * @returns {Promise} Resuelve con la instancia global de window.paypal.
+ */
 function loadPayPalSdk(baseUrl, clientId, currency) {
   if (window.paypal?.Buttons) return Promise.resolve(window.paypal);
   if (paypalSdkPromise) return paypalSdkPromise;
 
   paypalSdkPromise = new Promise((resolve, reject) => {
+    // Validación estricta del Client ID público antes de alterar el DOM
     if (!clientId || clientId === 'CLIENT_ID_PLACEHOLDER') {
       reject(new Error('PayPal public Client ID is missing from window.ENV.AppPagoJoeontheSoundWebClientID.'));
       return;
     }
+
+    // Evitar duplicados si el nodo script ya existe en el documento head
     const existing = document.querySelector('script[data-paypal-sdk]');
     if (existing) {
       existing.addEventListener('load', () => resolve(window.paypal), { once: true });
       existing.addEventListener('error', reject, { once: true });
       return;
     }
-    const script = document.createElement('script');
-    const sdkUrl = new URL(baseUrl);
-    sdkUrl.searchParams.set('client-id', clientId);
-    sdkUrl.searchParams.set('currency', currency);
-    script.src = sdkUrl.toString();
-    script.async = true;
-    script.dataset.paypalSdk = 'true';
-    script.addEventListener('load', () => resolve(window.paypal), { once: true });
-    script.addEventListener('error', event => {
+
+    try {
+      const script = document.createElement('script');
+      // Blindaje de construcción de URL para evitar excepciones de tipo TypeError
+      const validBaseUrl = baseUrl || "https://www.paypal.com/sdk/js";
+      const sdkUrl = new URL(validBaseUrl);
+      
+      sdkUrl.searchParams.set('client-id', clientId);
+      sdkUrl.searchParams.set('currency', currency);
+      
+      script.src = sdkUrl.toString();
+      script.async = true;
+      script.dataset.paypalSdk = 'true';
+      
+      script.addEventListener('load', () => resolve(window.paypal), { once: true });
+      script.addEventListener('error', event => {
+        paypalSdkPromise = null; // Liberar memoria en caso de error de red
+        reject(event);
+      }, { once: true });
+      
+      document.head.append(script);
+    } catch (urlError) {
       paypalSdkPromise = null;
-      reject(event);
-    }, { once: true });
-    document.head.append(script);
+      reject(urlError);
+    }
   });
+  
   return paypalSdkPromise;
 }
 
+/**
+ * Punto de entrada principal para el montaje interactivo del cotizador.
+ * Encapsula el estado de la aplicación para evitar colisiones en el scope global.
+ */
 export function mountQuoter({ container, config, dictionary, preselectedService = null }) {
   const initialProduct = PRODUCT_ALIASES[preselectedService] || preselectedService;
+  
+  // Estado reactivo local del cotizador
   const state = {
     step: 1,
     product: config.products.some(item => item.id === initialProduct) ? initialProduct : null,
@@ -55,10 +98,12 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     termsAccepted: false
   };
 
+  // Selectores funcionales derivados del estado actual
   const product = () => config.products.find(item => item.id === state.product);
   const vocal = () => config.vocals.find(item => item.id === state.vocals);
   const addons = () => config.addons.filter(item => state.addons.includes(item.id));
   const money = value => `$${Number(value || 0).toFixed(2)} ${config.currency}`;
+  
   const showToast = message => {
     const toast = container.querySelector('.toast');
     if (!toast) return;
@@ -67,6 +112,9 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     window.setTimeout(() => toast.classList.remove('is-visible'), 2800);
   };
 
+  /**
+   * Resuelve los valores métricos iniciales por defecto basados en las reglas de negocio del JSON.
+   */
   function defaultMetric(item) {
     if (!item) return null;
     if (item.pricing === 'perMinute' || item.pricing === 'linearSeconds') {
@@ -75,6 +123,10 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     return item.metric?.id || null;
   }
 
+  /**
+   * Algoritmo autoritativo del lado del cliente para el desglose financiero.
+   * Calcula de forma síncrona costos base, voces adicionales, add-ons y totales.
+   */
   function costs() {
     const item = product();
     let creative = 0;
@@ -95,6 +147,10 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     return { creative, external, extras, total: creative + external + extras };
   }
 
+  /**
+   * Retorna el precio total formateado matemáticamente de forma segura.
+   * Método de consumo crítico utilizado por el SDK de PayPal (evita la lectura de nodos del DOM).
+   */
   function calculateQuoterTotal() {
     return Number(costs().total.toFixed(2));
   }
@@ -109,6 +165,9 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     return dictionary[item.metric?.id] || item.metric?.id || '—';
   }
 
+  /**
+   * Genera el resumen textual estructurado para inyección en portapapeles y enlace de WhatsApp.
+   */
   function buildBrief() {
     const price = costs();
     const addonNames = addons().map(item => dictionary.addons[item.id].title);
@@ -129,6 +188,10 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     ].join('\n');
   }
 
+  /**
+   * Motor de validaciones de paso para el flujo del cotizador.
+   * Protege el sistema contra URLs corruptas y plazos temporales imposibles.
+   */
   function validateStep() {
     if (state.step === 1 && !state.product) return dictionary.select;
     if (state.step === 2 && (product()?.pricing === 'tier' ? !state.tier : !state.metric)) return dictionary.select;
@@ -150,6 +213,10 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     }
     return '';
   }
+
+  // ============================================================================
+  // COMPONENTES DE INTERFAZ (VISTAS HTML BAJO CONFIGURACIÓN DINÁMICA)
+  // ============================================================================
 
   function productStep() {
     return `
@@ -294,6 +361,9 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
       </section>`;
   }
 
+  /**
+   * Orquestador central de renderizado y escucha de eventos (Mecánica Reactiva Plana).
+   */
   function render() {
     const price = costs();
     container.innerHTML = `
@@ -316,6 +386,7 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
       </div>
       <div class="toast" role="status" aria-live="polite"></div>`;
 
+    // Asignación secuencial de Event Listeners tras la mutación del contenedor DOM
     container.querySelectorAll('input[name="product_type"]').forEach(input => input.addEventListener('change', () => {
       state.product = input.value;
       state.tier = null;
@@ -380,13 +451,19 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
       }
     });
 
+    // Inicialización asíncrona de la pasarela inteligente de PayPal en la etapa de checkout
     if (state.step === 5) {
       const paypalContainer = container.querySelector('#paypal-button-container');
+      
+      // Blindaje contra renombrado de variables en config.json o strings vacíos
+      const sdkUrlFromConfig = config.paypalSdkUrl || "https://www.paypal.com/sdk/js";
       const livePayPalClientId = window.ENV?.AppPagoJoeontheSoundWebClientID;
-      loadPayPalSdk(config.paypalSdkUrl, livePayPalClientId, config.currency)
+
+      loadPayPalSdk(sdkUrlFromConfig, livePayPalClientId, config.currency)
         .then(paypal => {
           if (!paypalContainer?.isConnected || !paypal?.Buttons) return;
-          paypalContainer.replaceChildren();
+          paypalContainer.replaceChildren(); // Remueve el loader de la interfaz de carga
+          
           return paypal.Buttons({
             fundingSource: paypal.FUNDING.PAYPAL,
             style: {
@@ -398,6 +475,7 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
             createOrder(data, actions) {
               if (!state.termsAccepted) throw new Error(dictionary.termsRequired);
               const finalAmount = calculateQuoterTotal().toFixed(2);
+              
               return actions.order.create({
                 purchase_units: [{
                   amount: {
@@ -409,18 +487,18 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
             },
             onApprove(data, actions) {
               return actions.order.capture().then(details => {
-                console.log('PayPal transaction details:', details);
+                console.log('PayPal transaction details successfully captured:', details);
                 showToast(dictionary.paymentSuccess);
               });
             },
             onError(error) {
-              console.error('PayPal payment error:', error);
+              console.error('PayPal core SDK runtime payment error:', error);
               showToast(dictionary.paymentError);
             }
           }).render(paypalContainer);
         })
         .catch(error => {
-          console.error('PayPal SDK load error:', error);
+          console.error('PayPal SDK loading orchestration failed:', error);
           if (paypalContainer?.isConnected) {
             paypalContainer.textContent = dictionary.paymentError;
           }
@@ -428,6 +506,7 @@ export function mountQuoter({ container, config, dictionary, preselectedService 
     }
   }
 
+  // Inicialización de la primera métrica por defecto basada en el producto cargado
   if (state.product) state.metric = defaultMetric(product());
   render();
 }
