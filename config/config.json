@@ -23,14 +23,13 @@
     "youtubeEmbed": "https://www.youtube-nocookie.com/embed/"
   },
   "payments": {
-    "paypal": "https://paypal.me/joeonthesound",
-    "paypalSdk": "https://www.paypal.com/sdk/js"
+    "paypal": "https://paypal.me/joeonthesound"
   },
   "endpoints": {
     "youtube": {
       "url": "https://www.googleapis.com/youtube/v3/search",
       "channelId": "UCtV8wVtkWeADxDrEz6k1YMA",
-      "maxResults": 9
+      "maxResults": 15
     }
   },
   "links": {
@@ -42,7 +41,7 @@
       {"id":"youtube","label":"YouTube Music","url":"https://music.youtube.com/channel/UCmZ-UCL5NjX1Z-jYD3nNOCQ"},
       {"id":"kkbox","label":"KKBox","url":"https://www.kkbox.com/tw/tc/artist/PXlotlG4LmWjjpSsoa"},
       {"id":"boomplay","label":"BoomPlay","url":"https://www.boomplay.com/albums/130920899"}
-    ]
+    }
   },
   "routes": {
     "home": {"es":"","en":"","fr":"","de":"","it":"","ru":"","sw":"","zh":""},
@@ -62,7 +61,7 @@
       {"id":"comiendo-y-soplando","title":"Comiendo y Soplando","type":"single","year":"2026","tracks":1,"url":"https://open.spotify.com/album/7gsnWUzf84aElDhDZtJJSI"},
       {"id":"fe","title":"Fe","type":"single","year":"2026","tracks":1,"url":"https://open.spotify.com/album/7bIigMxdtHknaJQyeUOvLG"},
       {"id":"ile","title":"ILE","type":"album","year":"2025","tracks":10,"url":"https://open.spotify.com/album/6cVUCDFLYoCeai5RfvEaqF"}
-    ]
+    }
   },
   "projectMetrics": [
     {"id":"spotify","platform":"Spotify"},
@@ -71,6 +70,7 @@
   ],
   "quoter": {
     "currency": "USD",
+    "paypalSdkUrl": "https://www.paypal.com/sdk/js",
     "products": [
       {"id":"reels","pricing":"perMinute","rate":45,"metric":{"min":2,"max":10,"step":1,"default":2}},
       {"id":"jingle","pricing":"linearSeconds","minimumPrice":450,"maximumPrice":1200,"metric":{"min":10,"max":60,"step":1,"default":10}},
