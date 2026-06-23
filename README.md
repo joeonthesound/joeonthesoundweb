@@ -4,7 +4,7 @@ Sitio modular construido con JavaScript ES6, CSS nativo y configuración JSON di
 
 ## Despliegue en Cloudflare Pages
 
-El proyecto está preparado como sitio estático sin proceso de compilación. Cloudflare Pages debe publicar directamente el contenido del repositorio.
+El proyecto utiliza un paso de ensamblado nativo, sin bundler ni dependencias, para generar un artefacto estático seguro dentro de `dist`.
 
 ### Configuración del proyecto
 
@@ -14,11 +14,11 @@ Utiliza estos valores al conectar el repositorio:
 |---|---|
 | Production branch | `main` |
 | Framework preset | `None` |
-| Build command | Ver comando de inyección inferior |
-| Build output directory | `/` |
+| Build command | `node scripts/build.mjs` |
+| Build output directory | `dist` |
 | Root directory | `/` |
 
-No es necesario ejecutar `npm install`, `npm run build` ni generar una carpeta `dist`.
+No es necesario ejecutar `npm install` ni utilizar un bundler. El script nativo genera una carpeta `dist` limpia a partir de `index.template.html`.
 
 ### Inyección de variables públicas en Cloudflare Pages
 
@@ -31,8 +31,10 @@ Declara en **Cloudflare Pages → Settings → Environment variables**:
 Usa exactamente este **Build command**:
 
 ```sh
-sed -i "s|logo.png|${logo}|g" index.html && sed -i "s|APIVIDEO_PLACEHOLDER|${APIVIDEO}|g" index.html && sed -i "s|CLIENT_ID_PLACEHOLDER|${AppPagoJoeontheSoundWebClientID}|g" index.html
+node scripts/build.mjs
 ```
+
+El script nunca modifica la plantilla original. Lee `index.template.html`, valida que `APIVIDEO` y `AppPagoJoeontheSoundWebClientID` existan, escapa sus valores, genera `dist/index.html` y cancela el despliegue si el HTML queda incompleto. `logo` es opcional y utiliza `logo.png` como valor seguro.
 
 `APIVIDEO` alimenta la consulta de YouTube y debe restringirse por dominio y cuota en Google Cloud Console. `AppPagoJoeontheSoundWebClientID` es el Client ID público utilizado para construir la URL del SDK de PayPal.
 
@@ -61,9 +63,21 @@ Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json
 
 ### Caché y cabeceras
 
-El archivo especial `_headers` está temporalmente retirado para aislar el procesamiento de `_redirects` durante el diagnóstico de Cloudflare Pages. Las cabeceras personalizadas podrán restaurarse después de confirmar que el hard refresh funciona.
+El archivo especial `_headers` está temporalmente retirado para aislar el procesamiento de `_redirects` durante el diagnóstico de Cloudflare Pages. `_redirects` se copia automáticamente dentro de `dist`.
 
 Los archivos JavaScript y CSS no usan nombres con hash. No deben configurarse como `immutable` desde el panel.
+
+### Wrangler y fallback SPA
+
+`wrangler.toml` configura el modo SPA para despliegues mediante **Cloudflare Workers Static Assets**:
+
+```toml
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
+```
+
+En Cloudflare Pages, esa propiedad de Workers no sustituye `_redirects`; Pages debe publicar `dist` y leer `dist/_redirects`. Para migrar a Workers Static Assets, utiliza el mismo directorio `dist` con Wrangler.
 
 Después de una publicación importante:
 
@@ -535,7 +549,7 @@ La plataforma utiliza un sistema centralizado de bordes eléctricos para estados
 
 ### Arquitectura
 
-`index.html` contiene un banco SVG oculto con el filtro reutilizable:
+`index.template.html` contiene un banco SVG oculto con el filtro reutilizable, que se conserva en el `dist/index.html` generado:
 
 ```text
 #turbulent-displace
