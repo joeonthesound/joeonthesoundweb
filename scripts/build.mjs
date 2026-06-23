@@ -58,4 +58,4 @@ await writeFile(resolve(output, 'index.html'), html, 'utf8');
 // 🔥 LA CORRECCIÓN: Generar el fallback 404.html idéntico a index.html
 await writeFile(resolve(output, '404.html'), html, 'utf8');
 
-console.log('Build complete: dist/index.html and dist/404.html generated and validated.');
+console.log('Build complete: dist/index.html and dist/404.html generated and validated v2.');
