@@ -31,21 +31,22 @@ La navegación utiliza History API y rutas reales:
 /fr/a-propos-de-joe/
 ```
 
-Cloudflare Pages necesita entregar `index.html` cuando una ruta virtual no corresponde a un archivo físico. El archivo raíz `_redirects` contiene:
+Cloudflare Pages ofrece fallback SPA automáticamente cuando el proyecto no contiene un archivo `404.html` en la raíz. Por ese motivo este repositorio no debe incluir:
 
 ```text
-/* /index.html 200
+_redirects
+404.html
 ```
 
-Esto es una reescritura interna con estado HTTP 200. Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json`, imágenes y diccionarios continúan sirviéndose como archivos estáticos.
+No añadas la regla `/* /index.html 200`: Pages normaliza `/index.html` hacia `/`, y su validador puede identificar esa combinación como un bucle infinito. Sin esos dos archivos, Pages entrega el shell raíz para rutas no físicas y `js/router.js` decide si corresponde mostrar una vista válida o la página 404 interna.
 
-No elimines `_redirects` mientras el router use `pushState` y `popstate`. Sin ese fallback, recargar una URL interna puede devolver una página 404 antes de que JavaScript se ejecute.
+Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json`, imágenes y diccionarios continúan sirviéndose normalmente.
 
 ### Caché y cabeceras
 
 `_headers` define:
 
-- Revalidación inmediata para `index.html`, `404.html` y `config/*.json`.
+- Revalidación inmediata para `index.html` y `config/*.json`.
 - Caché corta para diccionarios, CSS y módulos JavaScript.
 - Caché de un día para el logotipo.
 - Cabeceras defensivas que no interfieren con PayPal, YouTube, TikTok o Instagram.
