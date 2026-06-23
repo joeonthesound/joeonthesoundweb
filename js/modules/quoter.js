@@ -3,6 +3,7 @@
  * JOE ON THE SOUND — MODULO CENTRAL DEL COTIZADOR Y PASARELA DE PAGOS (PAYPAL)
  * ============================================================================
  * * Arquitectura: JavaScript ES6 Nativo (Sin frameworks ni empaquetadores).
+ * AQYUs
  * Características: Estado reactivo mediante re-renderizado posicional,
  * inyección asíncrona y segura del SDK de PayPal y validación por etapas.
  */
