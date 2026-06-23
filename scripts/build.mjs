@@ -65,4 +65,4 @@ for (const lang of config.site.supportedLanguages) {
   await writeFile(resolve(langDir, 'index.html'), html, 'utf8');
 }
 
-console.log('Build complete: Physical multi-language directories and index fallbacks generated successfully!');
+console.log('Hey Build complete: Physical multi-language directories and index fallbacks generated successfully! ');
