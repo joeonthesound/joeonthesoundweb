@@ -30,7 +30,7 @@
     "youtube": {
       "url": "https://www.googleapis.com/youtube/v3/search",
       "channelId": "UCtV8wVtkWeADxDrEz6k1YMA",
-      "maxResults": 6
+      "maxResults": 9
     }
   },
   "links": {

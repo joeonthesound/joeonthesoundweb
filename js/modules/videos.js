@@ -5,7 +5,6 @@ async function fetchVideos(endpoint, signal) {
 
   const apiToken = window.ENV?.APIVIDEO;
 
-  // 🔥 VALIDACIÓN ULTRA ROBUSTA: Intercepta strings vacíos, nulos, placeholders y la palabra de texto "undefined"
   if (
     !apiToken || 
     apiToken === 'APIVIDEO_PLACEHOLDER' || 
@@ -24,10 +23,11 @@ async function fetchVideos(endpoint, signal) {
       key: apiToken,
       maxResults: String(endpoint.maxResults),
       order: 'date',
-      type: 'video'
+      type: 'video',
+      videoDuration: 'medium' // 🔥 Filtra nativamente videos de entre 4 y 20 minutos
     });
 
-    console.log('📡 [YouTube Module] Attempting network data fetch from Google API. Endpoint target is verified.');
+    console.log('📡 [YouTube Module] Attempting network data fetch from Google API. Medium duration filter applied.');
     const response = await fetch(`${endpoint.url}?${params}`, { signal });
 
     if (!response.ok) {
@@ -67,6 +67,7 @@ function openLightbox({ videoId, dictionary, modalRoot, embedUrl }) {
   const onKey = event => { if (event.key === 'Escape') close(); };
   modal.querySelector('.modal-close').addEventListener('click', close);
   modal.addEventListener('click', event => { if (event.target === modal) close(); });
+  document.keydownEventListener = onKey;
   document.addEventListener('keydown', onKey);
   modalRoot.replaceChildren(modal);
   modal.querySelector('.modal-close').focus();
