@@ -52,17 +52,17 @@ La navegación utiliza History API y rutas reales:
 Cloudflare Pages debe entregar el shell raíz cuando se recarga una ruta localizada. El archivo `_redirects` contiene reglas de proxy con estado `200` para cada idioma soportado:
 
 ```text
-/es/* / 200
-/en/* / 200
-/fr/* / 200
-/de/* / 200
-/it/* / 200
-/ru/* / 200
-/sw/* / 200
-/zh/* / 200
+/es/* /index.html 200
+/en/* /index.html 200
+/fr/* /index.html 200
+/de/* /index.html 200
+/it/* /index.html 200
+/ru/* /index.html 200
+/sw/* /index.html 200
+/zh/* /index.html 200
 ```
 
-Estas reglas cubren las rutas válidas del router sin interceptar archivos estáticos ni coincidir con su propio destino. No las reemplaces por `/* /index.html 200`: Pages normaliza `/index.html` hacia `/`, lo que provoca el error de despliegue `100324` por bucle infinito. El proyecto tampoco debe incluir un `404.html` raíz, ya que `js/router.js` renderiza la vista 404 interna.
+Estas reglas entregan explícitamente el archivo físico `/index.html` para las rutas localizadas del router, sin interceptar archivos estáticos ni coincidir con su propio destino. No las reemplaces por `/* /index.html 200`: el patrón global también captura `/index.html` y Cloudflare lo rechaza con el error `100324` por bucle infinito. El proyecto tampoco debe incluir un `404.html` raíz, ya que `js/router.js` renderiza la vista 404 interna.
 
 Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json`, imágenes y diccionarios continúan sirviéndose normalmente.
 
