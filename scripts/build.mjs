@@ -48,14 +48,21 @@ for (const file of ['logo.png', 'robots.txt', '_redirects']) {
   await cp(resolve(root, file), resolve(output, file));
 }
 
+// Guardamos los archivos base de la raíz de dist
 await writeFile(resolve(output, 'index.html'), html, 'utf8');
-console.log('Build complete: dist/index.html generated and validated.');
-
-// ... Todo tu código anterior se mantiene exactamente igual hasta aquí ...
-
-await writeFile(resolve(output, 'index.html'), html, 'utf8');
-
-// 🔥 LA CORRECCIÓN: Generar el fallback 404.html idéntico a index.html
 await writeFile(resolve(output, '404.html'), html, 'utf8');
 
-console.log('Build complete: dist/index.html and dist/404.html generated and validated v2.');
+// 📦 LEER EL ARCHIVO CONFIG.JSON DESDE DIST PARA EXTRAER LOS IDIOMAS
+const configRaw = await readFile(resolve(output, 'config/config.json'), 'utf8');
+const config = JSON.parse(configRaw);
+
+// 🔥 LA SOLUCIÓN MAESTRA: Crear directorios físicos para cada idioma soportado
+for (const lang of config.site.supportedLanguages) {
+  const langDir = resolve(output, lang);
+  await mkdir(langDir, { recursive: true });
+  
+  // Guardamos una copia del index.html dentro de dist/es/, dist/en/, etc.
+  await writeFile(resolve(langDir, 'index.html'), html, 'utf8');
+}
+
+console.log('Build complete: Physical multi-language directories and index fallbacks generated successfully!');
