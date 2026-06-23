@@ -49,14 +49,20 @@ La navegación utiliza History API y rutas reales:
 /fr/a-propos-de-joe/
 ```
 
-Cloudflare Pages ofrece fallback SPA automáticamente cuando el proyecto no contiene un archivo `404.html` en la raíz. Por ese motivo este repositorio no debe incluir:
+Cloudflare Pages debe entregar el shell raíz cuando se recarga una ruta localizada. El archivo `_redirects` contiene reglas de proxy con estado `200` para cada idioma soportado:
 
 ```text
-_redirects
-404.html
+/es/* / 200
+/en/* / 200
+/fr/* / 200
+/de/* / 200
+/it/* / 200
+/ru/* / 200
+/sw/* / 200
+/zh/* / 200
 ```
 
-No añadas la regla `/* /index.html 200`: Pages normaliza `/index.html` hacia `/`, y su validador puede identificar esa combinación como un bucle infinito. Sin esos dos archivos, Pages entrega el shell raíz para rutas no físicas y `js/router.js` decide si corresponde mostrar una vista válida o la página 404 interna.
+Estas reglas cubren las rutas válidas del router sin interceptar archivos estáticos ni coincidir con su propio destino. No las reemplaces por `/* /index.html 200`: Pages normaliza `/index.html` hacia `/`, lo que provoca el error de despliegue `100324` por bucle infinito. El proyecto tampoco debe incluir un `404.html` raíz, ya que `js/router.js` renderiza la vista 404 interna.
 
 Los recursos físicos como `/js/app.js`, `/css/global.css`, `/config/themes.json`, imágenes y diccionarios continúan sirviéndose normalmente.
 
