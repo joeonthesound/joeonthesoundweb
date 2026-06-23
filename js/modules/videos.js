@@ -1,0 +1,86 @@
+let videoCache = null;
+
+async function fetchVideos(endpoint, signal) {
+  if (videoCache) return videoCache;
+  const params = new URLSearchParams({
+    part: 'snippet',
+    channelId: endpoint.channelId,
+    key: endpoint.apiKey,
+    maxResults: String(endpoint.maxResults),
+    order: 'date',
+    type: 'video'
+  });
+  const response = await fetch(`${endpoint.url}?${params}`, { signal });
+  if (!response.ok) throw new Error(`YouTube ${response.status}`);
+  const payload = await response.json();
+  videoCache = (payload.items || []).filter(item => item.id?.videoId);
+  return videoCache;
+}
+
+function mediaText(template, title) {
+  return template.replaceAll('{title}', title);
+}
+
+function openLightbox({ videoId, dictionary, modalRoot, embedUrl }) {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.innerHTML = `
+    <div class="modal-panel">
+      <button class="btn modal-close" type="button">${dictionary.videos.close}</button>
+      <iframe class="modal-frame" src="${embedUrl}${videoId}?autoplay=1" title="${dictionary.videos.open}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>`;
+  const close = () => {
+    modal.remove();
+    document.removeEventListener('keydown', onKey);
+  };
+  const onKey = event => { if (event.key === 'Escape') close(); };
+  modal.querySelector('.modal-close').addEventListener('click', close);
+  modal.addEventListener('click', event => { if (event.target === modal) close(); });
+  document.addEventListener('keydown', onKey);
+  modalRoot.replaceChildren(modal);
+  modal.querySelector('.modal-close').focus();
+}
+
+export function renderVideoLibrary({ container, endpoint, dictionary, modalRoot, embedUrl, compact = false }) {
+  const controller = new AbortController();
+  container.innerHTML = `<div class="status">${dictionary.videos.loading}</div>`;
+
+  const draw = (videos, query = '') => {
+    const normalized = query.trim().toLocaleLowerCase();
+    const filtered = videos.filter(item => item.snippet.title.toLocaleLowerCase().includes(normalized));
+    const visible = compact ? filtered.slice(0, 3) : filtered;
+    container.innerHTML = `
+      ${compact ? '' : `<input class="search" type="search" placeholder="${dictionary.videos.search}" aria-label="${dictionary.videos.search}">`}
+      <div class="grid video-grid">
+        ${visible.map(item => `
+          <article class="card video-card">
+            <button type="button" data-video-id="${item.id.videoId}" aria-label="${dictionary.videos.open}: ${item.snippet.title}">
+              <div class="video-thumb">
+                <img src="${item.snippet.thumbnails.medium.url}" alt="${mediaText(dictionary.media.videoAlt, item.snippet.title)}" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true">▶</span>
+              </div>
+              <div class="video-title">${item.snippet.title}</div>
+            </button>
+          </article>`).join('')}
+      </div>
+      ${visible.length ? '' : `<div class="status">${dictionary.videos.empty}</div>`}`;
+    container.querySelectorAll('[data-video-id]').forEach(button => {
+      button.addEventListener('click', () => openLightbox({ videoId: button.dataset.videoId, dictionary, modalRoot, embedUrl }));
+    });
+    container.querySelector('.search')?.addEventListener('input', event => draw(videos, event.target.value));
+  };
+
+  fetchVideos(endpoint, controller.signal)
+    .then(videos => {
+      if (container.isConnected) draw(videos);
+    })
+    .catch(error => {
+      if (error.name === 'AbortError' || !container.isConnected) return;
+      container.innerHTML = `<div class="status">${dictionary.videos.error}<br><button class="btn retry-video" type="button">${dictionary.videos.retry}</button></div>`;
+      container.querySelector('.retry-video')?.addEventListener('click', () => renderVideoLibrary({ container, endpoint, dictionary, modalRoot, embedUrl, compact }));
+    });
+
+  return () => controller.abort();
+}

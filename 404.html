@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title></title>
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:var(--bg,Canvas);color:var(--text,CanvasText);font-family:system-ui,sans-serif}.glow{position:fixed;width:55vmax;height:55vmax;border-radius:50%;filter:blur(90px);background:rgba(var(--fuchsia),.2);animation:drift 8s ease-in-out infinite alternate}.code{position:relative;font-size:clamp(5rem,22vw,14rem);font-weight:800;letter-spacing:-.08em;color:transparent;-webkit-text-stroke:1px rgb(var(--fuchsia));text-shadow:0 0 50px rgba(var(--violet),.45)}@keyframes drift{to{transform:translate3d(20vw,-15vh,0) scale(1.2)}}@media(prefers-reduced-motion:reduce){.glow{animation:none}}
+  </style>
+  <script>
+    (() => {
+      Promise.all([fetch('/config/config.json').then(r => r.json()), fetch('/config/themes.json').then(r => r.json())]).then(([config, themes]) => {
+        const savedSeason = localStorage.getItem('jots:theme');
+        const seasonName = themes.seasons[savedSeason] ? savedSeason : themes.activeSeason;
+        const savedMode = localStorage.getItem('jots:mode');
+        const mode = savedMode === 'dark' || savedMode === 'light' ? savedMode : themes.activeMode;
+        const theme = themes.seasons[seasonName][mode];
+        document.title = config.site.name;
+        document.documentElement.style.setProperty('--bg', theme.bgMain);
+        document.documentElement.style.setProperty('--text', theme.textPrimary);
+        document.documentElement.style.setProperty('--fuchsia', theme.fuchsia);
+        document.documentElement.style.setProperty('--violet', theme.violet);
+      });
+      const requested = location.pathname + location.search + location.hash;
+      sessionStorage.setItem('jots:fallback-path', requested);
+      setTimeout(() => location.replace('/?route=' + encodeURIComponent(requested)), 650);
+    })();
+  </script>
+</head>
+<body><div class="glow"></div><div class="code" aria-label="404">404</div></body>
+</html>

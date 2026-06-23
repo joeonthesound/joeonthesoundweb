@@ -1,0 +1,82 @@
+{
+  "languageName":"Español",
+  "meta":{
+    "home":{"title":"JOE on the Sound — Música, software y cultura desde Panamá","description":"Ecosistema creativo panameño de música independiente, producción, software e identidad latinoamericana."},
+    "project":{"title":"Proyecto — JOE on the Sound","description":"Manifiesto y visión 2026–2029 del ecosistema creativo."},
+    "about":{"title":"Sobre Joe — JOE on the Sound","description":"Biografía del fundador, productor, multiinstrumentista y desarrollador de software."},
+    "music":{"title":"Música — JOE on the Sound","description":"Catálogo oficial de singles, EP y álbumes."},
+    "videos":{"title":"Videos — JOE on the Sound","description":"Biblioteca audiovisual oficial."},
+    "services":{"title":"Servicios — JOE on the Sound","description":"Producción musical, mezcla, canciones personalizadas y metadata."},
+    "calculator":{"title":"Calculadora — JOE on the Sound","description":"Calculadora interactiva de proyectos musicales."},
+    "contact":{"title":"Contacto — JOE on the Sound","description":"Booking, licencias y colaboraciones."},
+    "notFound":{"title":"404 — Señal fuera de ruta","description":"La ruta solicitada no existe."}
+  },
+  "nav":{"home":"Inicio","project":"Proyecto","about":"Sobre Joe","music":"Música","videos":"Videos","services":"Servicios","calculator":"Calculadora","contact":"Contacto","menu":"Abrir menú","language":"Idioma","lightTheme":"Activar tema claro","darkTheme":"Activar tema oscuro"},
+  "hero":{"eyebrow":"PANAMÁ NORTE / SEÑAL GLOBAL","title":"Música humana.\nTecnología con propósito.","body":"House latino, afrobeat y electrónica experimental conectados con instrumentación orgánica, ingeniería de software y una mirada multicultural.","primary":"Calcular proyecto","secondary":"Explorar música","ticker":"HOUSE LATINO • AFROBEAT • ELECTRÓNICA EXPERIMENTAL • PANAMÁ AL MUNDO • DIGITAL CRAFT"},
+  "home":{"musicEyebrow":"ÚLTIMA ROTACIÓN","musicTitle":"Música reciente","musicBody":"Tres señales del catálogo oficial.","videosEyebrow":"ARCHIVO AUDIOVISUAL","videosTitle":"Videos recientes","videosBody":"Sesiones, piezas visuales y experimentos.","viewAll":"Ver todo","projectTitle":"Un sistema creativo, no solo un estudio.","projectBody":"La visión integra composición, cultura, código, automatización y distribución sin reemplazar el criterio humano.","projectCta":"Conocer el proyecto"},
+  "project":{"eyebrow":"MANIFIESTO 2026—2029","title":"Arte, tecnología y raíz.","body":"JOE on the Sound convierte ideas humanas en experiencias sonoras con relevancia cultural y comercial.","cards":[{"title":"Núcleo humano","body":"La sensibilidad, la narrativa y la autoría permanecen en manos humanas."},{"title":"Tecnología auxiliar","body":"El software y la IA amplifican análisis, experimentación y escala."},{"title":"Panamá al mundo","body":"Una identidad latinoamericana preparada para colaborar globalmente."}]},
+  "proyecto":{
+    "title":"El Proyecto — Ecosistema Creativo",
+    "eyebrow":"Manifiesto 2026–2029",
+    "quote":"No estamos construyendo un estudio; estamos desarrollando un sistema que convierte ideas en experiencias sonoras con relevancia tanto comercial como cultural.",
+    "desc_p1":"Joe on the Sound es un ecosistema creativo panameño que integra música, tecnología, cultura latinoamericana y desarrollo artístico independiente. El proyecto busca construir una estructura autosostenible que conecte producción musical, contenido digital, artistas emergentes, análisis de datos, identidad sonora y comunidad.",
+    "desc_p2":"Fundado en Panamá y concebido con una visión de proyección global (2026-2029), el proyecto tiene como objetivo situar la creatividad latinoamericana en la nueva era digital mediante el arte, la experimentación y el uso estratégico de la tecnología.",
+    "desc_ai":"La inteligencia artificial se presenta como una herramienta de apoyo avanzada, no como el núcleo creativo del proyecto. La IA optimiza la creación, experimentación y distribución, pero el valor central sigue siendo enteramente humano: la visión artística, el criterio cultural, la narrativa y la sensibilidad musical.",
+    "reelLabels":["Proceso creativo y señal cultural","Experimentación audiovisual","Identidad panameña en movimiento"],
+    "differentiatorsTitle":"Elementos clave de diferenciación",
+    "differentiators":[
+      {"number":"01","title":"Modelo Híbrido","body":"Arte, tecnología e identidad cultural operan como un mismo sistema creativo."},
+      {"number":"02","title":"Enfoque Humano","body":"Historia, propósito y sensibilidad musical orientan cada decisión."},
+      {"number":"03","title":"Infraestructura propia","body":"Producción, análisis, software y contenido conviven en una base independiente."},
+      {"number":"04","title":"Escalabilidad auténtica","body":"La estructura crece hacia nuevos mercados sin diluir su raíz cultural."},
+      {"number":"05","title":"Marca Sólida","body":"Identidad visual, narrativa y catálogo forman una presencia coherente."},
+      {"number":"06","title":"IA como Herramienta","body":"La IA amplifica la capacidad humana sin sustituir la autoría."}
+    ],
+    "growthTitle":"Indicadores de crecimiento real (2024–2025)",
+    "table":{"platform":"Plataforma","current":"Indicadores 2025","projection":"Proyección estratégica 2026"},
+    "metrics":{"spotify":{"current":"1,100 reproducciones / 78 oyentes / 23 seguidores","projection":"10,000 reproducciones / 1,000 oyentes"},"youtube":{"current":"56,700 visualizaciones / +163 suscriptores","projection":"150,000 visualizaciones / +500 suscriptores"},"tiktok":{"current":"+1,500 personas alcanzadas orgánicamente","projection":"10,000 seguidores de comunidad"}},
+    "warnings":["⚡ Estas cifras provienen de campañas completamente independientes, sin inversión en publicidad.","⚡ Este rendimiento refleja un crecimiento orgánico auténtico y sostenido."]
+  },
+  "about":{
+    "title":"Sobre Joe",
+    "eyebrow":"Perfil del fundador",
+    "role":"Líder del Proyecto",
+    "p1":"JOE es una persona profundamente curiosa, amante de la música y de todo lo que ocurre detrás del sonido. Multiinstrumentista, productor independiente y desarrollador de software con base en Panamá Norte, Panamá, su propuesta nace de una mezcla poco común entre sensibilidad artística, tecnología aplicada y experimentación constante.",
+    "p2":"Su historia comenzó en 2009, produciendo su primer disco con las primeras versiones de FL Studio, con más entusiasmo que técnica y una necesidad real de explorar. Aquel proyecto se lanzó bajo el nombre Música Para Las Discotecas: una producción que empezó como un hobby, creció más de lo esperado y terminó mucho antes de lo que le gusta admitir.",
+    "p3":"Mitad por falta de creer en sí mismo. Mitad porque, en ese momento, el mercado local parecía no creer demasiado en los suyos. De esa etapa quedó una anécdota que todavía aparece como una marca personal en muchas de sus canciones: el grito de estudio “¡No quiero cinta!”, una frase espontánea que resume su impulso por no quedarse quieto y seguir buscando hasta encontrar algo propio.",
+    "p4":"Con el tiempo, JOE nunca dejó de experimentar. La música se mezcló con el desarrollo de software, las arquitecturas web, el análisis de métricas de audiencia y la programación de herramientas DSP —Procesamiento Digital de Señales— a medida. Esa combinación híbrida de ingeniero y artista le permite configurar su propio estudio físico y digital, automatizar flujos de trabajo y aplicar la Inteligencia Artificial no como sustituto de la creatividad, sino como una herramienta avanzada para la modulación armónica, la síntesis de texturas generativas y la optimización técnica de metadatos.",
+    "p5":"El núcleo del proyecto sigue siendo profundamente sensible y latinoamericano: capturar el pulso de los tambores de Panamá, estructurar la expresividad tímbrica de teclados analógicos antiguos y componer líricas con sentido de propósito, identidad y pertenencia cultural para una distribución global.",
+    "p6":"Cada intento se volvió más complejo, cada idea abrió otra puerta, y todo ese camino terminó tomando forma en un proyecto más grande: Joe on the Sound. La historia completa es larga; de esas que no se explican en una biografía. Se cuentan mejor con una copa de vino entre amigos.",
+    "mediaLabels":["Experimentación de rap y escritura","Remix y beat inspirado en Danger Man","Video horizontal BBE"],
+    "signature":"¡No quiero cinta!"
+  },
+  "music":{"eyebrow":"CATÁLOGO OFICIAL","title":"Discografía","body":"Filtra el catálogo y abre cada lanzamiento en Spotify.","filters":{"all":"Todo","single":"Singles","ep":"EP","album":"Álbumes"},"tracks":"pistas","open":"Escuchar en Spotify"},
+  "videos":{"eyebrow":"BIBLIOTECA VISUAL","title":"Videos","body":"Busca en la señal audiovisual del proyecto.","search":"Buscar videos","loading":"Cargando videos…","empty":"No se encontraron videos.","error":"YouTube no respondió. Intenta nuevamente.","retry":"Reintentar","open":"Abrir en YouTube","close":"Cerrar video"},
+  "services":{"eyebrow":"SERVICIOS","title":"Producción que conecta arte y sistema.","body":"Soluciones modulares para artistas, marcas y proyectos culturales.","items":[{"id":"production","title":"Producción musical","body":"Composición, arreglos, dirección artística y producción integral."},{"id":"mixing","title":"Mezcla y mastering","body":"Profundidad, balance y entrega optimizada para distribución."},{"id":"customSong","title":"Canciones personalizadas","body":"Obras originales para personas, eventos y marcas."},{"id":"metadata","title":"Software y AI Metadata","body":"Arquitectura web, automatización y datos legibles por agentes."}],"cta":"Calcular este servicio"},
+  "quoter":{
+    "eyebrow":"BRIEF INTELIGENTE","title":"Calculadora internacional de producción","body":"Configura el producto, alcance comercial, logística y licencias. El total se actualiza en tiempo real.","step":"Paso","of":"de","back":"Atrás","next":"Siguiente","total":"Total","select":"Selecciona una opción para continuar.","required":"Completa los campos obligatorios para continuar.","invalidUrl":"Introduce una URL válida de YouTube, Spotify o SoundCloud.","invalidDate":"Selecciona una fecha futura válida.",
+    "steps":{"product":"Producto y mercado","format":"Formato y volumen","vocals":"Logística vocal","intelligence":"Datos comerciales","addons":"Ingeniería y licencias"},
+    "products":{
+      "reels":{"title":"Reels / contenido para redes","body":"Instagram, TikTok y paquetes mensuales de contenido."},
+      "jingle":{"title":"Jingle publicitario corporativo","body":"Pieza para campañas, broadcast y comunicación de marca."},
+      "soundtrack":{"title":"Soundtrack / música incidental","body":"Cine, cortos, documentales y contenido sincronizado."},
+      "sonicIdentity":{"title":"Identidad sonora de marca","body":"Selecciona un nivel de sonic branding adaptado a la escala de la marca."},
+      "artistRelease":{"title":"Sencillo / EP para artista","body":"Selecciona el nivel de intervención creativa y producción."}
+    },
+    "tiersTitle":"Selecciona el nivel de producción","tiers":{
+      "sonicIdentity":{"essential":{"title":"Esencial","body":"Sonic Logo básico, 1 variación de hasta 3 segundos para micromarcas."},"premium":{"title":"Premium","body":"Identidad sonora completa, 3 variaciones y guía básica de implementación."},"strategic":{"title":"Estratégico","body":"Ecosistema sonoro maestro, 6 variaciones, sonidos UI/app y guía global."}},
+      "artistRelease":{"technology":{"title":"Base tecnológica","body":"Generación instrumental pura con IA, curaduría de prompts y render master."},"hybrid":{"title":"Híbrido creativo","body":"Composición asistida por IA con arreglo estructural y diseño armónico manual."},"elite":{"title":"Producción Elite","body":"Arreglo personalizado, síntesis asistida, preparación vocal y estructura profesional."}}
+    },
+    "formatTitle":"Define el alcance medible","minutesPerMonth":"Minutos entregables al mes","jingleSeconds":"Duración exacta del jingle","seconds":"segundos","minutes":"minutos","soundtrackMinutes":"Minutos de audio sincronizado","reelsLinearNote":"Tarifa lineal de $45 USD por minuto.","jingleScaleNote":"Escala lineal desde $450 por 10 segundos hasta $1,200 por 60 segundos.","decrease":"Reducir valor","increase":"Aumentar valor",
+    "vocalsTitle":"¿Cómo se producirán las voces?","vocalsNotice":"Las voces humanas se graban en instalaciones externas y requieren coordinación técnica.","vocals":{"instrumental":"Instrumental puro / producción digital con IA","humanVoice":"Voz humana externa con grabación"},"included":"Incluido","externalBreakdown":"$100 grabación de terceros + $150 dirección remota.",
+    "commercialTitle":"Inteligencia comercial obligatoria","territory":"Territorio / destino","territories":{"social":"Solo redes sociales","panama":"Nacional — Panamá","international":"EE.UU. e internacional"},"reference":"Referencia sonora (opcional)","referencePlaceholder":"https://youtube.com/...","deadline":"Fecha objetivo","name":"Nombre o proyecto","namePlaceholder":"Nombre de la marca, artista o agencia",
+    "addonsTitle":"Ingeniería avanzada y licencias","addons":{"premiumMix":{"title":"Mezcla premium y mastering comercial híbrido","body":"Preparación para broadcast y sistemas de reproducción exigentes."},"stems":{"title":"Entrega de stems separados","body":"Pistas abiertas para postproducción y nuevas versiones."},"buyout":{"title":"Licencia de sincronización completa","body":"Master buyout y transferencia de explotación acordada."},"emergency":{"title":"Entrega prioritaria bajo 72 horas","body":"Acceso a la vía express sujeto a disponibilidad."}},
+    "estimate":"Estimación inicial","creativeBase":"Base creativa / IA","externalLogistics":"Logística externa / terceros","addonsTotal":"Extras y licencias","terms":"Acepto los términos y condiciones de producción","termsRequired":"Debes aceptar los términos y condiciones para exportar el brief.","send":"Enviar brief por WhatsApp","copy":"Copiar brief técnico","copied":"Brief copiado al portapapeles.","copyError":"No fue posible copiar el brief.","pay":"Pagar por PayPal","payNotice":"El pago se procesa mediante PayPal Sandbox. Confirma el alcance final con JOE antes de pagar.","paymentSuccess":"El pago de producción se procesó correctamente.","paymentError":"PayPal no pudo procesar el pago. Intenta nuevamente.","paymentLoading":"Cargando pago seguro…","noAddons":"Ninguno",
+    "brief":{"intro":"Hola JOE, he generado un brief técnico desde tu plataforma de cotización:","classification":"Clasificación","metric":"Duración/Métrica","vocals":"Grabación de voces","territory":"Territorio / Destino","reference":"Referencia Estilística","deadline":"Plazo Solicitado","addons":"Extras/Licencias","financial":"Desglose Financiero Estimado","base":"Base Creativa / IA","external":"Logística Externa / Terceros","total":"Presupuesto Total Estimado"}
+  },
+  "contact":{"eyebrow":"CONTACTO","title":"Hagamos algo que todavía no existe.","body":"Cuéntame la idea, el contexto y lo que quieres hacer sentir.","whatsapp":"Escribir por WhatsApp","email":"Enviar correo"},
+  "footer":{"statement":"Música independiente, software y cultura latinoamericana desde Panamá.","rights":"Todos los derechos reservados.","repository":"Repositorio"},
+  "dock":{"home":"Inicio","music":"Música","calculator":"Calcular","contact":"Contacto"},
+  "notFound":{"eyebrow":"SEÑAL FUERA DE RUTA","title":"Esta frecuencia no existe.","body":"Regresa al ecosistema o continúa escuchando en una plataforma oficial.","home":"Volver al inicio","listen":"Continuar escuchando"},
+  "media":{"logoAlt":"Logotipo oficial de JOE on the Sound","coverAlt":"Portada de {title}","videoAlt":"Miniatura de {title}"}
+}

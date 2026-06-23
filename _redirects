@@ -1,0 +1,4 @@
+# Cloudflare Pages SPA fallback.
+# Los archivos estáticos existentes se sirven normalmente; las rutas virtuales
+# localizadas se reescriben al shell para que History API resuelva la vista.
+/* /index.html 200

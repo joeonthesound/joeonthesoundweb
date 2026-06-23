@@ -1,0 +1,32 @@
+# El shell y las configuraciones deben actualizarse rápidamente después de publicar.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/404.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/config/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/locales/*
+  Cache-Control: public, max-age=300, must-revalidate
+
+# Recursos locales estables. No se usa immutable porque los nombres no incluyen hash.
+/css/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/js/*
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/logo.png
+  Cache-Control: public, max-age=86400
+
+# Cabeceras defensivas compatibles con los embeds y SDK externos actuales.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: SAMEORIGIN

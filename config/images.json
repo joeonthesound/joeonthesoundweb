@@ -1,0 +1,35 @@
+{
+  "brand": {"logo":"/logo.png","favicon":"/logo.png"},
+  "fallbacks": {"cover":"/logo.png","video":"/logo.png"},
+  "instagram": {
+    "embedScript": "https://www.instagram.com/embed.js",
+    "reels": [
+      "https://www.instagram.com/reel/DX77XmNJeua/",
+      "https://www.instagram.com/reel/DW_ZwW7AP8d/",
+      "https://www.instagram.com/reel/DUofrorknQu/"
+    ]
+  },
+  "tiktok": {
+    "embedScript": "https://www.tiktok.com/embed.js",
+    "profileUrl": "https://www.tiktok.com/@joeonthesound",
+    "videos": [
+      {"id":"7631449537508412694","orientation":"portrait"},
+      {"id":"7582634293613153558","orientation":"portrait"}
+    ]
+  },
+  "aboutMedia": {
+    "landscapeVideo": {
+      "provider": "youtube",
+      "embedUrl": "https://www.youtube.com/embed/uP7Af9T4i1o?si=7zAXtTnu7zzXnSVs",
+      "title": "BBE — colaboración audiovisual"
+    }
+  },
+  "covers": {
+    "el-pais-de-los-primos":"https://i.scdn.co/image/ab67616d0000b273330b25ddfb34ad7dc5bcb16a",
+    "vamo-pa-panama":"https://i.scdn.co/image/ab67616d0000b2733a2ba44a0145272f6d83f025",
+    "jotsdoc":"https://i.scdn.co/image/ab67616d0000b27365c20ba7c8acbf6a92528be3",
+    "comiendo-y-soplando":"https://i.scdn.co/image/ab67616d0000b2738f50e861d274727aa1aa92e0",
+    "fe":"https://i.scdn.co/image/ab67616d0000b273486df5413b8f7bd5443bf85d",
+    "ile":"https://i.scdn.co/image/ab67616d0000b273e55d7da02499434ee84c5090"
+  }
+}
