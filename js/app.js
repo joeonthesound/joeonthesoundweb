@@ -80,22 +80,11 @@ async function bootstrap() {
   document.head.append(favicon);
   ambientRoot.replaceChildren();
 
-  // Dynamic coordinate injection for the seasonal background radial warp.
-  let pointerFrame = 0;
-  let pointerX = 0;
-  let pointerY = 0;
-  const updatePointerCoordinates = () => {
-    pointerFrame = 0;
-    const { top, left, width, height } = document.body.getBoundingClientRect();
-    document.body.style.setProperty('--posX', (pointerX - left - width / 2).toFixed(2));
-    document.body.style.setProperty('--posY', (pointerY - top - height / 2).toFixed(2));
-  };
-  document.body.addEventListener('pointermove', event => {
-    if (event.pointerType === 'touch') return;
-    pointerX = event.clientX;
-    pointerY = event.clientY;
-    if (!pointerFrame) pointerFrame = requestAnimationFrame(updatePointerCoordinates);
-  }, { passive: true });
+  // Removed pointer-based background animation (2026-07-02).
+  // Reason: reduce CPU/GPU usage and avoid unwanted background motion on some devices.
+  // To restore the effect reintroduce the pointermove listener and update CSS variables.
+  document.body.style.setProperty('--posX', '0');
+  document.body.style.setProperty('--posY', '0');
 
   const routeLink = (language, routeId) => router.routePath(language, routeId);
   const socialById = id => config.links.social.find(item => item.id === id);
