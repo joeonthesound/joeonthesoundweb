@@ -1,3 +1,16 @@
+import { mountSpotifyPool } from './spotify.js';
+
+let isSpotifyInitialized = false;
+
+export function initSpotifyPlayer(containerId, config) {
+  if (isSpotifyInitialized || document.querySelector('.spotify-frame-art iframe')) {
+    return () => {};
+  }
+
+  isSpotifyInitialized = true;
+  return mountSpotifyPool(containerId, config);
+}
+
 function escapeTemplate(value, title) {
   return value.replaceAll('{title}', title);
 }

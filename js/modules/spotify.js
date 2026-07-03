@@ -206,7 +206,7 @@ export function mountSpotifyPool(containerId, config) {
     }
   })();
 
-  return () => {
+  const cleanup = () => {
     canceled = true;
     listeners.forEach(fn => fn());
     if (controller) {
@@ -216,4 +216,6 @@ export function mountSpotifyPool(containerId, config) {
     }
     if (container) container.innerHTML = '';
   };
+  cleanup.isSpotify = true;
+  return cleanup;
 }

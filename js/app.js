@@ -1,8 +1,7 @@
 import { createRouter } from './router.js';
 import { mountQuoter } from './modules/quoter.js';
 import { renderVideoLibrary } from './modules/videos.js';
-import { renderMusicCatalog } from './modules/music.js';
-import { mountSpotifyPool } from './modules/spotify.js';
+import { renderMusicCatalog, initSpotifyPlayer } from './modules/music.js';
 import { renderSobreJoe } from './modules/sobre-joe.js';
 import {
   afterFirstPaint,
@@ -31,6 +30,7 @@ async function bootstrap() {
   const ambientRoot = document.querySelector('#ambient-layer');
   const modalRoot = document.querySelector('#modal-root');
   let activeCleanup = [];
+  let preservedSpotifyAside = null;
   let currentLanguage = config.site.defaultLanguage;
   const legacyTheme = localStorage.getItem('jots:theme');
   if ((legacyTheme === 'dark' || legacyTheme === 'light') && !localStorage.getItem('jots:mode')) {
@@ -94,9 +94,11 @@ async function bootstrap() {
   const socialById = id => config.links.social.find(item => item.id === id);
 
   function cleanupPage() {
-    activeCleanup.forEach(cleanup => cleanup?.());
-    activeCleanup = [];
-    modalRoot.replaceChildren();
+      activeCleanup.forEach(cleanup => {
+        if (cleanup?.isSpotify && preservedSpotifyAside) return;
+        cleanup?.();
+      });
+      activeCleanup = activeCleanup.filter(cleanup => cleanup?.isSpotify && preservedSpotifyAside);
   }
 
   function injectStructuredData() {
@@ -173,6 +175,11 @@ async function bootstrap() {
       button.setAttribute('aria-label', activeMode === 'dark' ? words.nav.lightTheme : words.nav.darkTheme);
     });
     headerRoot.querySelector('#language').addEventListener('change', event => {
+      const spotifyAside = document.querySelector('.hero-spotify');
+      if (spotifyAside && match.route === 'home') {
+        preservedSpotifyAside = spotifyAside;
+        spotifyAside.remove();
+      }
       router.navigate(routeLink(event.target.value, match.valid ? match.route : 'home'));
     });
 
@@ -228,7 +235,7 @@ async function bootstrap() {
               <a class="btn btn--ghost" data-route-link href="${routeLink(match.language, 'music')}">${words.hero.secondary}</a>
             </div>
           </div>
-          <aside class="hero-spotify reveal" aria-hidden="false">
+          ${preservedSpotifyAside ? '<div id="spotify-preserve-slot"></div>' : `<aside class="hero-spotify reveal" aria-hidden="false">
             <div class="spotify-frame-art">
               <div id="spotify-embed-root" class="spotify-embed-root">
                 <div class="spotify-loading">Cargando...</div>
@@ -238,7 +245,7 @@ async function bootstrap() {
               <button id="spotify-play" class="btn">Play</button>
               <button id="spotify-pause" class="btn">Pause</button>
             </div>
-          </aside>
+          </aside>`}
           <div class="ticker"><div class="ticker-track"><span>${words.hero.ticker}</span><span aria-hidden="true">${words.hero.ticker}</span></div></div>
         </div>
       </section>
@@ -254,11 +261,22 @@ async function bootstrap() {
         <h2 class="heading">${words.home.projectTitle}</h2><p class="lead">${words.home.projectBody}</p>
         <a class="btn" data-route-link href="${routeLink(match.language, 'project')}">${words.home.projectCta}</a>
       </div></section>`;
-    // Mount Spotify embed pool after first paint and register cleanup
-    afterFirstPaint(() => {
-      const spotifyCleanup = mountSpotifyPool('spotify-embed-root', config.spotify || {});
-      activeCleanup.push(spotifyCleanup);
-    });
+
+    const isSpotifyPreserved = Boolean(preservedSpotifyAside);
+    if (isSpotifyPreserved) {
+      const preserveSlot = app.querySelector('#spotify-preserve-slot');
+      if (preserveSlot) {
+        preserveSlot.replaceWith(preservedSpotifyAside);
+      }
+      preservedSpotifyAside = null;
+    }
+
+    if (!isSpotifyPreserved) {
+      afterFirstPaint(() => {
+        const spotifyCleanup = initSpotifyPlayer('spotify-embed-root', config.spotify || {});
+        activeCleanup.push(spotifyCleanup);
+      });
+    }
 
     renderMusicCatalog({
       container: app.querySelector('#home-music'),
