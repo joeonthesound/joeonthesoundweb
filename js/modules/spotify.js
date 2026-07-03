@@ -50,7 +50,9 @@ async function fetchPlaylistTracks(playlistId, token) {
 }
 
 async function fetchArtistTopTracks(artistId, token) {
-  const url = `https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=US`;
+  // Restrict to the official artist ID and market PA as requested
+  const targetArtist = artistId || '0WolrewBAIYhWwzN5Z5Csg';
+  const url = `https://api.spotify.com/v1/artists/${targetArtist}/top-tracks?market=PA`;
   try {
     const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) {
@@ -96,27 +98,14 @@ function ensureSpotifyIframe() {
 }
 
 export async function resolveTrackPoolFromSeeds(seeds, token) {
-  console.debug('Resolving track pool from seeds', seeds);
-  const tracks = [];
-  for (const seed of seeds) {
-    try {
-      if (seed.startsWith('artist:')) {
-        const artistId = seed.split(':')[1];
-        const t = await fetchArtistTopTracks(artistId, token);
-        tracks.push(...t);
-      } else {
-        const playlistId = seed.replace(/^playlist:/, '');
-        const t = await fetchPlaylistTracks(playlistId, token);
-        tracks.push(...t);
-      }
-    } catch (e) {
-      console.debug('seed fetch failed', seed, e);
-    }
-  }
-  // Normalize to objects with uri and id
+  // Ignore external playlists: always query the artist's top-tracks for JoeOnTheSound
+  const ARTIST_ID = '0WolrewBAIYhWwzN5Z5Csg';
+  console.debug('Resolving track pool for artist', ARTIST_ID);
+  const tracks = await fetchArtistTopTracks(ARTIST_ID, token);
+  // Normalize (should already be normalized) and shuffle
   const normalized = tracks.map(t => ({ id: t.id, uri: t.uri || `spotify:track:${t.id}`, name: t.name, artists: t.artists || [] }));
   const shuffled = fisherYates(normalized);
-  // ensure uniqueness
+  // pick up to 5 unique tracks
   const seen = new Set();
   const unique = [];
   for (const t of shuffled) {
@@ -125,7 +114,7 @@ export async function resolveTrackPoolFromSeeds(seeds, token) {
     unique.push(t);
     if (unique.length >= 5) break;
   }
-  console.debug('Resolved track pool size:', unique.length);
+  console.debug('Resolved track pool size (artist top-tracks):', unique.length);
   return unique;
 }
 
@@ -159,7 +148,7 @@ export function mountSpotifyPool(containerId, config) {
       if (canceled) return;
 
       // Fallback URI if pool empty or token missing
-      const fallbackUri = config.fallbackUri || 'spotify:playlist:37i9dQZF1DX10zKzsJ2jva';
+      const fallbackUri = config.fallbackUri || 'spotify:artist:0WolrewBAIYhWwzN5Z5Csg';
       if (!pool || !pool.length) {
         console.warn('No tracks available from Spotify API; using fallback', fallbackUri);
       }
