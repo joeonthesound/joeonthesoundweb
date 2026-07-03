@@ -229,8 +229,10 @@ async function bootstrap() {
             </div>
           </div>
           <aside class="hero-spotify reveal" aria-hidden="false">
-            <div id="spotify-embed-root" class="spotify-embed-root">
-              <div class="spotify-loading">Cargando...</div>
+            <div class="spotify-frame-art">
+              <div id="spotify-embed-root" class="spotify-embed-root">
+                <div class="spotify-loading">Cargando...</div>
+              </div>
             </div>
             <div class="spotify-controls">
               <button id="spotify-play" class="btn">Play</button>
