@@ -157,10 +157,10 @@ export function mountSpotifyPool(containerId, config) {
       const IFrameAPI = await ensureSpotifyIframe();
       if (canceled) return;
 
-      // Create controller with first track (pool[0] or fallback)
-      const uris = (pool && pool.length) ? pool.map(t => t.uri) : [fallbackUri];
+      // Create controller using the artist URI to force the full artist view
+      const artistUri = 'spotify:artist:0WolrewBAIYhWwzN5Z5Csg';
       container.innerHTML = '';
-      IFrameAPI.createController(container, { width: '100%', height: String(config.embedHeight || 352), uri: uris[0] }, (ctrl) => {
+      IFrameAPI.createController(container, { width: '100%', height: '380', uri: artistUri }, (ctrl) => {
         controller = ctrl;
         let playing = false;
         let index = 0;
