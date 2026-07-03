@@ -36,6 +36,92 @@ async function bootstrap() {
     localStorage.setItem('jots:mode', legacyTheme);
     localStorage.removeItem('jots:theme');
   }
+
+  // --- Spotify Embed helpers (Vanilla JS integration) ---
+  const SPOTIFY_API_SRC = 'https://open.spotify.com/embed/iframe-api/v1';
+  function ensureSpotifyApi() {
+    return new Promise(resolve => {
+      if (window.onSpotifyIframeApiReady && window.Spotify) return resolve(window.Spotify);
+      const existing = document.querySelector(`script[src="${SPOTIFY_API_SRC}"]`);
+      if (!existing) {
+        const s = document.createElement('script');
+        s.src = SPOTIFY_API_SRC;
+        s.async = true;
+        document.head.appendChild(s);
+      }
+      const prev = window.onSpotifyIframeApiReady;
+      window.onSpotifyIframeApiReady = function(IFrameAPI) {
+        if (typeof prev === 'function') try { prev(IFrameAPI); } catch (e) {}
+        resolve(IFrameAPI);
+      };
+    });
+  }
+
+  function toSpotifyUri(url) {
+    if (!url) return url;
+    try {
+      const u = new URL(url);
+      const parts = u.pathname.split('/').filter(Boolean);
+      const type = parts[0];
+      const id = parts[1];
+      if (!type || !id) return url;
+      return `spotify:${type}:${id}`;
+    } catch (e) {
+      return url;
+    }
+  }
+
+  function mountSpotifyInHero(containerId = 'spotify-embed-root') {
+    let controller = null;
+    let playHandler = null;
+    let pauseHandler = null;
+    const container = document.getElementById(containerId);
+    if (!container) return () => {};
+    const loading = container.querySelector('.spotify-loading');
+    const playBtn = document.getElementById('spotify-play');
+    const pauseBtn = document.getElementById('spotify-pause');
+
+    let canceled = false;
+    ensureSpotifyApi().then(IFrameAPI => {
+      if (canceled) return;
+      const uri = toSpotifyUri(config.spotify?.embedUri || config.music?.releases?.[0]?.url);
+      try {
+        IFrameAPI.createController(container, { width: '100%', height: String(config.spotify?.embedHeight || 352), uri }, (ctrl) => {
+          controller = ctrl;
+          try { controller.addListener && controller.addListener('playback_update', payload => console.debug('spotify:playback_update', payload)); } catch (e) {}
+          try { controller.addListener && controller.addListener('playback_started', payload => console.debug('spotify:playback_started', payload)); } catch (e) {}
+          try { controller.addListener && controller.addListener('ready', () => { if (loading) loading.style.display = 'none'; }); } catch (e) { if (loading) loading.style.display = 'none'; }
+          if (playBtn) {
+            playHandler = () => { try { controller?.play && controller.play(); } catch (e) {} };
+            playBtn.addEventListener('click', playHandler);
+          }
+          if (pauseBtn) {
+            pauseHandler = () => { try { controller?.pause && controller.pause(); } catch (e) {} };
+            pauseBtn.addEventListener('click', pauseHandler);
+          }
+        });
+      } catch (e) {
+        console.error('spotify init error', e);
+        if (loading) loading.textContent = 'Error al cargar';
+      }
+    }).catch(err => {
+      console.error('spotify api load failed', err);
+      if (loading) loading.textContent = 'Error al cargar';
+    });
+
+    return () => {
+      canceled = true;
+      if (playBtn && playHandler) playBtn.removeEventListener('click', playHandler);
+      if (pauseBtn && pauseHandler) pauseBtn.removeEventListener('click', pauseHandler);
+      if (controller) {
+        try { controller.disconnect && controller.disconnect(); } catch (e) {}
+        try { controller.destroy && controller.destroy(); } catch (e) {}
+        controller = null;
+      }
+      if (container) container.innerHTML = '';
+    };
+  }
+
   const savedSeason = localStorage.getItem('jots:theme');
   let activeSeason = themes.seasons[savedSeason] ? savedSeason : themes.activeSeason;
   const savedMode = localStorage.getItem('jots:mode');
@@ -214,7 +300,7 @@ async function bootstrap() {
   function renderHome(words, match) {
     app.innerHTML = `
       <section class="hero">
-        <div class="shell">
+        <div class="shell hero-grid">
           <div class="hero-copy reveal">
             <p class="eyebrow">${words.hero.eyebrow}</p>
             <h1 class="display">${words.hero.title}</h1>
@@ -224,6 +310,15 @@ async function bootstrap() {
               <a class="btn btn--ghost" data-route-link href="${routeLink(match.language, 'music')}">${words.hero.secondary}</a>
             </div>
           </div>
+          <aside class="hero-spotify reveal" aria-hidden="false">
+            <div id="spotify-embed-root" class="spotify-embed-root">
+              <div class="spotify-loading">Cargando...</div>
+            </div>
+            <div class="spotify-controls">
+              <button id="spotify-play" class="btn">Play</button>
+              <button id="spotify-pause" class="btn">Pause</button>
+            </div>
+          </aside>
           <div class="ticker"><div class="ticker-track"><span>${words.hero.ticker}</span><span aria-hidden="true">${words.hero.ticker}</span></div></div>
         </div>
       </section>
@@ -239,6 +334,12 @@ async function bootstrap() {
         <h2 class="heading">${words.home.projectTitle}</h2><p class="lead">${words.home.projectBody}</p>
         <a class="btn" data-route-link href="${routeLink(match.language, 'project')}">${words.home.projectCta}</a>
       </div></section>`;
+    // Mount Spotify embed after first paint and register cleanup
+    afterFirstPaint(() => {
+      const spotifyCleanup = mountSpotifyInHero('spotify-embed-root');
+      activeCleanup.push(spotifyCleanup);
+    });
+
     renderMusicCatalog({
       container: app.querySelector('#home-music'),
       releases: config.music.releases,

@@ -53,6 +53,10 @@
     "calculator": {"es":"calculadora","en":"calculator","fr":"calculateur","de":"rechner","it":"calcolatore","ru":"kalkulyator","sw":"kikokotoo","zh":"jisuanqi"},
     "contact": {"es":"contacto","en":"contact","fr":"contact","de":"kontakt","it":"contatto","ru":"kontakt","sw":"mawasiliano","zh":"lianxi"}
   },
+  "spotify": {
+    "embedUri": "spotify:album:5woYLYxkgEqUeQw8EipT2d",
+    "embedHeight": 352
+  },
   "music": {
     "releases": [
       {"id":"el-pais-de-los-primos","title":"El País de los Primos","type":"single","year":"2026","tracks":1,"url":"https://open.spotify.com/album/5woYLYxkgEqUeQw8EipT2d"},
