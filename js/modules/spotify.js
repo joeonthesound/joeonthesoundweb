@@ -177,7 +177,17 @@ export function mountSpotifyPool(containerId, config) {
           }
         }); } catch (e) {}
         try { ctrl.addListener && ctrl.addListener('playback_started', () => { playing = true; }); } catch (e) {}
-        try { ctrl.addListener && ctrl.addListener('ready', () => { const l = container.querySelector('.spotify-loading'); if (l) l.style.display = 'none'; }); } catch (e) {}
+        try { ctrl.addListener && ctrl.addListener('ready', () => {
+          const l = container.querySelector('.spotify-loading');
+          if (l) l.style.display = 'none';
+          const iframe = container.querySelector('iframe[src*="spotify.com"]');
+          if (iframe) {
+            iframe.style.borderRadius = '16px';
+            iframe.style.backgroundColor = 'transparent';
+            iframe.style.border = 'none';
+            iframe.style.overflow = 'hidden';
+          }
+        }); } catch (e) {}
 
         if (playBtn) {
           const ph = () => { try { controller?.play && controller.play(); } catch (e) {} };
