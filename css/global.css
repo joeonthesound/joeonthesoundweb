@@ -120,7 +120,6 @@ html[data-theme=light] .play{color:#080a0f;box-shadow:0 0 0 2px rgba(255,255,255
 .spotify-frame-art{position:relative;padding:6px;background:linear-gradient(135deg,#ff007f,#7928ca);border-radius:20px;overflow:hidden;clip-path:inset(0 round 20px);box-shadow:0 0 20px rgba(255,0,127,.3),0 10px 30px rgba(0,0,0,.7);transition:transform .3s ease,box-shadow .3s ease;border:4px solid #1a1625;box-sizing:border-box}
 .spotify-frame-art:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,0,127,.5),0 15px 40px rgba(0,0,0,.8)}
 .spotify-embed-root{width:100%;height:352px;background:transparent;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;clip-path:inset(0 round 16px);background:transparent!important}
-.spotify-frame-art iframe{display:block;width:100%;height:100%;border-radius:14px!important;background-color:transparent!important}
 .spotify-loading{color:var(--bg-main);font-weight:700}
 .spotify-controls{display:flex;gap:10px}
 @media (max-width:900px){
