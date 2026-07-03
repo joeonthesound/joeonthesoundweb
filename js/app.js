@@ -2,6 +2,7 @@ import { createRouter } from './router.js';
 import { mountQuoter } from './modules/quoter.js';
 import { renderVideoLibrary } from './modules/videos.js';
 import { renderMusicCatalog } from './modules/music.js';
+import { mountSpotifyPool } from './modules/spotify.js';
 import { renderSobreJoe } from './modules/sobre-joe.js';
 import {
   afterFirstPaint,
@@ -37,90 +38,7 @@ async function bootstrap() {
     localStorage.removeItem('jots:theme');
   }
 
-  // --- Spotify Embed helpers (Vanilla JS integration) ---
-  const SPOTIFY_API_SRC = 'https://open.spotify.com/embed/iframe-api/v1';
-  function ensureSpotifyApi() {
-    return new Promise(resolve => {
-      if (window.onSpotifyIframeApiReady && window.Spotify) return resolve(window.Spotify);
-      const existing = document.querySelector(`script[src="${SPOTIFY_API_SRC}"]`);
-      if (!existing) {
-        const s = document.createElement('script');
-        s.src = SPOTIFY_API_SRC;
-        s.async = true;
-        document.head.appendChild(s);
-      }
-      const prev = window.onSpotifyIframeApiReady;
-      window.onSpotifyIframeApiReady = function(IFrameAPI) {
-        if (typeof prev === 'function') try { prev(IFrameAPI); } catch (e) {}
-        resolve(IFrameAPI);
-      };
-    });
-  }
-
-  function toSpotifyUri(url) {
-    if (!url) return url;
-    try {
-      const u = new URL(url);
-      const parts = u.pathname.split('/').filter(Boolean);
-      const type = parts[0];
-      const id = parts[1];
-      if (!type || !id) return url;
-      return `spotify:${type}:${id}`;
-    } catch (e) {
-      return url;
-    }
-  }
-
-  function mountSpotifyInHero(containerId = 'spotify-embed-root') {
-    let controller = null;
-    let playHandler = null;
-    let pauseHandler = null;
-    const container = document.getElementById(containerId);
-    if (!container) return () => {};
-    const loading = container.querySelector('.spotify-loading');
-    const playBtn = document.getElementById('spotify-play');
-    const pauseBtn = document.getElementById('spotify-pause');
-
-    let canceled = false;
-    ensureSpotifyApi().then(IFrameAPI => {
-      if (canceled) return;
-      const uri = toSpotifyUri(config.spotify?.embedUri || config.music?.releases?.[0]?.url);
-      try {
-        IFrameAPI.createController(container, { width: '100%', height: String(config.spotify?.embedHeight || 352), uri }, (ctrl) => {
-          controller = ctrl;
-          try { controller.addListener && controller.addListener('playback_update', payload => console.debug('spotify:playback_update', payload)); } catch (e) {}
-          try { controller.addListener && controller.addListener('playback_started', payload => console.debug('spotify:playback_started', payload)); } catch (e) {}
-          try { controller.addListener && controller.addListener('ready', () => { if (loading) loading.style.display = 'none'; }); } catch (e) { if (loading) loading.style.display = 'none'; }
-          if (playBtn) {
-            playHandler = () => { try { controller?.play && controller.play(); } catch (e) {} };
-            playBtn.addEventListener('click', playHandler);
-          }
-          if (pauseBtn) {
-            pauseHandler = () => { try { controller?.pause && controller.pause(); } catch (e) {} };
-            pauseBtn.addEventListener('click', pauseHandler);
-          }
-        });
-      } catch (e) {
-        console.error('spotify init error', e);
-        if (loading) loading.textContent = 'Error al cargar';
-      }
-    }).catch(err => {
-      console.error('spotify api load failed', err);
-      if (loading) loading.textContent = 'Error al cargar';
-    });
-
-    return () => {
-      canceled = true;
-      if (playBtn && playHandler) playBtn.removeEventListener('click', playHandler);
-      if (pauseBtn && pauseHandler) pauseBtn.removeEventListener('click', pauseHandler);
-      if (controller) {
-        try { controller.disconnect && controller.disconnect(); } catch (e) {}
-        try { controller.destroy && controller.destroy(); } catch (e) {}
-        controller = null;
-      }
-      if (container) container.innerHTML = '';
-    };
-  }
+  // Spotify pool integration moved to ./modules/spotify.js
 
   const savedSeason = localStorage.getItem('jots:theme');
   let activeSeason = themes.seasons[savedSeason] ? savedSeason : themes.activeSeason;
@@ -334,9 +252,9 @@ async function bootstrap() {
         <h2 class="heading">${words.home.projectTitle}</h2><p class="lead">${words.home.projectBody}</p>
         <a class="btn" data-route-link href="${routeLink(match.language, 'project')}">${words.home.projectCta}</a>
       </div></section>`;
-    // Mount Spotify embed after first paint and register cleanup
+    // Mount Spotify embed pool after first paint and register cleanup
     afterFirstPaint(() => {
-      const spotifyCleanup = mountSpotifyInHero('spotify-embed-root');
+      const spotifyCleanup = mountSpotifyPool('spotify-embed-root', config.spotify || {});
       activeCleanup.push(spotifyCleanup);
     });
 

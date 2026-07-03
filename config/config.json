@@ -55,7 +55,16 @@
   },
   "spotify": {
     "embedUri": "spotify:album:5woYLYxkgEqUeQw8EipT2d",
-    "embedHeight": 352
+    "embedHeight": 352,
+    "clientId": "35a6cbed4b1843fa8269031e32ba097a",
+    "clientSecret": "90d569af227b4ce79d7c9d60e5db5447",
+    "seeds": [
+      "playlist:37i9dQZF1DX2sUQwD7tbmL",
+      "playlist:37i9dQZF1DX4JAvHpjipBk",
+      "artist:0WolrewBAIYhWwzN5Z5Csg",
+      "playlist:37i9dQZF1DX5Ejj0EkURtP",
+      "artist:3TVXtAsR1Inumwj472S9r4"
+    ]
   },
   "music": {
     "releases": [
