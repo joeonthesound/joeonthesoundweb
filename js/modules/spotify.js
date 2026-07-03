@@ -9,30 +9,63 @@ function base64Encode(str) {
 
 export async function fetchSpotifyToken(clientId, clientSecret) {
   const body = new URLSearchParams({ grant_type: 'client_credentials' });
-  const auth = `Basic ${base64Encode(`${clientId}:${clientSecret}`)}`;
-  const res = await fetch(SPOTIFY_TOKEN_URL, {
-    method: 'POST',
-    headers: { 'Authorization': auth, 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: body.toString()
-  });
-  if (!res.ok) throw new Error(`token request failed: ${res.status}`);
-  return res.json();
+    const auth = `Basic ${base64Encode(`${clientId}:${clientSecret}`)}`;
+    try {
+      const res = await fetch(SPOTIFY_TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Authorization': auth, 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+      });
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        console.error('Spotify Auth Error: token request failed', res.status, text);
+        return null;
+      }
+      const data = await res.json();
+      console.debug('Spotify Auth: token acquired, expires_in=', data.expires_in);
+      return data;
+    } catch (error) {
+      console.error('Spotify Auth Error:', error);
+      return null;
+    }
 }
 
 async function fetchPlaylistTracks(playlistId, token) {
   const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?market=US&fields=items(track(id,uri,name,artists(name)))&limit=100`;
-  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data.items || []).map(i => i.track).filter(Boolean);
+  try {
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '');
+      console.warn('Spotify API: playlist tracks fetch failed', playlistId, res.status, txt);
+      return [];
+    }
+    const data = await res.json();
+    const items = data.items || [];
+    console.debug('Spotify API: playlist', playlistId, 'returned items:', items.length);
+    return (items).map(i => i.track).filter(Boolean);
+  } catch (e) {
+    console.error('Spotify API playlist fetch error:', e);
+    return [];
+  }
 }
 
 async function fetchArtistTopTracks(artistId, token) {
   const url = `https://api.spotify.com/v1/artists/${artistId}/top-tracks?market=US`;
-  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return (data.tracks || []).map(t => ({ id: t.id, uri: t.uri, name: t.name, artists: t.artists.map(a => a.name) }));
+  try {
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '');
+      console.warn('Spotify API: artist top tracks fetch failed', artistId, res.status, txt);
+      return [];
+    }
+    const data = await res.json();
+    const items = data.tracks || [];
+    console.debug('Spotify API: artist', artistId, 'returned tracks:', items.length);
+    return (items).map(t => ({ id: t.id, uri: t.uri, name: t.name, artists: t.artists.map(a => a.name) }));
+  } catch (e) {
+    console.error('Spotify API artist fetch error:', e);
+    return [];
+  }
 }
 
 function fisherYates(array) {
@@ -63,6 +96,7 @@ function ensureSpotifyIframe() {
 }
 
 export async function resolveTrackPoolFromSeeds(seeds, token) {
+  console.debug('Resolving track pool from seeds', seeds);
   const tracks = [];
   for (const seed of seeds) {
     try {
@@ -91,6 +125,7 @@ export async function resolveTrackPoolFromSeeds(seeds, token) {
     unique.push(t);
     if (unique.length >= 5) break;
   }
+  console.debug('Resolved track pool size:', unique.length);
   return unique;
 }
 
@@ -108,23 +143,33 @@ export function mountSpotifyPool(containerId, config) {
 
   (async function init() {
     try {
-      // 1. Get token
+      // 1. Get token (client credentials)
       tokenInfo = await fetchSpotifyToken(config.clientId, config.clientSecret);
-      const token = tokenInfo.access_token;
-      if (!token) throw new Error('no token');
-      // 2. Resolve track pool
-      const seeds = config.seeds || [];
-      const pool = await resolveTrackPoolFromSeeds(seeds, token);
-      if (canceled) return;
-      if (!pool.length) {
-        container.innerHTML = '<div class="spotify-loading">No tracks disponibles</div>';
-        return;
+      if (!tokenInfo || !tokenInfo.access_token) {
+        console.warn('Spotify token not obtained; proceeding to fallback');
       }
+      const token = tokenInfo && tokenInfo.access_token ? tokenInfo.access_token : null;
+
+      // 2. Resolve track pool if token present
+      const seeds = config.seeds || [];
+      let pool = [];
+      if (token) {
+        pool = await resolveTrackPoolFromSeeds(seeds, token);
+      }
+      if (canceled) return;
+
+      // Fallback URI if pool empty or token missing
+      const fallbackUri = config.fallbackUri || 'spotify:playlist:37i9dQZF1DX10zKzsJ2jva';
+      if (!pool || !pool.length) {
+        console.warn('No tracks available from Spotify API; using fallback', fallbackUri);
+      }
+
       // ensure iframe api loaded
       const IFrameAPI = await ensureSpotifyIframe();
       if (canceled) return;
-      // Create controller with first track
-      const uris = pool.map(t => t.uri);
+
+      // Create controller with first track (pool[0] or fallback)
+      const uris = (pool && pool.length) ? pool.map(t => t.uri) : [fallbackUri];
       container.innerHTML = '';
       IFrameAPI.createController(container, { width: '100%', height: String(config.embedHeight || 352), uri: uris[0] }, (ctrl) => {
         controller = ctrl;
