@@ -51,7 +51,7 @@ for (const directory of ['config', 'css', 'js', 'locales']) {
 }
 
 // Copiar archivos sueltos de la raíz (Quitamos _redirects para evitar el bucle de Cloudflare)
-for (const file of ['logo.png', 'robots.txt']) {
+for (const file of ['logo.png', 'robots.txt', 'llms.txt']) {
   await cp(resolve(root, file), resolve(output, file));
 }
 
