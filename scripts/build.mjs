@@ -7,15 +7,15 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const output = resolve(root, 'dist');
 const templatePath = resolve(root, 'index.template.html');
 
-// Validación de secretos obligatorios en Cloudflare
-const requiredVariables = [
-  'APIVIDEO',
-  'AppPagoJoeontheSoundWebClientID'
-];
+// Las integraciones son opcionales: su ausencia no bloquea el build.
+const integrationVariables = {
+  APIVIDEO: process.env.APIVIDEO?.trim() || '',
+  AppPagoJoeontheSoundWebClientID: process.env.AppPagoJoeontheSoundWebClientID?.trim() || ''
+};
 
-const missingVariables = requiredVariables.filter(name => !process.env[name]?.trim());
+const missingVariables = Object.keys(integrationVariables).filter(name => !integrationVariables[name]);
 if (missingVariables.length) {
-  throw new Error(`Missing required build variables: ${missingVariables.join(', ')}`);
+  console.warn(`Optional build variables missing: ${missingVariables.join(', ')}. Related integrations will be unavailable.`);
 }
 
 const escapeHtmlAttribute = value => value
@@ -27,8 +27,8 @@ const escapeHtmlAttribute = value => value
 // Procesar plantilla HTML
 let html = await readFile(templatePath, 'utf8');
 html = html
-  .replaceAll('APIVIDEO_PLACEHOLDER', JSON.stringify(process.env.APIVIDEO.trim()).slice(1, -1))
-  .replaceAll('CLIENT_ID_PLACEHOLDER', JSON.stringify(process.env.AppPagoJoeontheSoundWebClientID.trim()).slice(1, -1))
+  .replaceAll('APIVIDEO_PLACEHOLDER', JSON.stringify(integrationVariables.APIVIDEO).slice(1, -1))
+  .replaceAll('CLIENT_ID_PLACEHOLDER', JSON.stringify(integrationVariables.AppPagoJoeontheSoundWebClientID).slice(1, -1))
   .replaceAll('logo.png', escapeHtmlAttribute(process.env.logo?.trim() || 'logo.png'));
 
 // Validaciones de sanidad
